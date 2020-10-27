@@ -1,0 +1,178 @@
+/*==================================================
+=            Bootstrap 3 Media Queries             =
+==================================================*/
+
+/*==========  Non-Mobile First Method  ==========*/
+
+/* Large Devices, Wide Screens */
+
+@media only screen and (max-width: 1199px) {
+  .menuzord-brand img {
+    max-height: 90%;
+    top: 5%;
+  }
+  .menuzord-menu > li > a {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 991px) {
+  .home-boxes {
+    margin-top: 80px;
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width: 767px) {
+  .home-boxes {
+    margin-top: 140px;
+    margin-bottom: 0 !important;
+  }
+  .d-xs-none {
+    display: none;
+  }
+  .mr-sm-10 {
+    margin-right: 10px;
+  }
+
+  .menuzord-brand img {
+    max-height: 43px;
+    top: 2px;
+  }
+
+  .BrainhubCarousel__customArrows .BrainhubCarousel__custom-arrowLeft {
+    display: none !important;
+  }
+
+  .timeline_ar.timeline:before {
+    right: calc(1% + 6px) !important;
+    left: auto !important;
+  }
+
+  .timeline_ar .timeline-item-dateinner {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .entry .title:before {
+    left: 6px !important;
+  }
+
+  .timeline_ar .entry .title:before {
+    right: 6px !important;
+    left: auto !important;
+  }
+
+  .timeline_ar .timeline-item-date {
+    margin-right: 30px;
+  }
+
+  .img-carousel {
+    width: 100%;
+    height: auto;
+  }
+
+  .body-container {
+    width: 100%;
+  }
+
+  /* .post-thumb {
+    width: 100%;
+    height: auto;
+  } */
+}
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 479px) {
+  .fig-col {
+    width: 100% !important;
+  }
+  .BrainhubCarousel__customArrows .BrainhubCarousel__custom-arrowLeft {
+    display: none !important;
+  }
+
+  .img-carousel {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .BrainhubCarousel__customArrows .BrainhubCarousel__custom-arrowLeft {
+    display: none !important;
+  }
+  .timeline_ar .entry .title:before {
+    right: 2px !important;
+    left: auto !important;
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 360px) {
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width: 319px) {
+}
+
+/*==========  Mobile First Method  ==========*/
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 320px) {
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width: 480px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+}
+
+@media only screen and (min-width: 768px) {
+  .timeline_ar.timeline:before {
+    left: calc(66% - 6px) !important;
+  }
+  .timeline_ar .entry .title:before {
+    left: -12px !important;
+    right: auto !important;
+  }
+
+  .img-carousel {
+    width: 100% !important;
+    height: auto;
+  }
+
+  /* .post-thumb {
+    width: 100%;
+    height: 400px;
+  } */
+}
+
+@media only screen and (width: 768px) {
+  .timeline_ar.timeline:before {
+    right: calc(1% + 6px) !important;
+    left: auto !important;
+  }
+  .entry .title:before {
+    left: 6px !important;
+  }
+
+  .timeline_ar .entry .title:before {
+    right: 6px !important;
+    left: auto !important;
+  }
+
+  .timeline_ar .timeline-item-date {
+    margin-right: 30px;
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
+}

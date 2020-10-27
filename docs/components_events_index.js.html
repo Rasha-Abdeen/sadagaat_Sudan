@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/events/index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/events/index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useRef, useState, useEffect } from "react";
+import Carousel from "@brainhubeu/react-carousel";
+import "@brainhubeu/react-carousel/lib/style.css";
+import { Link } from "react-router-dom";
+import address from "./../utils/address";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
+import {getMonthName} from './getMonthName'
+
+/**
+ * This function showing last 3 events and lase 3 news n the home Page 
+ * @component
+ * @see http://sadagaat-uk.org/
+ */
+function Event() {
+  const [news, setNews] = useState([]);
+  const [events, setEvent] = useState([]);
+  const style = i18n.dir() === "rtl" ? "pl-0" : "pr-0"
+  const styleMr = i18n.dir() === "rtl" ? " ml-5" : " mr-5"
+
+  
+ 
+  const { t } = useTranslation();
+  /**  useEffect call fetchNews() , fetchNews() functions to get all news and events  when component mounted or  when recived props 
+*/
+
+  useEffect(() => {
+      fetchNews();
+      fetchNews();
+  }
+ , [i18n.language]);
+ /**
+  * This function get News from APIs and set the last three News 
+  * @return {Array} array of News returned by APIs
+  */
+
+  async function fetchNews() {
+    const fetcher = await window.fetch(`${address()}news`, {
+      headers: { "accept-language": `${i18n.language}` },
+    });
+    const response = await fetcher.json();
+    setNews(response.slice(-3));
+  }
+ /**
+  * This function get Events from APIs and set the last three News 
+  * @return {Array} array of events returned by APIs
+  */
+
+  async function fetcEvents() {
+    const fetcher = await window.fetch(`${address()}events`, {
+      headers: { "accept-language": `${i18n.language}` },
+    });
+    const response = await fetcher.json();
+    setEvent(response.slice(-3));
+  }
+
+  return (
+    &lt;React.Fragment>
+    &lt;section>
+      &lt;div className="container">
+        &lt;div className="section-content">
+          &lt;div className="row">
+            &lt;div className="col-xs-12 col-sm-6 col-md-4">
+              &lt;h3 className="text-uppercase title line-bottom mt-0 mb-30">
+                {t("Upcoming1")}{" "}
+                &lt;span className="text-theme-colored">{t("Events1")}&lt;/span>
+              &lt;/h3>
+
+              {events.map((event) => (
+                &lt;div
+                  className="event media sm-maxwidth400 border-bottom mt-5 mb-0 pt-10 pb-15"
+                  key={event.id}
+                >
+                  &lt;div className="row">
+                    &lt;div className = {`col-xs-2 col-md-3 ${style}`}>
+                      &lt;div className="event-date text-center bg-theme-colored border-1px p-0 pt-10 pb-10 sm-custom-style">
+                        &lt;ul>
+                          &lt;li className="font-28 text-white font-weight-700">
+                            
+                            {event.startDate.slice(8,10)}
+                          &lt;/li>
+                          &lt;li className="font-18 text-white  font-weight-700 text-center text-uppercase">
+                          {/* {event.startDate.slice(0,4)} */}
+                            {getMonthName(event.startDate)}
+                          &lt;/li>
+                        &lt;/ul>
+                      &lt;/div>
+                    &lt;/div>
+                    &lt;Link to={"/event/" + event.id}>
+                      &lt;div className="col-xs-9 pr-10 pl-10">
+                        &lt;div className="event-content mt-10 p-5 pb-0 pt-0">
+                          &lt;h5 className="media-heading font-16 font-weight-600">
+                            &lt;p>{event.name}&lt;/p>
+                          &lt;/h5>
+                          &lt;ul className="list-inline font-weight-600 text-gray-dimgray">
+                            &lt;li>
+                              &lt;i className={`fa fa-calendar ${styleMr} text-theme-colored`} />
+                              {`${event.startDate}`}
+                            &lt;/li>
+                            &lt;li>
+                              {"  "}
+                              &lt;i className={`fa fa-map-marker text-theme-colored ${styleMr}`} />
+                              {event.locationName}
+                            &lt;/li>
+                          &lt;/ul>
+                        &lt;/div>
+                      &lt;/div>
+                    &lt;/Link>
+                  &lt;/div>
+                &lt;/div>
+              ))}
+            &lt;/div>
+
+            &lt;div className="col-xs-12 col-sm-6 col-md-8">
+              &lt;h2 class="line-bottom border-bottom mt-0">
+                {" "}
+                {t("Latest")}
+                &lt;span className="text-theme-colored"> {t("News")} &lt;/span>
+              &lt;/h2>
+
+              &lt;div className="event media sm-maxwidth400 border-bottom mt-5 mb-0 pt-10 pb-15">
+                &lt;div className="row">
+                  &lt;Carousel autoPlay={5000} stopAutoPlayOnHover dots direction = {i18n.dir() === 'rtl'?'rtl':'ltr'}>
+                    {news.map((news_) => (
+                      &lt;div className="causes" key={news_.id}>
+                        &lt;div className="row-fluid">
+                          &lt;div className="col-md-5">
+                            &lt;img
+                              src={`${address()}news/${news_.id}/image`}
+                              alt="News"
+                              height="250px"
+                            />
+                          &lt;/div>
+                          &lt;div className="col-md-7">
+                            &lt;div class="event-content pull-left flip">
+                            &lt;h2 className="line-bottom mt-0">{news_.name}&lt;/h2>
+                            &lt;h4 className="mt-0 mb-0 text-theme-colored">
+                            &lt;/h4>
+                            &lt;p className = "project-discription">{news_.description}&lt;/p>
+                            &lt;Link
+                              className="btn btn-theme-colored btn-sm"
+                              to={'/news/'+news_.id}>
+                              {t("Read More")}
+                            &lt;/Link>
+                          &lt;/div>
+                          &lt;/div>
+                        &lt;/div>
+                      &lt;/div>
+                    ))}
+                  &lt;/Carousel>
+                &lt;/div>
+              &lt;/div>
+            &lt;/div>
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+    &lt;/section>
+    &lt;/React.Fragment>
+  );
+}
+export default Event;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-i18next_i18n.html">i18next/i18n</a></li></ul><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="About_.html">About_</a></li><li><a href="AllMedia.html">AllMedia</a></li><li><a href="Become.html">Become</a></li><li><a href="Calendar.html">Calendar</a></li><li><a href="Contact.html">Contact</a></li><li><a href="Donate.html">Donate</a></li><li><a href="Education.html">Education</a></li><li><a href="Event.html">Event</a></li><li><a href="Feeding.html">Feeding</a></li><li><a href="Health.html">Health</a></li><li><a href="Home.html">Home</a></li><li><a href="Hub_Subhubs.html">Hub_Subhubs</a></li><li><a href="Hubs.html">Hubs</a></li><li><a href="LanguageSelector.html">LanguageSelector</a></li><li><a href="Login.html">Login</a></li><li><a href="News.html">News</a></li><li><a href="Numbers.html">Numbers</a></li><li><a href="Parteners.html">Parteners</a></li><li><a href="Photo.html">Photo</a></li><li><a href="Projects.html">Projects</a></li><li><a href="ProjectSlider.html">ProjectSlider</a></li><li><a href="SingleSubhub.html">SingleSubhub</a></li><li><a href="SinglEvent.html">SinglEvent</a></li><li><a href="SinglNews.html">SinglNews</a></li><li><a href="SinglProject2.html">SinglProject2</a></li><li><a href="VolunteerForm.html">VolunteerForm</a></li><li><a href="Volunteers.html">Volunteers</a></li><li><a href="Water.html">Water</a></li></ul><h3>Global</h3><ul><li><a href="global.html#address">address</a></li><li><a href="global.html#forgotPassword">forgotPassword</a></li><li><a href="global.html#getMonthName">getMonthName</a></li><li><a href="global.html#getNumber">getNumber</a></li><li><a href="global.html#getNumberWithComma">getNumberWithComma</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#Precision">Precision</a></li><li><a href="global.html#PrivateRoute">PrivateRoute</a></li><li><a href="global.html#PubliceRoute">PubliceRoute</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#submit_volunteer_data">submit_volunteer_data</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 10:08:54 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

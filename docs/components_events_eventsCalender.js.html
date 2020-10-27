@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/events/eventsCalender.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/events/eventsCalender.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect , useRef } from 'react';
+import Header from '../sub_page_header';
+import address from '../utils/address';
+import i18n from 'i18next'
+import { useTranslation } from 'react-i18next';
+import {Link} from 'react-router-dom'
+import {getMonthName} from './getMonthName'
+import ReactPaginate from 'react-paginate'
+import Preload from '../preload'
+
+
+/**
+ * This component showing calender of all events 
+ * @component
+ *  @see http://sadagaat-uk.org/calender
+ */
+
+function Calendar(){
+
+  const [data, setData ] = useState([])
+  const [offset ,setOffset]= useState(0)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(6);
+  const {t} = useTranslation()
+  const [loading , setLoading] = useState(true)
+  const styleMr = i18n.dir() === "rtl" ? "l" : "r"
+
+/**
+     * This function return All events returned by the API 
+     * @return {Array} array  of events returned by the API
+*/
+  async function fetchData() {
+    const fetcher = await window.fetch(`${address()}events`,{headers: {'accept-language': `${i18n.language}`}})
+    const response = await fetcher.json()
+    setData(response)
+    setLoading(false)
+
+  }
+  
+ /**  useEffect call fetchData()  to get all events when component mounted or  when change language
+*/
+  
+  useEffect(() => {
+      fetchData()
+   },[i18n.language])
+
+  // Get current events you wate to post in page
+const currentPosts = data.slice(offset , offset + postsPerPage);
+
+// Change page paginate change current page of pagenation  and change the value of offset
+
+const paginate = (e) => {
+  setCurrentPage(e.selected)
+  setOffset(e.selected * postsPerPage)
+}
+    return(
+   &lt;section>
+          
+&lt;Header name={t("Events")} coverImage = {'events-bg-img'}/>
+  &lt;div className="container mt-30 mb-30">
+    &lt;div className="section-content">
+      &lt;div className="row">
+      {loading &amp;&amp; &lt;Preload  loading = {loading}/>}
+
+      {currentPosts.map((event) => (  
+        &lt;div className="col-sm-6 col-md-4 col-lg-4">
+          &lt;div className="schedule-box maxwidth500 bg-lighter mb-30" >
+            &lt;div className="schedule-details border-bottom-theme-color-2px clearfix p-15 pt-10">
+              &lt;div className={`text-center pull-left flip bg-theme-colored p-10 pt-5 pb-5 m${styleMr}-10`} key = {event.id}>
+                &lt;ul style = {{height:'50px'}}>
+                  &lt;li className="font-19 text-white font-weight-600 border-bottom">
+                      {event.startDate.slice(8,10)}
+                  &lt;/li>
+                  &lt;li className="font-12 text-white text-uppercase">
+                     {getMonthName(event.startDate)}
+                  &lt;/li>
+                &lt;/ul>
+              &lt;/div>
+              &lt;Link to = {'/event/'+event.id} >
+              &lt;h4 className="title mt-5 mb-5">
+                
+                 {event.name} 
+                
+                &lt;/h4>
+               
+              &lt;ul className="list-inline font-11 text-gray" style = {{height:'50px'}}>
+                &lt;li>&lt;i className={`fa fa-calendar m${styleMr}-5`} /> {event.startDate}&lt;/li>
+                &lt;li>&lt;i className={`fa fa-map-marker ${styleMr}`} /> {event.locationName}&lt;/li>
+              &lt;/ul>
+              &lt;div className="clearfix" >
+            &lt;/div>
+            &lt;/Link>
+          &lt;/div>
+        &lt;/div>
+        &lt;/div>
+      ))}
+      &lt;/div>
+      &lt;/div>
+
+      {/* pagination doesnt appear untile the event length being more than 6  postPerPage */}
+      {data.length > postsPerPage &amp;&amp;(
+      &lt;div style = {{position:'absolute',bottom:'0%'}}>
+
+    &lt;ReactPaginate
+                        previousLabel={t('prev')}
+                        nextLabel={t('next')}
+                        breakLabel={"..."}
+                        breakClassName={"break-me"}
+                        pageCount={Math.ceil(data.length / postsPerPage)}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={paginate}
+                        containerClassName={"pagination"}
+                        subContainerClassName={"pages pagination"}
+                        activeClassName={"active"}/>
+            &lt;/div>
+      )}
+      &lt;/div>
+      &lt;/section>
+
+    )
+}
+export default Calendar;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-i18next_i18n.html">i18next/i18n</a></li></ul><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="About_.html">About_</a></li><li><a href="AllMedia.html">AllMedia</a></li><li><a href="Become.html">Become</a></li><li><a href="Calendar.html">Calendar</a></li><li><a href="Contact.html">Contact</a></li><li><a href="Donate.html">Donate</a></li><li><a href="Education.html">Education</a></li><li><a href="Event.html">Event</a></li><li><a href="Feeding.html">Feeding</a></li><li><a href="Health.html">Health</a></li><li><a href="Home.html">Home</a></li><li><a href="Hub_Subhubs.html">Hub_Subhubs</a></li><li><a href="Hubs.html">Hubs</a></li><li><a href="LanguageSelector.html">LanguageSelector</a></li><li><a href="Login.html">Login</a></li><li><a href="News.html">News</a></li><li><a href="Numbers.html">Numbers</a></li><li><a href="Parteners.html">Parteners</a></li><li><a href="Photo.html">Photo</a></li><li><a href="Projects.html">Projects</a></li><li><a href="ProjectSlider.html">ProjectSlider</a></li><li><a href="SingleSubhub.html">SingleSubhub</a></li><li><a href="SinglEvent.html">SinglEvent</a></li><li><a href="SinglNews.html">SinglNews</a></li><li><a href="SinglProject2.html">SinglProject2</a></li><li><a href="VolunteerForm.html">VolunteerForm</a></li><li><a href="Volunteers.html">Volunteers</a></li><li><a href="Water.html">Water</a></li></ul><h3>Global</h3><ul><li><a href="global.html#address">address</a></li><li><a href="global.html#forgotPassword">forgotPassword</a></li><li><a href="global.html#getMonthName">getMonthName</a></li><li><a href="global.html#getNumber">getNumber</a></li><li><a href="global.html#getNumberWithComma">getNumberWithComma</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#Precision">Precision</a></li><li><a href="global.html#PrivateRoute">PrivateRoute</a></li><li><a href="global.html#PubliceRoute">PubliceRoute</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#submit_volunteer_data">submit_volunteer_data</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 10:08:54 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

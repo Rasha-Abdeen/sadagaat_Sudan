@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/sub_hubs/single-subhub.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/sub_hubs/single-subhub.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+import React ,{Component }  from 'react';
+import address from '../utils/address';
+import axios from 'axios';
+import i18n from 'i18next'
+import  {withTranslation}  from 'react-i18next'
+import 'react-circular-progressbar/dist/styles.css';
+import {Link } from 'react-router-dom'
+import {Precision, getNumber} from '../events/getMonthName'
+import ReactPaginate from 'react-paginate'
+import parse from 'html-react-parser';
+
+/**
+ * This comoponent display subHub information  and Project related to this subhub
+ * @component 
+ * @see http://sadagaat-uk.org/single-subhub/1849
+ */
+
+class SingleSubhub extends Component {
+
+  constructor() {
+    super();
+    this.state = 
+    {
+      subhub:[],
+      projects:[],
+      offset:0,
+      currentPage:1,
+      postsPerPage:6
+      }
+}
+/**
+ * Get shub information from APIs
+ * Get Projects that related to specific subhub
+ */
+
+async componentDidMount(){
+    //  Get id of subhub from url
+    let id = this.props.match.params.subhub_id
+
+    await axios.get(`${address()}subHubs/${id}`,{headers: {'accept-language': `${i18n.language}`}})
+
+    .then(response => {
+
+         const subhub = response.data
+          this.setState({subhub})
+
+    }).catch(error => {
+        // alert(error.message)
+    })
+
+    await axios.get(`${address()}subHubs/${id}/projects`,{headers: {'accept-language': `${i18n.language}`}})
+
+    .then(response => {
+
+         const projects = response.data
+          this.setState({projects})
+          console.log(projects)
+
+    }).catch(error => {
+        // alert(error.message)
+    })
+  
+}
+/**
+ * Function call when change props Like  switch language 
+ */
+  async componentWillReceiveProps(){
+
+  let id = this.props.match.params.subhub_id
+
+    await axios.get(`${address()}subHubs/${id}`,{headers: {'accept-language': `${i18n.language}`}})
+
+    .then(response => {
+
+         const subhub = response.data
+          this.setState({subhub})
+
+    }).catch(error => {
+        // alert(error.message)
+    })
+
+    await axios.get(`${address()}subHubs/${id}/projects`,{headers: {'accept-language': `${i18n.language}`}})
+
+    .then(response => {
+
+         const projects = response.data
+          this.setState({projects})
+
+    }).catch(error => {
+        // alert(error.message)
+    })
+
+}
+
+ // Change page
+  paginate = (e) => {
+  this.setState({
+    currentPage : e.selected,
+    offset:e.selected * this.state.postsPerPage
+  })
+}
+
+render()
+{
+  const {t} = this.props
+  const {subhub} = this.state
+  const {projects} = this.state
+  const totalDonation = subhub.total_donation
+
+  const currentPosts = projects.slice(this.state.offset , this.state.offset + this.state.postsPerPage)
+  const projectProgressAlign = i18n.dir()==='rtl'?'right':'left'
+
+
+    return (
+&lt;React.Fragment>
+      &lt;section>
+        &lt;div className="container">
+      &lt;div className="row multi-row-clearfix">
+      &lt;div>
+            &lt;div className="col-xs-12 col-sm-6 col-md-12">
+                &lt;h2 >
+  
+                &lt;/h2>
+  
+                &lt;div className="event media sm-maxwidth400 border-bottom mt-5 mb-0 pt-10 pb-15">
+                  &lt;div className="row">
+                     
+                        &lt;div className="causes">
+                          &lt;div className="row-fluid">
+                            &lt;div className="col-md-6">
+                        
+                              &lt;div className ="post-thumb thumb" style = {{mxaHeight:"600px"}}>
+                              &lt;img
+                                className= 'img-responsive'
+                                src={`${address()}subHubs/${subhub.id}/image`}
+                                alt="subhub image"
+                                 style= {{height:'400px',
+                                width:'500px'}}
+                                
+                              />
+                              &lt;/div>
+                         
+                               
+                              
+  
+                            &lt;/div>
+                            &lt;div class="causes-details col-md-6">
+                                  
+                                  &lt;h2 class="line-bottom mt-0">{subhub.name}&lt;/h2>
+                                   
+  
+                                    &lt;p>{subhub.description}&lt;/p>
+                                    
+                                    &lt;div class="mt-10 mb-20">
+                                    &lt;ul class="list-inline clearfix mt-10">
+                                      &lt;li class="text-theme-colored pull-right flip pr-0">
+                                        
+                                      &lt;/li>
+                                    &lt;/ul>
+                                  &lt;/div>
+                                  &lt;Link to= {'/sub_hubs/'+subhub.id}
+                                   class="btn btn-theme-colored btn-sm">{t('Donate Now')}&lt;/Link>
+                                &lt;/div>
+             
+                          &lt;/div>
+                        &lt;/div>
+                
+                  &lt;/div>
+             
+                &lt;/div>
+              &lt;/div>
+  
+                   
+          
+              
+            &lt;/div>
+          
+        
+       
+    &lt;/div>
+     &lt;br />
+              
+                {/* Projects related to subhub */}
+              
+     &lt;div className="row multi-row-clearfix">
+          &lt;div className="blog-posts">
+          &lt;h3 class="mt-10 line-bottom">{t('Projects')}&lt;/h3>
+          &lt;br/>
+
+            {currentPosts.map(project => (        
+
+
+            &lt;div className="col-md-4" key ={project.id}>
+            &lt;Link to={'/single-projects/'+project.id}>
+              &lt;div className="causes bg-white mb-30 border-bottom" style ={{height:'600px'}} >
+                  &lt;div className="thumb" 
+                  // style = {{ maxHeight: '260px'}}
+                  >
+                  &lt;img 
+                      src={`${address()}projects/${project.id}/image`}  
+                      className="img-fullwidth"
+                      width = '390'
+                      height = '260'  />
+                  &lt;/div>
+            &lt;div className="causes-details clearfix p-10 pt-15 pb-15">
+                &lt;ul className="list-inline font-14 font-weight-600 clearfix mb-5">
+                  &lt;li className="pull-left font-weight-400 text-black-333 pr-0">
+                    &lt;span className="text-theme-colored font-weight-500">
+                      {t('Raised')}{getNumber(project.raised)}
+                    &lt;/span>
+                  &lt;/li>
+                  &lt;li className="pull-right font-weight-400 text-black-333 pr-0">
+                    &lt;span className="text-theme-colored font-weight-00">
+                      {t('Goal')}{getNumber(project.goal)}
+                      &lt;/span>
+                  &lt;/li>
+                &lt;/ul>
+                  
+                &lt;div className="progress-item mt-0">
+                  &lt;div className="progress">
+                    &lt;div data-percent={Precision(project.donationProgress)} className="progress-bar">
+                      &lt;span className="percent">
+                          {Precision(project.donationProgress)}%
+                        &lt;/span>
+                      &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div className="progress-item mt-0">
+                  &lt;p className = "" style = {{textAlign:projectProgressAlign}}>{t('Project Progress')}&lt;/p>
+                  &lt;div className="progress">
+                    &lt;div data-percent={Precision(project.projectProgress)} className="progress-bar">  
+                    &lt;span className="percent">
+                        {Precision(project.projectProgress)}%
+                      &lt;/span>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+                &lt;h4 className="text-uppercase">{project.name}&lt;/h4>
+                &lt;p className="mt-20 project-discription">{parse(project.description)}&lt;/p>
+
+                &lt;Link 
+                    to={'/projects/'+project.id} 
+                    className="btn btn-default btn-theme-colored btn-xs font-16 mt-10"
+                    style = {{
+                      display:`${project.donationProgress >= 100 ?'none':''}`
+                        }}
+                    >
+                  {t('Donate')}
+                &lt;/Link>
+              &lt;/div>
+              
+            &lt;/div>
+            &lt;/Link>
+            &lt;/div>
+            ))
+           }
+           {projects.length > this.state.postsPerPage &amp;&amp;(
+       &lt;div style = {{position:'absolute',bottom:'0%'}}>
+
+      &lt;ReactPaginate
+                    previousLabel={t('prev')}
+                    nextLabel={t('next')}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"}
+                    pageCount={Math.ceil(projects.length / this.state.postsPerPage)}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.paginate}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"}/>
+             &lt;/div>
+      )}
+             &lt;/div>
+             
+             &lt;/div> 
+             &lt;/div>
+    
+             &lt;/section>
+             &lt;/React.Fragment>
+
+         )
+}
+
+    } export default withTranslation()(SingleSubhub)</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-i18next_i18n.html">i18next/i18n</a></li></ul><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="About_.html">About_</a></li><li><a href="AllMedia.html">AllMedia</a></li><li><a href="Become.html">Become</a></li><li><a href="Calendar.html">Calendar</a></li><li><a href="Contact.html">Contact</a></li><li><a href="Donate.html">Donate</a></li><li><a href="Education.html">Education</a></li><li><a href="Event.html">Event</a></li><li><a href="Feeding.html">Feeding</a></li><li><a href="Health.html">Health</a></li><li><a href="Home.html">Home</a></li><li><a href="Hub_Subhubs.html">Hub_Subhubs</a></li><li><a href="Hubs.html">Hubs</a></li><li><a href="LanguageSelector.html">LanguageSelector</a></li><li><a href="Login.html">Login</a></li><li><a href="News.html">News</a></li><li><a href="Numbers.html">Numbers</a></li><li><a href="Parteners.html">Parteners</a></li><li><a href="Photo.html">Photo</a></li><li><a href="Projects.html">Projects</a></li><li><a href="ProjectSlider.html">ProjectSlider</a></li><li><a href="SingleSubhub.html">SingleSubhub</a></li><li><a href="SinglEvent.html">SinglEvent</a></li><li><a href="SinglNews.html">SinglNews</a></li><li><a href="SinglProject2.html">SinglProject2</a></li><li><a href="VolunteerForm.html">VolunteerForm</a></li><li><a href="Volunteers.html">Volunteers</a></li><li><a href="Water.html">Water</a></li></ul><h3>Global</h3><ul><li><a href="global.html#address">address</a></li><li><a href="global.html#forgotPassword">forgotPassword</a></li><li><a href="global.html#getMonthName">getMonthName</a></li><li><a href="global.html#getNumber">getNumber</a></li><li><a href="global.html#getNumberWithComma">getNumberWithComma</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#Precision">Precision</a></li><li><a href="global.html#PrivateRoute">PrivateRoute</a></li><li><a href="global.html#PubliceRoute">PubliceRoute</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#submit_volunteer_data">submit_volunteer_data</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 10:08:54 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

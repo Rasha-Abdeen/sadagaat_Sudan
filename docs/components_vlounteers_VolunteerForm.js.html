@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/vlounteers/VolunteerForm.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/vlounteers/VolunteerForm.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React ,{Component}from 'react';
+import Header from '../sub_page_header';
+import Axios from 'axios';
+import {submit_volunteer_data, logout} from '../../repository'
+import {animateScroll as scroll } from "react-scroll";
+import  {withTranslation}  from 'react-i18next'
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+
+/**
+ * This Component diplay volunteer form 
+ * @component
+ * @see http://sadagaat-uk.org/volunteerForm
+ */
+class VolunteerForm extends Component{ 
+
+    constructor() {
+        super();
+     
+        this.state = { 
+            form:{
+            name:'',
+            gender:'FEMALE', 
+            ageGroup:'15-25',
+            phoneNumber:'',
+            secondPhoneNumber:'',
+            email:'',
+            bloodGroup:'AB',
+            educationLevel:'Secondary School',
+            languages:'',
+            studyField:'',
+            job:'',
+            country:'',
+            city:'',
+            cityProjects:'',
+            volunteeredBefore:'',
+            heardAboutSadagaat:'',
+            volunteerTime:'',
+            vacationTime:'',
+            countryProjects:'',
+            volunteeredPeriod:'',
+            volunteeredProjects:'',
+            receiveEmails:''
+            },
+            response:{
+                message:'',
+                styleClass:''
+                
+            },
+            dob: moment()
+          
+            /*there is some quistion not found in bakend and mobile app  */
+         
+         }
+        }
+        clearState =()=>{
+            this.setState({
+                form:{
+                    ...this.state.form,
+                    name:'',
+                    gender:'FEMALE', 
+                    ageGroup:'15-25',
+                    phoneNumber:'',
+                    secondPhoneNumber:'',
+                    email:'',
+                    bloodGroup:'AB',
+                    educationLevel:'Secondary School',
+                    languages:'',
+                    studyField:'',
+                    job:'',
+                    country:'',
+                    city:'',
+                    cityProjects:'',
+                    volunteeredBefore:'',
+                    heardAboutSadagaat:'',
+                    volunteerTime:'',
+                    vacationTime:'',
+                    countryProjects:'',
+                    volunteeredPeriod:'',
+                    volunteeredProjects:'',
+                    receiveEmails:''
+
+                }
+            })
+
+        } 
+
+/**
+ * This function validate from and return custom message fill this field
+ * @param {object} e event of input 
+ * @param {string} message that return from handleFormErrorMessage 
+ * @returns {'fill this field'} custom message
+ * */
+ 
+    handleFormErrorMessage =(e,message = '')=>{
+        const {t} = this.props
+        
+        if (e.target.value === '')
+        
+        e.target.setCustomValidity(t('fill this field'))
+        else
+        e.target.setCustomValidity(message)
+            
+        }
+
+        /**
+     * this function set the value of input form in the state
+     * @param {object} e  event from input field
+     * @example name:'ahmed'
+     */
+       handleChange = (e)=> {
+        this.setState({
+            form: {
+            ...this.state.form ,
+            [e.target.name]:e.target.value,
+          }
+           
+            })
+        }
+       
+        /**
+         * This function pass form data  to api through submit_volunteer_data  function and recive mresponse (message) 
+         * @param {object} e  submit button
+         * 
+         */
+       
+        handleSubmit = (e) => {
+        e.preventDefault();
+        submit_volunteer_data(this.state.form)
+
+        .then(response => {
+                this.clearState()
+            this.setState({
+                response:{
+                    ...this.state.response ,
+                message:'Your Form Submitted Successfully',
+                styleClass:'success-msg'
+            }
+            })
+           
+        })
+      
+        .catch(err => {
+           // check message returned from API
+            const message = ''
+            if (err.message === 'Request failed with status code 401')
+            {
+                logout()
+                message = 'Please Login Again'
+            }
+
+            if (err.message ==='Network Error')
+                message = 'Network Error'
+            else 
+                message = "something went wrong try again later"
+            //const message = err.message ==='Network Error'?err.message : "something went wrong try again later"
+            this.setState({
+                response:{
+                    ...this.state.response ,
+                        message:message,
+                        styleClass:'error-msg'
+                }
+        })
+    })
+                     scroll.scrollTo(70);
+    }
+       
+       
+
+    render(){
+        const {t}= this.props
+     
+return(
+    &lt;React.Fragment>
+        &lt;div className="main-content">
+
+        &lt;Header name={t('Volunteer Registration')} coverImage = {'volunteer-bg-img'}/>
+
+
+            &lt;section>
+                &lt;div className="container">
+                    &lt;div className="row">
+                        &lt;div className="col-md-8 col-md-offset-2">
+                            &lt;div className="tab-content">
+                                &lt;div className="tab-pane active p-15" id="register-tab">
+
+                                    &lt;form 
+                                            id="reg-form" 
+                                            name = 'volunteer-form'
+                                            className="register-form" 
+                                            onSubmit ={this.handleSubmit}
+                                         >           
+                                        &lt;div className="icon-box mb-0 p-0">
+                                            &lt;h4 className="text-gray pt-10 mt-0 mb-30">
+                                                {t('Fill Your Volunteering Form')}
+                                            &lt;/h4>
+                                        &lt;/div>
+                                       
+                                        &lt;div className={`${this.state.response.styleClass} bold`} role="alert">
+                                               &lt;p> {t(this.state.response.message)} &lt;/p>
+                                        &lt;/div>
+                                        
+                                        &lt;p className="text-gray">&lt;/p>
+
+                                        &lt;div className ="row">
+                                            &lt;div className="form-group required col-md-12 ">
+                                                &lt;label className = "control-label">{t('name')}&lt;/label>
+
+                                                &lt;input 
+                                                    name="name" 
+                                                    className="form-control" 
+                                                    type="text"
+                                                    onChange ={this.handleChange}
+                                                    pattern = '^([A-Za-z\u0621-\u064A]+)\s([A-Za-z\u0621-\u064A]+)(\s[A-Za-z\u0621-\u064A]+)?(\s[A-Za-z\u0621-\u064A]+)?([A-Za-z\u0621-\u064A\s]+)?$'
+                                                    title = {t('Please enter your fullName')}
+                                                    value  = {this.state.form.name}
+                                                    required="required"
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('Please enter your fullName'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}}
+                                                />
+                                            &lt;/div>
+                                        &lt;/div>
+
+                                        &lt;div className="row">
+                                            &lt;div className="form-group required col-md-5">
+
+                                                &lt;label for="" className="control-label float-left">{t('Gender')}&lt;/label>
+
+                                                &lt;select 
+                                                    name="gender"
+                                                    className ="form-control float-right" 
+                                                    onChange ={this.handleChange}
+                                                    value= {this.state.form.gender}
+                                                    required = "required"
+                                                
+                                                >
+                                                    &lt;option name ='gender'>{t("FEMALE")}&lt;/option>
+                                                    &lt;option name ="gender">{t('MALE')}&lt;/option>
+                                                &lt;/select>
+                                            &lt;/div>
+                                            
+
+                                            &lt;div className="form-group required col-md-7">
+                                                &lt;label className = "control-label">{t('Age Range')}&lt;/label>
+
+                                                &lt;div className="form-check- form-inline">
+                                                    &lt;div className="radio-inline ">
+
+                                                        &lt;input 
+                                                            className="form-check-input form"
+                                                            id = "1"
+                                                            type="radio"
+                                                            name="ageGroup" 
+                                                            value ='15-25'
+                                                            checked={this.state.form.ageGroup === '15-25'}
+                                                            onChange ={this.handleChange}
+                                                            
+                                                        />
+
+                                                        &lt;label className="form-check-label" for="1">
+                                                            15-25
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+                                                        &lt;input
+                                                            id='2'
+                                                            className="form-check-input" 
+                                                            type="radio"
+                                                            name="ageGroup" 
+                                                            value ='25-35'
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.ageGroup === '25-35'}
+                                                            
+                                                            
+                                                        />
+                                                        &lt;label className="form-check-label" for="2">
+                                                            25-35
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input 
+                                                            className="form-check-input"
+                                                            type="radio"
+                                                            name="ageGroup" 
+                                                            id="3" 
+                                                            value='35-45'
+                                                            onChange = {this.handleChange}
+                                                            checked={this.state.form.ageGroup === '35-45'}
+                                                            
+                                                            
+                                                        />
+                                                        &lt;label className="form-check-label" for="3" >
+                                                            35-45
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input
+                                                            className="form-check-input" 
+                                                            type="radio"
+                                                            name="ageGroup"
+                                                            id="4" 
+                                                            value ='45-'
+                                                            checked={this.state.form.ageGroup === '45-'}
+                                                            onChange ={this.handleChange}
+                                                            
+                                                        />
+
+                                                        &lt;label className="form-check-label" for="3">
+                                                            45-
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                &lt;/div>
+                                            &lt;/div>
+                                            &lt;/div>
+                                      
+                                        &lt;div className="row">
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label for="" className = "control-label">{t('Phone')}.&lt;/label>
+                                                    &lt;small className = "font-12 text-gray">   &lt;/small>
+
+                                                &lt;input 
+                                                   
+                                                    name="phoneNumber"
+                                                    className="form-control"
+                                                    type="tel"
+                                                    onChange ={this.handleChange}
+                                                    pattern="^(0[0-9]{9})|(00[0-9]{12})$"
+                                                    title = {t('Enter a valid phone number with 10 number or 14')}
+                                                    value = {this.state.form.phoneNumber}
+                                                    required="required"
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('Enter a valid phone number with 10 number or 14'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}}
+                                                 />
+                                            &lt;/div>
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label>{t('Additional Phone')}&lt;/label>
+                                                &lt;small className = "font-12 text-gray">   &lt;/small>
+
+
+                                                &lt;input
+                                                    name="secondPhoneNumber"
+                                                    className="form-control"
+                                                    type="tele"
+                                                    onChange ={this.handleChange}
+                                                    value = {this.state.form.secondPhoneNumber}
+                                                    pattern="^(0[0-9]{9})|(00[0-9]{12})$"
+                                                    title = {t('Enter a valid phone number with 10 number or 14')}
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('Enter a valid phone number with 10 number or 14'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}
+                                                        }
+                                                    />
+                                                &lt;/div>
+                                                &lt;/div>
+                                            &lt;div className="row">
+                                            &lt;div className="form-group required col-md-8">
+                                                &lt;label for="" className = "control-label">{t('E-Mail')}&lt;/label>
+                                                
+                                                &lt;input 
+                                                    id="" 
+                                                    name="email"
+                                                    className="form-control"
+                                                    type="text"
+                                                    onChange ={this.handleChange}
+                                                    pattern = '^([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-z]{2,8})(\.[a-z]{2,8})?$'
+                                                    title = {t("that email address is invalid")}
+                                                    value ={this.state.form.email}
+                                                    required="required"
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('that email address is invalid'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}} 
+                                                />
+                                            &lt;/div>
+                                            &lt;div className="form-group required col-md-4">
+                                                &lt;label className = "control-label">{t('Blood Group')}&lt;/label>
+
+                                                &lt;select 
+                                                    name="bloodGroup"
+                                                    className="form-control float-right" 
+                                                    value ={this.state.form.bloodGroup}
+                                                    onChange={this.handleChange}>
+                                                    &lt;option >AB&lt;/option>
+                                                    &lt;option >A&lt;/option>
+                                                    &lt;option >B&lt;/option>
+                                                    &lt;option >O&lt;/option>
+                                                &lt;/select>
+                                            &lt;/div>
+                                        &lt;/div>
+                                        &lt;div className="row">
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label>{t('Educational Level')}&lt;/label>
+
+                                                &lt;select
+                                                    name ='educationLevel'
+                                                    className="form-control float-right"  
+                                                    value ={this.state.form.educationLevel}
+                                                    onChange ={this.handleChange}
+
+                                                 >
+                                                    &lt;option>{t('Secondary School')}&lt;/option>
+                                                    &lt;option >{t('University Degree')}&lt;/option>
+                                                &lt;/select>
+                                            &lt;/div>
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label>{t('Languages you Know?')}&lt;/label> 
+
+                                                &lt;input 
+                                                    name="languages"
+                                                    className="form-control" 
+                                                    type="text"
+                                                    pattern = '^[^\s].+[^\s]$'
+                                                    onChange ={this.handleChange}                                                    
+                                                    value = {this.state.form.languages}
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('your value must not be white space'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}}
+                                                    
+                                                />
+                                            &lt;/div>
+                                            &lt;/div>
+
+                                        &lt;div className="row">
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label>{t('What did you Study(or are studding)?')}&lt;/label>
+
+                                                &lt;input 
+                                                    name="studyField"
+                                                    className="form-control" 
+                                                    type="text"
+                                                    pattern = '^[^\s].+[^\s]$'
+                                                    value = {this.state.form.studyField}
+                                                    onChange ={this.handleChange}
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('your value must not be white space'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}}
+                                                />
+                                            &lt;/div>
+                                            
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label>{t('If you currently work , what is your job?')}&lt;/label>
+
+                                                &lt;input 
+                                                    name="job" 
+                                                    className="form-control"
+                                                    type="text"
+                                                    pattern = '^[^\s].+[^\s]$'
+                                                    value = {this.state.form.job}
+                                                    onChange ={this.handleChange}
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('your value must not be white space'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}}
+                                                    
+                                                />
+                                            &lt;/div>
+                                         
+                                        &lt;/div>
+                                        &lt;div className="row">
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label for="">
+                                                    {t('In which State do you live ?')}
+                                                &lt;/label>
+                                                &lt;input 
+                                                    id="" 
+                                                    name="country"
+                                                    className="form-control"
+                                                    type="text"
+                                                    pattern = '^[^\s].+[^\s]$'
+                                                    value = {this.state.form.country}
+                                                    onChange ={this.handleChange}
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('your value must not be white space'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}}
+                                                    
+                                                    
+                                                 />
+                                            &lt;/div>
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label>{t('In which city?')}&lt;/label>
+
+                                                &lt;input 
+                                                    id="city" 
+                                                    name="city"
+                                                    className="form-control"
+                                                    type="text"
+                                                    value = {this.state.form.city}
+                                                    pattern = '^[^\s].+[^\s]$'
+                                                    onChange ={this.handleChange}
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('your value must not be white space'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}}
+                                                    
+                                                    
+                                                />
+                                            &lt;/div>
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label>
+                                                    {t('Did Sadagaat executed any projects in your State?')}
+                                                &lt;/label>
+                                                &lt;div className="form-check- form-inline">
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input
+                                                            className="form-check-input"
+                                                            type="radio"
+                                                            name="cityProjects"  
+                                                            value="yes"
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.cityProjects === 'yes'}
+                                                            
+                                                        />
+                                                        &lt;label className="form-check-label" >
+                                                             {t('Yes')}  
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+                                                        &lt;input 
+                                                            className="form-check-input" 
+                                                            type="radio"
+                                                            name="cityProjects" 
+                                                            id=""
+                                                            value='no'
+                                                            onChange ={this.handleChange}
+                                                            pattern = '^[^\s].+[^\s]$'
+                                                            checked={this.state.form.cityProjects === 'no'}
+                                                            
+                                                        />
+                                                        &lt;label className="form-check-label" for="">
+                                                              {t('No')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input 
+                                                            className="form-check-input" 
+                                                            type="radio"
+                                                            name="cityProjects"
+                                                            value='dont'
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.cityProjects === 'dont'}
+                                                            
+                                                        />
+                                                        &lt;label className="form-check-label" for="">
+                                                            {t('I Dont Know')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+
+                                                &lt;/div>
+                                            &lt;/div>
+                                        &lt;/div>
+                                        &lt;div className="row">
+                                            
+                                         &lt;div className="form-group required col-md-6">
+                                                &lt;label>
+                                                    {t('Did you volunteer in Sadagaat before?')}
+                                                &lt;/label>
+                                                &lt;div className="form-check- form-inline">
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input 
+                                                            className="form-check-input"
+                                                            type="radio"
+                                                            name="volunteeredBefore" 
+                                                            id="1" 
+                                                            value='yes'
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.volunteeredBefore === 'yes'}
+                                                            
+                                                        />
+                                                        &lt;label className="form-check-label" for="1">
+                                                            {t('Yes')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+                                                        &lt;input
+                                                            className="form-check-input"
+                                                            type="radio"
+                                                            name="volunteeredBefore" 
+                                                            value='no'
+                                                            onChange = {this.handleChange}
+                                                            checked={this.state.form.volunteeredBefore === 'no'}
+
+                                                            
+                                                        />
+                                                        &lt;label className="form-check-label" for="">
+                                                           {t('No')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                &lt;/div>
+                                            &lt;/div>
+                                            &lt;div className="form-group required col-md-6">
+                                                &lt;label for="">{t('If yes , Since when?')}&lt;/label>
+                                                &lt;input 
+                                                    id = 'date'
+                                                    name="volunteerTime"
+                                                    className="form-control"
+                                                    type="date"
+                                                    value = {this.state.form.volunteerTime}
+                                                    onChange ={this.handleChange}
+                                                    max={moment().format("YYYY-MM-DD")}
+                                                    onInvalid = {(e) =>(e,t('enter date no later than')+ moment().format("YYYY-MM-DD"))}
+                                                    onInput={function(e) {
+                                                         e.target.setCustomValidity(t(''))}}                                                     
+                                                />
+                                            &lt;/div>
+                                            &lt;div className="form-group col-md-12">
+                                                &lt;label for="">
+                                                    {t('What projects did you participated in with Sadagaat?')}
+                                                &lt;/label>
+                                                
+                                                &lt;input 
+                                                    id="" 
+                                                    name="volunteeredProjects"
+                                                    className="form-control" 
+                                                    type="text"
+                                                    pattern = '^[^\s].+[^\s]$'
+                                                    onChange ={this.handleChange}
+                                                    value = {this.state.form.volunteeredProjects}
+                                                    onInvalid = {(e)=>this.handleFormErrorMessage(e,t('your value must not be white space'))}
+                                                    onInput={function(e) {
+                                                        e.target.setCustomValidity(t(''))}}
+                                                />
+                                            &lt;/div>
+                                            &lt;div className="form-group col-md-12">
+                                                &lt;label>{t('How did you know about Sadagaat?')}&lt;/label>
+                                                &lt;div className="form-check- form-inline">
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input 
+                                                            className="form-check-input"
+                                                            type="radio"
+                                                            name="heardAboutSadagaat" 
+                                                            id="1"
+                                                            value='Friends'
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.heardAboutSadagaat === 'Friends'}
+                                                            
+                                                        />
+                                                        &lt;label className="form-check-label" for="1">
+                                                            {t('Friends')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+                                                        &lt;input 
+                                                            className="form-check-input"
+                                                            type="radio"
+                                                            name="heardAboutSadagaat"
+                                                            id=""
+                                                            value = 'NewsPaper'
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.heardAboutSadagaat === 'NewsPaper'}
+                                                        />
+                                                        &lt;label className="form-check-label" for="">
+                                                        {t('NewsPaper , magazzen')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input 
+                                                            className="form-check-input" 
+                                                            type="radio"
+                                                            name="heardAboutSadagaat" 
+                                                            value='Social Media'
+                                                            onChange={this.handleChange}
+                                                            checked={this.state.form.heardAboutSadagaat === 'Social Media'}
+                                                        />
+                                                        &lt;label className="form-check-label" for="">
+                                                            {t('Social Media')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                &lt;/div>
+                                            &lt;/div>
+                                        &lt;/div>
+                                        &lt;div className="row">
+                                            &lt;div className="form-group col-md-12">
+                                                &lt;label>
+                                                {t('what is the suitable time for you to volunteer in Sadagaat?')}
+                                                &lt;/label>
+                                                &lt;div className="form-check- form-inline">
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input 
+                                                            className="form-check-input"
+                                                            type="radio"
+                                                            name="volunteeredPeriod"
+                                                            id="1"
+                                                            value='Morning time'
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.volunteeredPeriod === 'Morning time'}
+                                                        />
+                                                        &lt;label className="form-check-label" for="1">
+                                                            {t('Morning time')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+                                                        &lt;input 
+                                                            className="form-check-input" 
+                                                            type="radio"
+                                                            name="volunteeredPeriod"
+                                                            value ='Evening time'
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.volunteeredPeriod === 'Evening time'}
+
+
+                                                        />
+                                                        &lt;label className="form-check-label" for="">
+                                                            {t('Evening time')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                            &lt;/div>
+                                            &lt;div className="form-group col-md-12">
+                                                &lt;label>
+                                                    {t('Would you like us to send a newsletter about Sadagaat work in your email?')}
+                                                &lt;/label>
+                                                &lt;div className="form-check- form-inline">
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input 
+                                                            className="form-check-input"
+                                                            type="radio"
+                                                            name="receiveEmails" 
+                                                         
+                                                            value = 'true'
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.receiveEmails === 'true'}
+                                                        />
+                                                        &lt;label className="form-check-label" >
+                                                            {t('Yes')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                                    &lt;div className="radio-inline">
+
+                                                        &lt;input
+                                                            className="form-check-input" 
+                                                            type="radio"
+                                                            name="receiveEmails" 
+                                                            id="" 
+                                                            value = 'false'
+                                                            onChange ={this.handleChange}
+                                                            checked={this.state.form.receiveEmails === 'false'}
+                                                        />
+                                                        &lt;label className="form-check-label" for="">
+                                                             {t('No')}
+                                                        &lt;/label>
+                                                    &lt;/div>
+                                            &lt;/div>
+                                            
+                                        &lt;/div>
+                                        &lt;div className="form-group">
+                                            &lt;button className="btn text-white btn-theme-green btn-lg btn-block mt-15"
+                                                 type="submit" >
+                                                      &lt;span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">&lt;/span>
+                                                    {t('Submit')}
+                                            &lt;/button>
+                                        &lt;/div>
+                                        &lt;/div>
+                                        &lt;/div>
+                                    &lt;/form>
+                                &lt;/div>
+                            &lt;/div>
+                        &lt;/div>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/section>
+        &lt;/div>
+        &lt;/React.Fragment>
+
+        )
+    }
+
+}export default withTranslation()(VolunteerForm);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-i18next_i18n.html">i18next/i18n</a></li></ul><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="About_.html">About_</a></li><li><a href="AllMedia.html">AllMedia</a></li><li><a href="Become.html">Become</a></li><li><a href="Calendar.html">Calendar</a></li><li><a href="Contact.html">Contact</a></li><li><a href="Donate.html">Donate</a></li><li><a href="Education.html">Education</a></li><li><a href="Event.html">Event</a></li><li><a href="Feeding.html">Feeding</a></li><li><a href="Health.html">Health</a></li><li><a href="Home.html">Home</a></li><li><a href="Hub_Subhubs.html">Hub_Subhubs</a></li><li><a href="Hubs.html">Hubs</a></li><li><a href="LanguageSelector.html">LanguageSelector</a></li><li><a href="Login.html">Login</a></li><li><a href="News.html">News</a></li><li><a href="Numbers.html">Numbers</a></li><li><a href="Parteners.html">Parteners</a></li><li><a href="Photo.html">Photo</a></li><li><a href="Projects.html">Projects</a></li><li><a href="ProjectSlider.html">ProjectSlider</a></li><li><a href="SingleSubhub.html">SingleSubhub</a></li><li><a href="SinglEvent.html">SinglEvent</a></li><li><a href="SinglNews.html">SinglNews</a></li><li><a href="SinglProject2.html">SinglProject2</a></li><li><a href="VolunteerForm.html">VolunteerForm</a></li><li><a href="Volunteers.html">Volunteers</a></li><li><a href="Water.html">Water</a></li></ul><h3>Global</h3><ul><li><a href="global.html#address">address</a></li><li><a href="global.html#forgotPassword">forgotPassword</a></li><li><a href="global.html#getMonthName">getMonthName</a></li><li><a href="global.html#getNumber">getNumber</a></li><li><a href="global.html#getNumberWithComma">getNumberWithComma</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#Precision">Precision</a></li><li><a href="global.html#PrivateRoute">PrivateRoute</a></li><li><a href="global.html#PubliceRoute">PubliceRoute</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#submit_volunteer_data">submit_volunteer_data</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 10:08:54 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Login/Registration.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Login/Registration.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React,{Component} from 'react';
+import {register} from '../../repository';
+import{Redirect} from 'react-router-dom'
+import i18n from 'i18next'
+import { withTranslation } from 'react-i18next'
+import {animateScroll as scroll } from "react-scroll";
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+
+
+class Registration extends Component{
+
+  constructor() {
+    super();
+    this.state = { 
+      form:{
+   
+            firstName:'',
+            lastName:'',
+            userName: '',
+            password: '',
+            phoneNumber:'',
+            gender:'MALE',
+            dateOfBirth:'',
+          },
+      response:
+      {
+        message:'',
+        success: null,
+        styleClass:'',
+        iconClass:'',
+        loginLink:'',
+        confirmPassword:'',
+        errorPassword:false
+        
+      },
+      dob: moment()
+    };
+  }
+/**
+ * 
+ * @param {object} e input field
+ * @param {string} message  custom message
+ */
+ handleFormErrorMessage =(e,message = '')=>{
+  const {t} = this.props
+
+  if (e.target.value === '')
+  
+  e.target.setCustomValidity(t('fill this field'))
+  else
+  e.target.setCustomValidity(message)
+    
+  }
+   
+   handleChange = (e)=> 
+   {
+      this.setState({
+        form:{
+          ...this.state.form,
+        [e.target.name]: e.target.value
+        }
+      })   
+    }
+
+    handleConfirmPassword = (e)=>{
+       const  confirm = e.target.value
+       const password = this.state.form.password
+       if( confirm === password){
+        this.setState({
+          response:{
+             ...this.state.response,
+             confirmPassword:'fa fa-check alert-success',
+             errorPassword:false
+
+          }
+        })
+       }
+     else{
+      this.setState({
+        response:{
+           ...this.state.response,
+           confirmPassword:'fa fa-times-circle alert-danger',
+           errorPassword:true
+        }
+      })
+     }
+      
+       
+    }
+
+   
+   handleSubmit=(e) => 
+   {
+
+        e.preventDefault();
+       let errorconfirm = this.state.response.errorPassword
+       if (!errorconfirm){
+
+          register(this.state.form)
+          
+          .then(token => {
+            this.setState({
+              response:{
+                ...this.state.response,
+                success : 1,
+              message:'Registerd Successfully',
+              styleClass:'success-msg',
+              iconClass:'fa fa-check fa-2x',
+              loginLink:'Login'
+              }
+            })
+            this.clearState()
+            
+          }
+          )
+       
+       .catch(err => {
+        console.log(err)
+        let message;
+        if (err.message === 'Request failed with status code 403')
+          message = 'This Email Already Exist'
+          else if (err.message === 'Network Error')
+           message = 'Network Error'
+           else 
+           message = 'something went wrong try again later'
+          
+            this.setState({
+              response:{
+                ...this.state.response,
+                success:0,
+                message: message,
+                iconClass:'fa fa-times-circle',
+                styleClass:'error-msg'
+              }
+           })
+          }
+        )
+
+
+                     
+        }else{
+          this.setState({
+            response:{
+             ...this.state.response,
+             message:'Pasword Not Matching',
+             styleClass:'error-msg',
+             iconClass:'fa fa-times-circle'
+            }
+          })
+        }
+        scroll.scrollTo(70);
+    }
+    clearState=()=>{
+      this.setState({
+        form:{
+          ...this.state.form,
+          firstName:'',
+          lastName:'',
+          userName: '',
+          password: '',
+          phoneNumber:'',
+          gender:'MALE',
+          dateOfBirth:'',
+        }
+      })
+      document.getElementById('confirmPassword').value = ''
+
+    }
+   
+   render(){
+      const {t} = this.props
+      const styleClass = i18n.dir() ==='rtl'?'pull-right ml-10':'pull-left mr-10'
+
+  
+    return(
+                   
+                   &lt;div className="tab-pane fade in  p-15" id="register-tab">
+
+
+                            &lt;form 
+                            
+                                  name="reg-form" 
+                                  id = 'reg-form1'
+                                  className="register-form" 
+                                  role="form"
+                                  onSubmit={this.handleSubmit}
+                                  
+                                
+                              >
+                              &lt;div className="icon-box mb-0 p-0">
+                                &lt;span className={`icon icon-bordered icon-rounded icon-sm ${styleClass} mb-0`}>
+                                  &lt;i className="pe-7s-users">&lt;/i>
+                                &lt;/span> 
+                                  &lt;h4 className="text-gray pt-10 mt-0 mb-30">{t('Register Now')}&lt;/h4>
+                              &lt;/div>
+                             
+                                {this.state.response.success === 1 ?
+
+                                  (
+                                      &lt;Redirect 
+                                      to = {{
+                                          pathname: "/login",
+                                         state:{referrer: this.state.response.message}
+                                          }}  />
+                                      ) :
+
+                                    (&lt;div className = {this.state.response.styleClass}>
+                                    &lt;i className = {this.state.response.iconClass} style = {{margin:'5px'}}/>
+                                    {t(this.state.response.message)}
+                                    
+                                    &lt;/div>) 
+                                }
+  
+                              &lt;div className="row">
+                                &lt;div className="form-group required col-md-6">
+                                  &lt;label className = "control-label" for="first-name">{t('First Name')}&lt;/label>
+
+                                  &lt;input
+                                      id="firs-name" 
+                                      name="firstName" 
+                                      className="form-control" 
+                                      type="text"
+                                      pattern = '^([A-Za-z\u0621-\u064A]+)(\s[A-Za-z\u0621-\u064A]+)?$'
+                                      title = {t('Please enter a valid name')}
+                                      required = "required"
+                                      onChange = {this.handleChange}
+                                      value = {this.state.form.firstName}
+                                      onInvalid = {(e)=>this.handleFormErrorMessage(e,t('Please enter a valid name'))}
+                                      onInput={function(e) {
+                                          e.target.setCustomValidity(t(''))}}
+                                      
+
+                                      
+                                  />
+                                &lt;/div>
+                                &lt;div className="form-group required col-md-6">
+                                  &lt;label className = "control-label">{t('Last Name')}&lt;/label>
+
+                                  &lt;input 
+                                        id="last-Mame" 
+                                        name="lastName"  
+                                        className="form-control"  
+                                        type="text" 
+                                        pattern = '^([A-Za-z\u0621-\u064A]+)(\s[A-Za-z\u0621-\u064A]+)?$'
+                                        title = {t('Please enter a valid name')}                                    
+                                        onChange = {this.handleChange}
+                                        value = {this.state.form.lastName}
+                                        required = "required"
+                                        onInvalid = {(e)=>this.handleFormErrorMessage(e,t('Please enter a valid name'))}
+                                        onInput={function(e) {
+                                            e.target.setCustomValidity(t(''))}}
+                               
+                                   />
+                                       
+                                &lt;/div>
+
+                                
+                              &lt;/div>
+                              &lt;div className="row">
+                                
+                                &lt;div className="form-group required col-md-6">
+                                  &lt;label className = "control-label">{t('Email Address')}&lt;/label>
+
+                                  &lt;input 
+                                      name="userName" 
+                                      className="form-control" 
+                                      type="text" id="inputEmail"
+                                      onChange = {this.handleChange}
+                                      value = {this.state.form.userName}
+                                      pattern = '^([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-z]{2,8})(\.[a-z]{2,8})?$'
+                                      title = {t("that email address is invalid")}
+                                      required = "required"
+                                      onInvalid = {(e)=>this.handleFormErrorMessage(e,t("that email address is invalid"))}
+                                        onInput={function(e) {
+                                            e.target.setCustomValidity(t(''))}}
+                                       
+                                      
+                                    />
+                                &lt;/div>
+                                &lt;div className="form-group required col-md-6">
+                                                &lt;label for="" className="float-left control-label">{t('Gender')}&lt;/label>
+                                                &lt;select 
+                                                className="form-control float-right" 
+                                                name ="gender" 
+                                                value ={this.state.form.gender} 
+                                                onChange = {this.handleChange}
+                                                >
+                                                    &lt;option value = "FEMALE">{t('FEMALE')}&lt;/option>
+                                                    &lt;option value = "MALE">{t('MALE')}&lt;/option>
+                                                &lt;/select>
+                                            &lt;/div>
+                                      &lt;/div>
+                              &lt;div className="row">
+                                
+                                &lt;div className="form-group required col-md-6">
+                                  &lt;label className = "control-label">{t('Phone')}&lt;/label>
+                                  &lt;small className = "font-12 text-gray">&lt;/small>
+
+                                  &lt;input 
+                                      name="phoneNumber" 
+                                      className="form-control" 
+                                      type="tel" 
+                                      pattern="^(0[0-9]{9})|(00[0-9]{12})$"
+                                      title = {t('Enter a valid phone number with 10 number or 14')}
+                                      onChange = {this.handleChange}
+                                      value ={this.state.form.phoneNumber} 
+                                      required = "required" 
+                                      onInvalid = {(e)=>this.handleFormErrorMessage(e,t('Enter a valid phone number with 10 number or 14'))}
+                                      onInput={function(e) {
+                                          e.target.setCustomValidity(t(''))}}
+
+                                      
+                                    />
+                                &lt;/div>
+                                &lt;div className="form-group required col-md-6">
+                                    &lt;label className = "control-label">{t('Date Of Birth')}&lt;/label>
+
+                                  &lt;input 
+                                      name="dateOfBirth" 
+                                      className="form-control" 
+                                      type="date" 
+                                      onChange ={this.handleChange}
+                                      required = "required" 
+                                      value ={this.state.form.dateOfBirth}
+                                      max={moment().format("YYYY-MM-DD")}  
+                                      title = {t('enter date no later than')+ moment().format("YYYY-MM-DD")}
+                                      onInvalid = {(e)=>
+                                        this.handleFormErrorMessage(e,t('enter date no later than')+ moment().format("YYYY-MM-DD"))
+                                            }
+                                      onInput={function(e) {
+                                         e.target.setCustomValidity(t(''))}}  
+                                    />
+                                &lt;/div>
+
+                                  &lt;/div>
+
+                              &lt;div className="row">
+                                &lt;div className="form-group required col-md-6  has-feedback">
+                                  &lt;label className = "control-label" for="form_choose_password"> {t('password')}&lt;/label>
+
+                                  &lt;input
+                                      id="inputPassword" 
+                                      name="password" 
+                                      className="form-control" 
+                                      type="password"
+                                      minlength="8"
+                                      required = "required"
+                                      onChange = {this.handleChange}
+                                      value ={this.state.form.password}
+                                      pattern = '^(?!.* )(?=.*\d)(?=.*[A-Z]).{8,20}$'
+                                      onInvalid = {(e)=>this.handleFormErrorMessage(e,t('your password should not contain whitespace ,contains at least one digit,contains at least one capital letter, at least 8 characters and at most 20 characters'))}
+                                      onInput={function(e) {
+                                          e.target.setCustomValidity(t(''))}}
+
+                                      /> 
+
+                                &lt;/div>
+                                &lt;div className="form-group required col-md-6  has-feedback" >
+                                  &lt;label className = "control-label">{t('Re-enter Password')}&lt;/label>
+                                  &lt;i className = {this.state.response.confirmPassword}>&lt;/i>
+
+
+                                  &lt;input 
+                                        id="confirmPassword" 
+                                        name="re_enter_password"  
+                                        className="form-control"  
+                                        type="password" 
+                                        minlength="8"                                     
+                                        data-match="#inputPassword" 
+                                        data-match-error={t('Not Matching')} 
+                                        // placeholder={t("Confirm")}
+                                         required = "required"
+                                         onChange = {this.handleConfirmPassword}
+                                   />
+                                &lt;/div>
+
+                                &lt;div className="form-group">
+                                &lt;button className="btn text-white btn-theme-green btn-lg btn-block mt-15" type="submit">{t('Register')}&lt;/button>
+                              &lt;/div>
+                              &lt;/div>
+                             
+                            &lt;/form>
+              
+                       
+            &lt;/div>
+                  
+                    
+                    
+
+    )
+   }
+}
+
+export default withTranslation()(Registration);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-i18next_i18n.html">i18next/i18n</a></li></ul><h3>Classes</h3><ul><li><a href="About.html">About</a></li><li><a href="About_.html">About_</a></li><li><a href="AllMedia.html">AllMedia</a></li><li><a href="Become.html">Become</a></li><li><a href="Calendar.html">Calendar</a></li><li><a href="Contact.html">Contact</a></li><li><a href="Donate.html">Donate</a></li><li><a href="Education.html">Education</a></li><li><a href="Event.html">Event</a></li><li><a href="Feeding.html">Feeding</a></li><li><a href="Health.html">Health</a></li><li><a href="Home.html">Home</a></li><li><a href="Hub_Subhubs.html">Hub_Subhubs</a></li><li><a href="Hubs.html">Hubs</a></li><li><a href="LanguageSelector.html">LanguageSelector</a></li><li><a href="Login.html">Login</a></li><li><a href="News.html">News</a></li><li><a href="Numbers.html">Numbers</a></li><li><a href="Parteners.html">Parteners</a></li><li><a href="Photo.html">Photo</a></li><li><a href="Projects.html">Projects</a></li><li><a href="ProjectSlider.html">ProjectSlider</a></li><li><a href="SingleSubhub.html">SingleSubhub</a></li><li><a href="SinglEvent.html">SinglEvent</a></li><li><a href="SinglNews.html">SinglNews</a></li><li><a href="SinglProject2.html">SinglProject2</a></li><li><a href="VolunteerForm.html">VolunteerForm</a></li><li><a href="Volunteers.html">Volunteers</a></li><li><a href="Water.html">Water</a></li></ul><h3>Global</h3><ul><li><a href="global.html#address">address</a></li><li><a href="global.html#forgotPassword">forgotPassword</a></li><li><a href="global.html#getMonthName">getMonthName</a></li><li><a href="global.html#getNumber">getNumber</a></li><li><a href="global.html#getNumberWithComma">getNumberWithComma</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#Precision">Precision</a></li><li><a href="global.html#PrivateRoute">PrivateRoute</a></li><li><a href="global.html#PubliceRoute">PubliceRoute</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#submit_volunteer_data">submit_volunteer_data</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 10:08:54 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,588 @@
+/*
+@Author: ThemeMascot
+@URL: http://ThemeMascot.com
+
+This is the file where you can add your custom styles to change the look of the
+theme. But don't modify style-main.css file.
+
+*/
+
+/* Your custom css codes start here: */
+
+.progress-item .progress-bar {
+  background: rgb(6, 105, 147);
+  background: linear-gradient(
+    90deg,
+    rgba(6, 105, 147, 1) 0%,
+    rgba(0, 159, 78, 1) 50%
+  ) !important;
+}
+
+.btn-theme-green {
+  border-radius: 0 !important;
+  background-color: rgba(0, 159, 78, 1);
+  color: #fff !important;
+}
+
+.btn-theme-green:hover {
+  background-color: rgb(0, 120, 78, 1) !important;
+  color: #fff !important;
+}
+
+.facts {
+  padding: 60px 0;
+}
+
+.form-check {
+  display: inline !important;
+  margin-right: 20px;
+}
+
+.bg-img {
+  background-image: url("../images/bg-inside_1.jpg");
+}
+.water-bg-img {
+  background-image: url("../images/waterCover.jpg");
+}
+.education-bg-img {
+  background-image: url("../images/EduCover.jpg");
+}
+.feeding-bg-img {
+  background-image: url("../images/feedingCover.jpg");
+}
+.health-bg-img {
+  background-image: url("../images/healthCover.jpg");
+}
+.volunteer-bg-img {
+  background-image: url("../images/volunteerCover.jpg");
+}
+.about-bg-img {
+  background-image: url("../images/AboutCover.jpg");
+}
+.events-bg-img {
+  background-image: url("../images/EventsCover.jpg");
+}
+.news-bg-img {
+  background-image: url("../images/newsCover.jpg");
+}
+.contact-bg-img {
+  background-image: url("../images/ContactCover.jpg");
+}
+.projects-bg-img {
+  background-image: url("../images/OngoingCover.jpg");
+}
+
+.slide-container {
+  direction: ltr;
+  width: 100%;
+  margin-bottom: -140px;
+}
+
+.react-slideshow-container .nav {
+  background-color: rgba(0, 0, 0, 0.35) !important;
+  /* width: 50px !important; */
+}
+
+/* .react-slideshow-container .nav:last-of-type {
+margin-right: -50px !important;
+}
+
+.react-slideshow-container .nav:first-of-type {
+margin-left: -50px !important;
+} */
+
+.react-slideshow-container .nav span {
+  border-color: #fff !important;
+}
+
+/* h3 {
+  text-align: center; } */
+
+.each-slide > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  height: 600px;
+}
+
+.each-slide h3 {
+  padding: 10px 20px;
+  font-size: 20px;
+  letter-spacing: 0.8rem;
+  border-radius: 0;
+  background: rgba(239, 239, 239, 0.75);
+  text-align: center;
+  display: block !important;
+  margin-bottom: 30px;
+  /* margin: auto; */
+}
+
+.each-slide a.btn {
+  margin: auto !important;
+  /* display: block; */
+}
+
+.each-fade {
+  display: flex;
+}
+
+.each-fade .image-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.each-fade .image-container img {
+  width: 100%;
+}
+
+.each-fade h2 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background: #adceed;
+}
+
+.number-animates {
+  font-style: italic;
+  font-weight: 900;
+  font-size: 99px;
+}
+.form-check {
+  display: inline !important;
+  margin-right: 20px;
+}
+
+.dropdown-menu {
+  left: 50%;
+  border-radius: 0;
+}
+
+.dropdown-menu > li > a {
+  text-transform: capitalize !important;
+  font-weight: 500;
+}
+
+.dropdown-menu > li > a:hover {
+  background-color: #fff;
+  color: #243f60;
+}
+
+/*
+@Author: ThemeMascot
+@URL: http://ThemeMascot.com
+
+This is the file where you can add your custom styles to change the look of the
+theme. But don't modify style-main.css file.
+
+*/
+
+/* Your custom css codes start here: */
+
+.rev_slider_wrapper {
+  direction: ltr !important;
+  float: left;
+}
+
+.progress-item .progress-bar {
+  background: rgb(6, 105, 147);
+  background: linear-gradient(
+    90deg,
+    rgba(6, 105, 147, 1) 0%,
+    rgba(0, 159, 78, 1) 50%
+  ) !important;
+}
+
+.btn-theme-green {
+  border-radius: 0 !important;
+  background-color: #243f60;
+  color: #fff !important;
+}
+
+.btn-theme-green:hover {
+  background-color: #243f60 !important;
+  color: #fff !important;
+}
+
+.facts {
+  padding: 60px 0;
+}
+
+.form-check {
+  display: inline !important;
+  margin-right: 20px;
+}
+
+.dropdown-menu {
+  left: 50%;
+  border-radius: 0;
+}
+
+.dropdown-menu > li > a {
+  text-transform: capitalize !important;
+  font-weight: 500;
+}
+
+.dropdown-menu > li > a:hover {
+  background-color: #fff;
+  /* color: #00a74f; */
+}
+
+.menuzord-menu > li > a {
+  font-family: "sadagaat";
+}
+.lang-switch {
+  border: none;
+  background-color: transparent;
+}
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block;
+}
+
+.react-slideshow-container + div.indicators {
+  display: none !important;
+}
+
+.jumbotron {
+  background-color: transparent;
+}
+
+#causes .item {
+  padding: 0 5px;
+}
+
+#causes .causes-details {
+  height: 280px;
+}
+
+.info-msg,
+.success-msg,
+.warning-msg,
+.error-msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+}
+.info-msg {
+  color: #059;
+  background-color: #bef;
+}
+.success-msg {
+  color: #270;
+  background-color: #dff2bf;
+}
+.warning-msg {
+  color: #9f6000;
+  background-color: #feefb3;
+}
+.error-msg {
+  color: darkred;
+  /* background-color: #FFBABA; */
+}
+.news {
+  position: relative;
+  overflow: hidden;
+}
+.news-img {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+}
+.slider-img {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.project-discription {
+  white-space: wrap;
+  height: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.event-discription {
+  white-space: wrap;
+  height: 1.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.form-group.required .control-label:after {
+  color: red;
+  font-family: "FontAwesome";
+  content: "   *";
+}
+table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border-collapse: collapse;
+}
+table th {
+  padding: 0.75rem;
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+tbody tr:nth-of-type(2n + 1) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.fig-col {
+  width: calc(100% / 5);
+}
+
+.dateSelect {
+  padding: 20px 0;
+}
+
+/* .dateSelect h5,
+.dateSelect div {
+  display: inline;
+} */
+
+.d-inline {
+  display: inline !important;
+}
+
+.justify-content-end {
+  justify-content: end !important;
+}
+
+.datePick-btn {
+  background-color: transparent;
+  border-radius: 0;
+  border: 1px solid #bbb;
+  padding: 5px 10px !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.float-right {
+  float: right !important;
+}
+
+.float-left {
+  float: left !important;
+}
+
+.dateInput {
+  background-color: transparent;
+  border-radius: 0;
+  border: 1px solid #bbb;
+  padding: 3px 5px !important;
+  display: inline;
+}
+
+.dateAlert {
+  background-color: rgb(245, 170, 170);
+  padding: 15px 10px 5px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.alertBtn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.fade-in {
+  animation: fadeIn ease 1s;
+  -webkit-animation: fadeIn ease 1s;
+  -moz-animation: fadeIn ease 1s;
+  -o-animation: fadeIn ease 1s;
+  -ms-animation: fadeIn ease 1s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-out {
+  animation: fadeOut ease 1s;
+  -webkit-animation: fadeOut ease 1s;
+  -moz-animation: fadeOut ease 1s;
+  -o-animation: fadeOut ease 1s;
+  -ms-animation: fadeOut ease 1s;
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.timeline-item-dateinner {
+  background-color: #ff96a7 !important;
+}
+
+.timeline {
+  max-width: 100% !important;
+}
+
+.entry .title:before {
+  right: -5px !important;
+}
+
+.timeline_ar .entry .title {
+  float: right !important;
+}
+
+.timeline_ar .entry .body {
+  float: left !important;
+}
+
+/* .timeline_ar .entry .body {
+  margin: 3em 0 0 !important;
+} */
+
+.timeline_ar .entry {
+  text-align: right !important;
+}
+
+/* @media only screen and (min-width: 768) {
+  .timeline_ar.timeline:before {
+    left: calc(66% - 6px) !important;
+  }
+} */
+
+.timeline_ar .timeline-item-dateinner {
+  -webkit-clip-path: polygon(
+    0% 50%,
+    5% 100%,
+    100% 100%,
+    100% 0%,
+    5% 0%
+  ) !important;
+  clip-path: polygon(0% 50%, 5% 100%, 100% 100%, 100% 0%, 5% 0%) !important;
+}
+
+.timeline_ar .timeline-item-date {
+  -webkit-clip-path: polygon(
+    0% 50%,
+    5% 100%,
+    100% 100%,
+    100% 0%,
+    5% 0%
+  ) !important;
+  clip-path: polygon(0% 50%, 5% 100%, 100% 100%, 100% 0%, 5% 0%) !important;
+  left: auto !important;
+  right: 0 !important;
+}
+
+.timeline_ar .body-container {
+  margin-right: 30px !important;
+  margin-left: auto !important;
+}
+
+.slider-container {
+  width: 100% !important;
+}
+
+.nav-tabs > li > a {
+  border-left: none;
+}
+
+.nav-tabs > li > a:hover,
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus {
+  border-left: 1px solid #d3d3d3 !important;
+}
+
+.mb-20 {
+  margin-bottom: 20px !important;
+}

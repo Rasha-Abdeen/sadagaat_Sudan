@@ -149,10 +149,10 @@ class SinglProject2 extends Component {
       const { project } = this.state;
 
       const project_images = project.images;
-      let steps_images = [];
+      let projectImages = [];
       //push default project image to array of images
       if (project.imageUrl !== null) {
-        project_images.push({
+        projectImages.push({
           id: project.id,
           name: project.id,
         });

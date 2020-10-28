@@ -15,18 +15,18 @@ class StepSlider extends Component {
       return (
         <Carousel
           slidesPerScroll={1}
-          autoPlay={6000}
+          // autoPlay={6000}
           rtl
           arrowLeft={
             <i
               className="fa fa-chevron-right fa-2x"
-              style={{ margin: "10px" }}
+              style={{ marginLeft: "10px" }}
             />
           }
           arrowRight={
             <i
               className="fa fa-chevron-left fa-2x"
-              style={{ margin: "10px" }}
+              style={{ marginRight: "10px" }}
             />
           }
           addArrowClickHandler
@@ -53,14 +53,12 @@ class StepSlider extends Component {
             },
           }}
         >
-          {/* /projects/step/{imageName}/image */}
           {media.map((mediaItem) => (
             <div className="post-thumb thumb" style={{ margin: "20px 0" }}>
               {mediaItem.type === "img" ? (
                 <img
                   src={`${address()}projects/step/${mediaItem.item.name}/image`}
                   alt="project image"
-                  // className="img-carousel"
                 />
               ) : (
                 <div>
@@ -73,13 +71,6 @@ class StepSlider extends Component {
                     }/video`}
                   />
                 </div>
-
-                // <video
-                //   controls
-                //   src={`${address()}projects/step/${mediaItem.item.name}/video`}
-                //   type="video/mp4"
-                //   className="img-carousel"
-                // ></video>
               )}
             </div>
           ))}

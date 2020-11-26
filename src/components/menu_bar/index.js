@@ -91,30 +91,47 @@ function MenuBar() {
                     {t("Ongoing Projects")}
                   </NavLink>
                 </li>
-                {/* <li> */}
-                {/* <a>{t("Media Center")} <span class="indicator"></span></a>
-                  <ul className="dropdown"> */}
-
                 <li>
-                  <NavLink className="nav-link" to="/news">
-                    {t("News")}
-                  </NavLink>
+                  <a>
+                    {t("Events")} <span class="indicator"></span>
+                  </a>
+                  <ul className="dropdown">
+                    <li>
+                      <NavLink className="nav-link" to="/news">
+                        {t("News")}
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/calendar">
+                        {t("Events")}
+                      </NavLink>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <NavLink className="nav-link" to="/calendar">
-                    {t("Events")}
-                  </NavLink>
+                  <a>
+                    {t("Volunteers")} <span class="indicator"></span>
+                  </a>
+                  <ul className="dropdown">
+                    <li>
+                      <NavLink className="nav-link" to="/volunteers">
+                        {t("About") + " " + t("Volunteers")}
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        activeclassName="active"
+                        to="/volunteerForm"
+                      >
+                        {t("Volunteers Form")}
+                      </NavLink>
+                    </li>
+                  </ul>
                 </li>
-                {/* </ul> */}
-                {/* </li> */}
-
                 <li>
-                  <NavLink
-                    className="nav-link"
-                    activeclassName="active"
-                    to="/volunteers"
-                  >
-                    {t("Volunteers")}
+                  <NavLink className="nav-link" to="/careers">
+                    {t("Careers")}
                   </NavLink>
                 </li>
                 <li className="nav-link">

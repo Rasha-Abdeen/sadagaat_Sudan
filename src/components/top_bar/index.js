@@ -13,7 +13,7 @@ function TopBar() {
     <div className="header-top bg-theme-colored sm-text-center">
       <div className="container">
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-6">
             <div className="widget no-border m-0">
               <ul className="styled-icons icon-dark icon-theme-colored icon-sm sm-text-center">
                 <li>
@@ -24,24 +24,11 @@ function TopBar() {
                     <i className="fa fa-facebook"></i>
                   </a>
                 </li>
-                {/* <li>
-                  <Link to="#">
-                    <i className="fa fa-twitter"></i>
-                  </Link>
-                </li> */}
                 <li>
-                  <a
-                    href="http://twitter.com/sadagaat "
-                    target="blank"
-                  >
+                  <a href="http://twitter.com/sadagaat " target="blank">
                     <i className="fa fa-twitter"></i>
                   </a>
                 </li>
-                {/* <li>
-                  <Link to="#">
-                    <i className="fa fa-instagram"></i>
-                  </Link>
-                </li> */}
                 <li>
                   <a
                     href="http://www.linkedin.com/pub/sadagaat-sudan/54/431/5b7"
@@ -53,28 +40,28 @@ function TopBar() {
               </ul>
             </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-6">
             <div className="widget no-border m-0">
               <ul className="list-inline pull-right flip sm-pull-none mt-5">
                 <li className="m-0 pl-10 pr-10">
                   <i className="fa fa-phone text-white">
-                  <span className="text-white" style = {{padding:'7px'}} >
-                 +249910010077
-                  </span>
+                    <span className="text-white" style={{ padding: "7px" }}>
+                      +249910010077
+                    </span>
                   </i>
                 </li>
                 <li className="m-0 pl-10 pr-10">
                   <i className="fa fa-envelope-o text-white">
-                  <span className="text-white" style = {{padding:'7px'}}>
-                     info@sadagaat.com
-                  </span>
+                    <span className="text-white" style={{ padding: "7px" }}>
+                      info@sadagaat.com
+                    </span>
                   </i>
                 </li>
               </ul>
             </div>
           </div>
 
-          {isAuthenticated() ? <Auth_user_menu /> : <UnAuth_user_menu />}
+          {/* {isAuthenticated() ? <Auth_user_menu /> : <UnAuth_user_menu />} */}
         </div>
       </div>
     </div>

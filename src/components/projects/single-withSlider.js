@@ -320,8 +320,8 @@ class SinglProject2 extends Component {
                                     (steps.indexOf(step, 0) + 1)
                                   }
                                   style={{
-                                    color: "#ff96a7",
-                                    background: "#ff96a7",
+                                    color: "#243f60",
+                                    background: "#243f60",
                                   }}
                                 >
                                   <p>{parse(step.text)}</p>

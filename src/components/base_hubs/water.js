@@ -1,115 +1,255 @@
-import React, { useState, useEffect , useRef} from 'react';
-
-import Header from '../sub_page_header';
-import address from './../utils/address';
-import{Link} from 'react-router-dom'
-import 'react-circular-progressbar/dist/styles.css';
-import i18n from 'i18next'
-import { useTranslation } from 'react-i18next';
-import Hub_Subhubs from './hub_subHubs'
+import React, { Component } from "react";
+import address from "../utils/address";
+import Header from "../sub_page_header";
+import { Link } from "react-router-dom";
+import i18n from "i18next";
+import Hub_Subhubs from "./hub_subHubs";
+import { withTranslation } from "react-i18next";
+import Popup from "reactjs-popup";
 
 /**
- * This component of display Water Hub Information such as Image , name , discription ,donation Button for feeding hub 
+ * This comoponent display subHub information  and Project related to this subhub
  * @component
- * @see http://sadagaat-uk.org/water
+ * @see http://sadagaat-uk.org/single-subhub/1849
  */
 
-function Water (){
+class Water extends Component {
+  constructor() {
+    super();
+    this.state = {
+      hub: [],
+      offset: 0,
+      files: [],
+      file: "",
+      activeTab1: "active",
+      activeTab2: "",
+    };
+  }
+  /**
+   * Get shub information from APIs
+   * Get Projects that related to specific subhub
+   */
 
-  const [water, setwater ] = useState([])
-  const {t} = useTranslation()
-
-/**
-     * This function return Water hub information returned by the API 
-     * @return {object} Water hub returned by the API
-*/
-  async function waterHub() {
-    const fetcher = await window.fetch(`${address()}hubs/1102`,{headers: {'accept-language': `${i18n.language}`}})
-    const response = await fetcher.json()
-    setwater(response)
+  async componentDidMount() {
+    console.log(this.props);
+    //  Get id of subhub from url
+    const fetcher = await window.fetch(`${address()}hubs/1102`, {
+      headers: { "accept-language": `${i18n.language}` },
+    });
+    const response = await fetcher.json();
+    this.setState({ hub: response, files: response.files });
   }
 
-  /**  useEffect  waterHub call helth Hub function when component mounted or  when swiches Language through props i18n.language  
- * i18n .language = en  Or ar 
-*/
-  useEffect(() => {
-      waterHub()
-        } , [i18n.language])
- 
+  async componentWillReceiveProps() {
+    const fetcher = await window.fetch(`${address()}hubs/1102`, {
+      headers: { "accept-language": `${i18n.language}` },
+    });
+    const response = await fetcher.json();
+    this.setState({ hub: response, files: response.files });
+  }
 
-return(
-  <React.Fragment>
-<section>
-<Header name={t('Water')} coverImage = {'water-bg-img'}/>
+  changeActiveTab1 = () => {
+    this.setState({ activeTab1: "active", activeTab2: "" });
+  };
 
-      <div className="container">
-        <div className="row multi-row-clearfix">
-        <div>
-              <div className="col-xs-12 col-sm-6 col-md-12">
-              <h2 >
+  changeActiveTab2 = () => {
+    this.setState({ activeTab1: "", activeTab2: "active" });
+  };
 
-              </h2>
+  fileType = () => {
+    let fileName = this.state.files[0].displayName;
+    let icon = "";
+    if (fileName.search(".pdf")) {
+      return "pdf";
+    } else if (fileName.search(".xlsx")) {
+      return "xlsx";
+    } else if (fileName.search(".docs")) {
+      return "docx";
+    }
+  };
 
-              <div className="event media sm-maxwidth400 border-bottom mt-5 mb-0 pt-10 pb-15">
-                <div className="row">
-                   
-                      <div className="causes">
-                        <div className="row-fluid">
-                          <div className="col-md-6">
-                      
-                            <div className ="post-thumb thumb" style = {{mxaHeight:"600px"}}>
-                            <img
-                              src = {`${address()}hubs/${water.id}/image`}
-                              alt="water image"
-                              className= 'img-responsive'
-                              style= {{height:'400px',
-                                        width:'500px'}}
-                              
-                            />
-                            </div>
-                       
-                          </div>
-                          <div class="causes-details col-md-6">
-                                
-                                <h2 class="line-bottom mt-0">{water.name}</h2>
-                                 
+  getFileName = () => {
+    return this.state.files[0].name;
+  };
 
-                                  <p>{water.description}</p>
-                                  
-                                  <div class="mt-10 mb-20">
+  fileType = () => {
+    let fileName = this.state.files[0].name;
+    let type = "";
+    if (fileName.search(".pdf") > 0) {
+      type = "pdf";
+    } else if (fileName.search(".xlsx") > 0) {
+      type = "xlsx";
+    } else if (fileName.search(".docs") > 0) {
+      type = "docx";
+    }
+    return type;
+  };
+
+  fileIcon = () => {
+    let fileType = this.fileType();
+    console.log(fileType);
+    switch (fileType) {
+      case "pdf":
+        return <i class="fa fa-file-pdf-o"></i>;
+      case "xlsx":
+        return <i class="fa fa-file-excel-o"></i>;
+      case "docx":
+        return <i class="fa fa-file-word-o"></i>;
+    }
+  };
+
+  openFile = () => {
+    let url = address() + "hub/document/" + this.getFileName();
+    fetch(url)
+      .then((res) => res.blob())
+      .then((blob) => {
+        var outside = URL.createObjectURL(blob);
+        this.setState({ file: outside });
+        window.open(this.state.file);
+      });
+  };
+
+  render() {
+    let hubFiles = this.state.files;
+    const { t } = this.props;
+    const { hub } = this.state;
+    const tabs_class = i18n.dir() === "rtl" ? "float-right" : "float-left";
+    const popupDir = i18n.dir() === "rtl" ? "left center" : "right center";
+    const btnDir = i18n.dir() === "rtl" ? "mr-5" : "ml-5";
+    return (
+      <React.Fragment>
+        <section>
+          <Header name={t("Water")} coverImage={"water-bg-img"} />
+          <div className="container">
+            <div className="row multi-row-clearfix">
+              <div>
+                <div className="col-xs-12 col-md-12">
+                  <h2 class="line-bottom mt-0">{hub.name}</h2>
+                  <ul className="nav nav-tabs">
+                    <li className={this.state.activeTab1 + " " + tabs_class}>
+                      <a
+                        href="#login-tab"
+                        data-toggle="tab"
+                        id="login"
+                        onClick={this.changeActiveTab1}
+                      >
+                        {t("Sector Details")}
+                      </a>
+                    </li>
+                    <li className={this.state.activeTab2 + " " + tabs_class}>
+                      <a
+                        href="#register-tab"
+                        data-toggle="tab"
+                        onClick={this.changeActiveTab2}
+                      >
+                        {t("Sector File")}
+                      </a>
+                    </li>
+                  </ul>
+                  <div className="tab-content">
+                    <div
+                      className="tab-pane fade in active p-15"
+                      id="login-tab"
+                    >
+                      <div className="event media sm-maxwidth400 border-bottom mt-5 mb-5 pt-10 pb-15">
+                        <div className="row">
+                          <div className="causes">
+                            <div className="row-fluid">
+                              <div className="col-md-6">
+                                <div
+                                  className="post-thumb thumb"
+                                  style={{ mxaHeight: "600px" }}
+                                >
+                                  <img
+                                    className="img-responsive"
+                                    src={`${address()}hubs/${hub.id}/image`}
+                                    alt="Water Sector"
+                                    style={{ height: "400px", width: "500px" }}
+                                  />
+                                </div>
+                              </div>
+                              <div class="causes-details col-md-6">
+                                <p>{hub.description}</p>
+                                <div class="mt-10 mb-20">
                                   <ul class="list-inline clearfix mt-10">
-                                    <li class="text-theme-colored pull-right flip pr-0">
-                                    </li>
+                                    <li class="text-theme-colored pull-right flip pr-0"></li>
                                   </ul>
                                 </div>
-                                <Link to= {'/hub/'+water.id} class="btn btn-theme-colored btn-sm">{t('Donate Now')}</Link>
+                                <Link
+                                  to={"/hub/" + hub.id}
+                                  class="btn btn-theme-colored btn-sm"
+                                >
+                                  {t("Donate Now")}
+                                </Link>
                               </div>
-           
+                            </div>
+                          </div>
                         </div>
                       </div>
-              
+                      <Hub_Subhubs
+                        hubId={hub.id}
+                        name={t("Water Sub Sectors")}
+                      />
+                    </div>
+                    <div className="tab-pane fade in p-15" id="register-tab">
+                      <p>{t("Files")}</p>
+                      {hubFiles !== undefined && hubFiles.length > 0 ? (
+                        hubFiles.map((file, index) => (
+                          <div>
+                            {this.fileType() === "pdf" ? (
+                              <Popup
+                                trigger={(open) => (
+                                  <a className="popupCustom-btn">
+                                    {this.fileIcon()} {file.displayName}
+                                  </a>
+                                )}
+                                position="bottom center"
+                                closeOnDocumentClick
+                              >
+                                <div>
+                                  <h6>
+                                    {this.fileIcon()} {file.displayName}
+                                  </h6>
+                                  <a
+                                    href={`${address()}hub/document/${this.getFileName()}`}
+                                    className="btn btn-flat btn-theme-colored btn-sm"
+                                    target="_slef"
+                                    download="pdf"
+                                  >
+                                    {t("Save")}
+                                  </a>
+                                  <a
+                                    onClick={this.openFile}
+                                    className={
+                                      "btn btn-flat btn-theme-colored btn-sm " +
+                                      btnDir
+                                    }
+                                  >
+                                    {t("Open")}
+                                  </a>
+                                </div>
+                              </Popup>
+                            ) : (
+                              <a
+                                href={`${address()}hub/document/${this.getFileName()}`}
+                              >
+                                {this.fileIcon()} {file.displayName}
+                              </a>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <p>{t("No Files Available")}</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-           
               </div>
             </div>
-
-                 
-        
-            
           </div>
-        
-      
-     
-  </div>
-   <br />
-{/** this component display all subhubs related to Water hub */}
-
-          <Hub_Subhubs  hubId = {water.id} name = {t('Water Sub Sectors')}/>
-      </div>
-    </section>
-    </React.Fragment>
-
-)
-
+        </section>
+      </React.Fragment>
+    );
+  }
 }
-export default Water;
+export default withTranslation()(Water);

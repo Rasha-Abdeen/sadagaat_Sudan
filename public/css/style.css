@@ -71,6 +71,9 @@ theme. But don't modify style-main.css file.
 .projects-bg-img {
   background-image: url("../images/OngoingCover.jpg");
 }
+.careers-bg-img {
+  background-image: url("../images/CareersCover.jpg");
+}
 
 .slide-container {
   direction: ltr;
@@ -507,7 +510,7 @@ tbody tr:nth-of-type(2n + 1) {
 }
 
 .timeline-item-dateinner {
-  background-color: #ff96a7 !important;
+  background-color: #243f60 !important;
 }
 
 .timeline {
@@ -585,4 +588,58 @@ tbody tr:nth-of-type(2n + 1) {
 
 .mb-20 {
   margin-bottom: 20px !important;
+}
+
+.modal-btn i {
+  transition: all 1s;
+}
+
+.modal-btn:hover i {
+  color: #fff !important;
+  cursor: pointer;
+}
+
+.modal-video-movie-wrap {
+  padding-bottom: 50% !important;
+}
+
+.modal-video-close-btn {
+  top: 10px !important;
+  right: 10px !important;
+}
+
+.popup-content {
+  margin: auto;
+  background: rgb(255, 255, 255);
+  width: 50%;
+  padding: 15px;
+  border: 1px solid rgb(235, 234, 234) !important;
+}
+.popup-arrow {
+  color: rgb(235, 234, 234);
+}
+[role="tooltip"].popup-content {
+  width: 200px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+[data-popup="tooltip"].popup-overlay {
+  background: transparent;
+}
+
+.popupCustom-btn {
+  background-color: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.list-formatting ul {
+  list-style-type: circle !important;
+}
+
+.list-formatting ol {
+  list-style-type: decimal;
 }

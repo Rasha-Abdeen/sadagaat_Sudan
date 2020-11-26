@@ -1,0 +1,6 @@
+<Link
+                            to={"/hub/" + education.id}
+                            class="btn btn-theme-colored btn-sm"
+                          >
+                            {t("Donate Now")}
+                          </Link>

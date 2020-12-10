@@ -296,7 +296,12 @@
    "Files":"الملفات",
   "Save":"حفظ",
   "Open":"عرض",
-  "No Files Available":"لا توجد ملفات متاحة",
+  "No Files Available":"لا يوجد ملف متاح حاليا",
    "directMsg":"سيتم توجيهك إلى موقع التقديم",
-  "Cancel":"إلغاء"
+  "Cancel":"إلغاء",
+  "Volunteers Programs":"برامج المتطوعين",
+  "Subscribed Volunteers":"المتطوعين المشتركين",
+  "Volunteers Needed":"العدد المطلوب",
+  "Target":"الهدف",
+  "No Volunteers Programs Available Now":"لا يوجد برامج متطوعين متاحة الآن"
 }

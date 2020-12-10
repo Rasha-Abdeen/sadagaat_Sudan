@@ -127,6 +127,11 @@ function MenuBar() {
                         {t("Volunteers Form")}
                       </NavLink>
                     </li>
+                    <li>
+                      <NavLink className="nav-link" to="/Volunteer-Programs">
+                        {t("Volunteers Programs")}
+                      </NavLink>
+                    </li>
                   </ul>
                 </li>
                 <li>

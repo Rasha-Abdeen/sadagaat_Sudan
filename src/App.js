@@ -28,6 +28,11 @@ const RestPassword = React.lazy(() =>
 const VolunteerForm = React.lazy(() =>
   import("./components/vlounteers/VolunteerForm")
 );
+const Programs = React.lazy(() => import("./components/vlounteers/programs"));
+const SingleVolunteersProgram = React.lazy(() =>
+  import("./components/vlounteers/single-program")
+);
+
 const Donate = React.lazy(() => import("./components/Donation/donate"));
 const DonateToProject = React.lazy(() =>
   import("./components/Donation/DonateToProject")
@@ -140,17 +145,14 @@ function App() {
             <Route exact path="/success-donate" component={SuccessDonate} />
             <Route exact path="/failed-donate" component={FaildDonate} />
             <Route exact path="/volunteerForm" component={VolunteerForm} />
+            <Route exact path="/Volunteer-Programs" component={Programs} />
+            <Route
+              exact
+              path="/Volunteer-Programs/:id"
+              component={SingleVolunteersProgram}
+            />
             <Route exact path="/careers" component={AllCareers} />
             <Route exact path="/vacancy/:id" component={Vacancy} />
-            {/* <PubliceRoute exact path="/login" component={Login} />
-            <Route exact path="/registration" component={Registration} />
-            <Route exact path="/forgot_password" component={ForgotPassword} /> */}
-            {/* <Route
-              exact
-              path="/reset-password/:token"
-              component={RestPassword}
-            /> */}
-
             <Route
               exact
               path="/single-projects/:project_id"

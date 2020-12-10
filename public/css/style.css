@@ -643,3 +643,23 @@ tbody tr:nth-of-type(2n + 1) {
 .list-formatting ol {
   list-style-type: decimal;
 }
+
+.list-formatting p {
+  margin: auto 0;
+}
+
+.right ul {
+  padding-right: 15px;
+}
+
+.right ol {
+  padding-right: 15px;
+}
+
+.left ul {
+  padding-left: 15px;
+}
+
+.left ol {
+  padding-left: 15px;
+}

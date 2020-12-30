@@ -35,11 +35,6 @@ const Slideshow = () => {
           </LazyLoad>
           <LazyLoad once={true}>
             <div>
-              <img src={require("../images/slide9.jpg")} />
-            </div>
-          </LazyLoad>
-          <LazyLoad once={true}>
-            <div>
               <Link to="/single-projects/3057">
                 <img src={require("../images/slide 6.jpg")} />
               </Link>

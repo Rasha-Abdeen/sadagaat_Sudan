@@ -303,5 +303,8 @@
   "Subscribed Volunteers":"المتطوعين المشتركين",
   "Volunteers Needed":"العدد المطلوب",
   "Target":"الهدف",
-  "No Volunteers Programs Available Now":"لا يوجد برامج متطوعين متاحة الآن"
+  "No Volunteers Programs Available Now":"لا يوجد برامج متطوعين متاحة الآن",
+  "Map not available":"لا تتوفر خريطة لهذا المشروع",
+  "Project Map" : "الموقع على الخريطة",
+  "Loading Map":"تحميل الخريطة"
 }

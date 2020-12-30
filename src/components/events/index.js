@@ -30,7 +30,6 @@ function Event() {
    * This function get News from APIs and set the last three News
    * @return {Array} array of News returned by APIs
    */
-
   async function fetchNews() {
     const fetcher = await window.fetch(`${address()}news`, {
       headers: { "accept-language": `${i18n.language}` },

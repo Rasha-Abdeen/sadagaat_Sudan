@@ -27,6 +27,7 @@
     "jimp": "^0.16.0",
     "jquery": "^3.5.1",
     "jwt-decode": "^2.2.0",
+    "leaflet": "^1.7.1",
     "lqip-loader": "^2.2.0",
     "moment": "^2.27.0",
     "next-optimized-images": "^2.6.2",

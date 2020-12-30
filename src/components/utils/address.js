@@ -5,10 +5,10 @@
  */
 export function address() {
   // Deployment Enviroment
-  // return "https://sadagaat.com:9090/api/v1/";
+  return "https://sadagaat.com:9090/api/v1/";
 
   // Development and Test Enviroment
-  return "https://sadagaat.com:4959/api/v1/";
+  // return "https://sadagaat.com:4959/api/v1/";
 }
 
 export default address;

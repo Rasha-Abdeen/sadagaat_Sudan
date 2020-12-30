@@ -37,7 +37,7 @@ function Event() {
     });
     const response = await fetcher.json();
     console.log(response);
-    setNews(response.slice(-3));
+    setNews(response.slice(0, 3));
   }
   /**
    * This function get Events from APIs and set the last three News
@@ -50,7 +50,7 @@ function Event() {
     });
     const response = await fetcher.json();
     console.log(response);
-    setEvent(response.slice(-3));
+    setEvent(response.slice(0, 3));
   }
 
   return (

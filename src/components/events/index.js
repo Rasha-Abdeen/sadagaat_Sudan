@@ -30,14 +30,13 @@ function Event() {
    * This function get News from APIs and set the last three News
    * @return {Array} array of News returned by APIs
    */
-
   async function fetchNews() {
     const fetcher = await window.fetch(`${address()}news`, {
       headers: { "accept-language": `${i18n.language}` },
     });
     const response = await fetcher.json();
     console.log(response);
-    setNews(response.slice(-3));
+    setNews(response.slice(0, 3));
   }
   /**
    * This function get Events from APIs and set the last three News
@@ -50,7 +49,7 @@ function Event() {
     });
     const response = await fetcher.json();
     console.log(response);
-    setEvent(response.slice(-3));
+    setEvent(response.slice(0, 3));
   }
 
   return (

@@ -292,5 +292,7 @@
   "Apply":"Apply",
   "No Vacancies Available Now":"No Vacancies Available Now",
   "No Files Available":"No File Available Now",
-  "directMsg":"You Will be Directed to The Application Website"
+  "directMsg":"You Will be Directed to The Application Website",
+  "Map not available":"There is no available map for this project",
+  "Project Map" : "Project Map"
 }

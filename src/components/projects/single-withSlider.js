@@ -11,6 +11,9 @@ import { Timeline, TimelineItem } from "vertical-timeline-component-for-react";
 import Slider from "./slider";
 import StepSlider from "./step_slider";
 import ReactPlayer from "react-player";
+import { Map, TileLayer, Popup, Marker } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { VenueLocationIcon } from "./VenueLocationIcon";
 
 /**
  * This Component display project information like (carousal of images , name , discription ...)
@@ -29,6 +32,8 @@ class SinglProject2 extends Component {
       stepsMedia: [],
       activeTab1: "active",
       activeTab2: "",
+      activeTab3: "",
+      showMap: false,
     };
   }
   /**
@@ -134,11 +139,18 @@ class SinglProject2 extends Component {
   };
 
   changeActiveTab1 = () => {
-    this.setState({ activeTab1: "active", activeTab2: "" });
+    this.setState({ activeTab1: "active", activeTab2: "", activeTab3: "" });
   };
 
   changeActiveTab2 = () => {
-    this.setState({ activeTab1: "", activeTab2: "active" });
+    this.setState({ activeTab1: "", activeTab2: "active", activeTab3: "" });
+  };
+
+  changeActiveTab3 = () => {
+    this.setState({ activeTab1: "", activeTab2: "", activeTab3: "active" });
+    setTimeout(() => {
+      this.setState({ showMap: true });
+    }, 1000);
   };
 
   render() {
@@ -159,7 +171,8 @@ class SinglProject2 extends Component {
       }
 
       let steps = this.state.Steps;
-
+      let currentLocation = [project.locationLat, project.locationLng];
+      let zoom = 9;
       const projectProgressAlign = i18n.dir() === "rtl" ? "right" : "left";
       const tabs_class = i18n.dir() === "rtl" ? "float-right" : "float-left";
       const btn_class = i18n.dir() === "rtl" ? "float-left" : "float-right";
@@ -191,6 +204,15 @@ class SinglProject2 extends Component {
                           onClick={this.changeActiveTab2}
                         >
                           {t("Project Timeline")}
+                        </a>
+                      </li>
+                      <li className={this.state.activeTab3 + " " + tabs_class}>
+                        <a
+                          href="#location-tab"
+                          data-toggle="tab"
+                          onClick={this.changeActiveTab3}
+                        >
+                          {t("Project Map")}
                         </a>
                       </li>
                     </ul>
@@ -396,6 +418,56 @@ class SinglProject2 extends Component {
                         ) : (
                           <h4>{t("No Project Timeline")}</h4>
                         )}
+                      </div>
+                      <div className="tab-pane fade in p-15" id="location-tab">
+                        <div className="row">
+                          {project.locationLat != 0.0 &&
+                          project.locationLng != 0.0 ? (
+                            <div id="LocationMap">
+                              {this.state.showMap ? (
+                                <React.Fragment>
+                                  <Map center={currentLocation} zoom={zoom}>
+                                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                                    <Marker
+                                      position={currentLocation}
+                                      icon={VenueLocationIcon}
+                                    >
+                                      <Popup>
+                                        <div className="poup-text">
+                                          <h6>{project.name}</h6>
+                                          <p>{project.locationName}</p>
+                                        </div>
+                                      </Popup>
+                                    </Marker>
+                                  </Map>
+                                  <div className="mt-20">
+                                    <Link
+                                      to={"/projects/" + project.id}
+                                      class={
+                                        "btn btn-theme-colored btn-sm mb-20 " +
+                                        btn_class
+                                      }
+                                      style={{
+                                        display: `
+                                ${
+                                  project.donationProgress >= 100 ? "none" : ""
+                                }`,
+                                      }}
+                                    >
+                                      {t("Donate Now")}
+                                    </Link>
+                                  </div>
+                                </React.Fragment>
+                              ) : (
+                                <p className="text-center">
+                                  {t("Loading Map")}
+                                </p>
+                              )}
+                            </div>
+                          ) : (
+                            <h4>{t("Map not available")}</h4>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

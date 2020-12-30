@@ -663,3 +663,12 @@ tbody tr:nth-of-type(2n + 1) {
 .left ol {
   padding-left: 15px;
 }
+
+.leaflet-container {
+  width: 100% !important;
+  height: 400px !important;
+}
+
+.leaflet-control-attribution a {
+  display: none;
+}

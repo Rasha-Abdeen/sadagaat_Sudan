@@ -65,6 +65,10 @@ const Volunteers = React.lazy(() =>
 function App() {
   const { i18n } = useTranslation();
   document.getElementById("direction").dir = i18n.dir();
+  // Google analytics tracking
+  const TrackinID = "UA-186584467-1";
+  ReactGA.initialize(TrackinID);
+  ReactGA.pageview(window.location.pathname + window.location.search);
 
   useEffect(() => {
     if (i18n.dir() === "rtl") {

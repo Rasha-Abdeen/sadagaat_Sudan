@@ -41,9 +41,9 @@ const Slideshow = () => {
           {Object.keys(fetchedSlide).length != 0
             ? fetchedSlide.map((slide) => (
                 <div>
-                  <Link to={slide.link}>
+                  <a href={slide.link}>
                     <img src={`${address()}slider/${slide.imageName}/image`} />
-                  </Link>
+                  </a>
                 </div>
               ))
             : slides.map((slide) => (

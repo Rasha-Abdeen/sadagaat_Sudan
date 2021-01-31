@@ -8,30 +8,38 @@ import { Precision, getNumber } from "../events/getMonthName";
 import parse from "html-react-parser";
 import ReactPaginate from "react-paginate";
 import Preload from "../preload";
-import Filters from "../ProjectsFilter/filter";
+import Filters from "./filter";
+
 /**
  * this componnet display projects  and filter projects acourding to recived props
  * @param {string} props type of project 'completed , ongoing' , planed
  * @component
  * @see http://sadagaat-uk.org/projects
  */
-const Projects = (props) => {
-  const [data, setData] = useState([]);
+const FilteredProjects = (props) => {
+  let [data, setData] = useState([]);
   let [currentPage, setCurrentPage] = useState(0);
-  let [projectsType, setProjectsType] = useState(0);
+  let [projectsType, setProjectsType] = useState("");
   const [postsPerPage] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
   let [Dates, GetDates] = useState({
-    startDate: "01/01/2001",
-    endDate: "01/01/2025",
+    startDate: "1/1/2001",
+    endDate: "1/1/2025",
   });
-  let [orderOn, setOrderOn] = useState(false);
   let [filterOn, setFilterOn] = useState(false);
+  let [orderOn, setOrderOn] = useState(false);
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
-  //@example projectType = 'onging'
-  const projectId = props.projectId;
+  const [viewFilter, toggleViewFilter] = useState(true);
   const projectProgressAlign = i18n.dir() === "rtl" ? "right" : "left";
+  let searchQuery = "";
+  if (props.search === true) {
+    searchQuery = localStorage.getItem("searchQuery");
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [props]);
 
   function GetSelectedDates(x) {
     Dates.startDate = x.startDate;
@@ -48,7 +56,6 @@ const Projects = (props) => {
     console.log(x);
     projectsType = x;
     setProjectsType(x);
-    // filterOn = true;
   }
 
   function clearFilter() {
@@ -70,14 +77,14 @@ const Projects = (props) => {
     let FilterUrl =
       prefix +
       "projects/search-order?" +
-      "inASEOrder=" +
+      "name=" +
+      searchQuery +
+      "&inASEOrder=" +
       false +
       "&page=" +
       currentPage +
       "&size=" +
-      postsPerPage +
-      "&subhubId=" +
-      projectId;
+      postsPerPage;
     console.log(FilterUrl);
     const fetcher = await window.fetch(
       FilterUrl,
@@ -92,7 +99,10 @@ const Projects = (props) => {
     const response = await fetcher.json();
     console.log(response);
     setData(response.data);
+    // data = response.data;
+    console.log(data);
     setTotalPages(response.totalPages);
+    console.log(totalPages);
     setLoading(false);
     console.log(Dates.endDate);
   }
@@ -101,41 +111,25 @@ const Projects = (props) => {
     if (document.getElementsByClassName("flip-v") === undefined) {
       sorting = false;
     } else sorting = true;
+    // filterProjectsType(props.type);
     let prefix = address();
-    let FilterUrl;
-    if (Dates.startDate === "01/01/2001" && Dates.endDate === "01/01/2025") {
-      FilterUrl =
-        prefix +
-        "projects/search-order?" +
-        "status=" +
-        projectsType +
-        "&inASEOrder=" +
-        false +
-        "&page=" +
-        currentPage +
-        "&size=" +
-        postsPerPage +
-        "&subhubId=" +
-        projectId;
-    } else {
-      FilterUrl =
-        prefix +
-        "projects/search-order?" +
-        "startDate=" +
-        Dates.startDate +
-        "&endDate=" +
-        Dates.endDate +
-        "&status=" +
-        projectsType +
-        "&inASEOrder=" +
-        false +
-        "&page=" +
-        currentPage +
-        "&size=" +
-        postsPerPage +
-        "&subhubId=" +
-        projectId;
-    }
+    let FilterUrl =
+      prefix +
+      "projects/search-order?" +
+      "name=" +
+      searchQuery +
+      "&startDate=" +
+      Dates.startDate +
+      "&endDate=" +
+      Dates.endDate +
+      "&status=" +
+      projectsType +
+      "&inASEOrder=" +
+      false +
+      "&page=" +
+      currentPage +
+      "&size=" +
+      postsPerPage;
     console.log(FilterUrl);
     const fetcher = await window.fetch(
       FilterUrl,
@@ -150,6 +144,7 @@ const Projects = (props) => {
     const response = await fetcher.json();
     console.log(response);
     setData(response.data);
+    console.log(data);
     setTotalPages(response.totalPages);
     setLoading(false);
     console.log(Dates.endDate);
@@ -165,9 +160,6 @@ const Projects = (props) => {
     if (type === "completed") projectsType = 1;
     if (type === "planned") projectsType = 3;
   }
-  useEffect(() => {
-    fetchData();
-  }, [props]);
 
   // Change page
   function paginate(pageNumber) {
@@ -318,4 +310,4 @@ const Projects = (props) => {
   );
 };
 
-export default Projects;
+export default FilteredProjects;

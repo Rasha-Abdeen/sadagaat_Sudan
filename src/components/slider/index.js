@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Slide } from "react-slideshow-image";
-import slide1 from "../images/slide 1.jpg";
-import slide2 from "../images/slide 2.jpg";
-import slide3 from "../images/slide 3.jpg";
-import slide4 from "../images/slide 4.jpg";
-import slide5 from "../images/slide 5.jpg";
 import { Link } from "react-router-dom";
 import LazyLoad from "react-lazyload";
-
-const slideImages = [slide1, slide2, slide3, slide4, slide5];
-
+import slide_1 from "../images/slide 1.jpg";
+import slide_2 from "../images/slide 2.jpg";
+import address from "../utils/address.js";
+/**
+ * This component returns hompage's slider
+ * @component
+ * @see https://sadagaat-uk.org/
+ */
 const properties = {
   duration: 5000,
   transitionDuration: 500,
@@ -17,73 +17,42 @@ const properties = {
   indicators: true,
   arrows: true,
   pauseOnHover: true,
-  // onChange: (oldIndex, newIndex) => {
-  //   console.log(`slide transition from ${oldIndex} to ${newIndex}`);
-  // },
 };
+const slides = [
+  { img: slide_1, link: "1911" },
+  { img: slide_2, link: "3562" },
+];
 const Slideshow = () => {
+  const [fetchedSlide, setSlides] = useState([]);
+  async function fetchData() {
+    console.log("slider");
+    const fetcher = await window.fetch(`${address()}slider`);
+    const response = await fetcher.json();
+    setSlides(response);
+    console.log("the fetch  method call");
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <React.Fragment>
       <div className="slide-container">
         <Slide {...properties}>
-          <LazyLoad once={true}>
-            <div>
-              <Link to="/single-projects/3463">
-                <img src={require("../images/slide10.jpg")} />
-              </Link>
-            </div>
-          </LazyLoad>
-          <LazyLoad once={true}>
-            <div>
-              <Link to="/single-projects/3057">
-                <img src={require("../images/slide 6.jpg")} />
-              </Link>
-            </div>
-          </LazyLoad>
-          <LazyLoad once={true}>
-            <div>
-              <Link to="/single-projects/1911">
-                <img src={require("../images/slide 1.jpg")} />
-              </Link>
-            </div>
-          </LazyLoad>
-          {/* </div> */}
-
-          {/* <div  className = "img-responsive" style={{ backgroundImage: `url(${slideImages[1]})`, backgroundSize: 'auto'}}></div>
-        </div> */}
-          <LazyLoad once={true}>
-            <div>
-              <Link to="/single-projects/2374">
-                <img src={require("../images/slide 5.jpg")} />
-              </Link>
-            </div>
-          </LazyLoad>
-
-          {/* <div style={{ backgroundImage: `url(${slideImages[2]})`}} ></div> */}
-          <LazyLoad once={true}>
-            <div>
-              <Link to="/single-projects/2710">
-                <img src={require("../images/slide 2.jpg")} />
-              </Link>
-            </div>
-          </LazyLoad>
-          {/* <div  className = "img-responsive" style={{ backgroundImage: `url(${slideImages[3]})` }}></div> */}
-          <LazyLoad once={true}>
-            <div>
-              <Link to="/single-projects/2054">
-                <img src={require("../images/slide 3.jpg")} />
-              </Link>
-            </div>
-          </LazyLoad>
-
-          {/* <div  className = "img-responsive" style={{ backgroundImage: `url(${slideImages[3]})` }}></div> */}
-          <LazyLoad once={true}>
-            <div>
-              <Link to="/single-projects/2042">
-                <img src={require("../images/slide 4.jpg")} />
-              </Link>
-            </div>
-          </LazyLoad>
+          {Object.keys(fetchedSlide).length != 0
+            ? fetchedSlide.map((slide) => (
+                <div>
+                  <Link to={slide.link}>
+                    <img src={`${address()}slider/${slide.imageName}/image`} />
+                  </Link>
+                </div>
+              ))
+            : slides.map((slide) => (
+                <div>
+                  <Link to={"/single-projects/" + slide.link}>
+                    <img src={slide.img} />
+                  </Link>
+                </div>
+              ))}
         </Slide>
       </div>
     </React.Fragment>

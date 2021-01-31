@@ -75,6 +75,10 @@ theme. But don't modify style-main.css file.
   background-image: url("../images/CareersCover.jpg");
 }
 
+.volunteer-programs-bg-img {
+  background-image: url("../images/voulnteers-programs.jpeg");
+}
+
 .slide-container {
   direction: ltr;
   width: 100%;
@@ -307,6 +311,13 @@ theme. But don't modify style-main.css file.
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.project-discription-1 {
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .event-discription {
   white-space: wrap;
   height: 1.5em;
@@ -586,10 +597,6 @@ tbody tr:nth-of-type(2n + 1) {
   border-left: 1px solid #d3d3d3 !important;
 }
 
-.mb-20 {
-  margin-bottom: 20px !important;
-}
-
 .modal-btn i {
   transition: all 1s;
 }
@@ -671,4 +678,124 @@ tbody tr:nth-of-type(2n + 1) {
 
 .leaflet-control-attribution a {
   display: none;
+}
+
+.search-bar {
+  padding: 0;
+  height: 35px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  width: 100%;
+  background-color: #fff;
+}
+
+.search-bar input {
+  background-color: transparent;
+  border: none;
+  border-radius: 15px 0 0 15px;
+  width: 85%;
+  height: 35px;
+  padding: 5px 10px;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border: none;
+  background-color: transparent !important;
+}
+
+.search-bar input:visited {
+  background-color: transparent !important;
+}
+
+.search-bar .btn {
+  padding: 0;
+  background-color: transparent !important;
+  width: 15%;
+  line-height: 35px;
+  height: 35px;
+  border-radius: 0;
+  font-size: 15px;
+}
+
+.btnLeft {
+  margin-left: -20px;
+  border-left: 1px solid #ccc;
+}
+
+.btnRight {
+  margin-right: -20px;
+  border-right: 1px solid #ccc;
+}
+
+.header-top {
+  padding: 10px 0 0;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 5px !important;
+  border: 1px solid #bbb;
+}
+
+.sort-btn {
+  background-color: transparent;
+  padding: 3px 7px !important;
+  border: 1px solid #bbb;
+}
+
+.ml-5 {
+  margin-left: 5px !important;
+}
+
+.mr-5 {
+  margin-right: 5px !important;
+}
+
+.ml-1 {
+  margin-left: 10px !important;
+}
+
+.mr-1 {
+  margin-right: 10px !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.ml-0 {
+  margin-left: 0 !important;
+}
+
+.filter-float-left {
+  float: left;
+}
+.filter-float-right {
+  float: right;
+}
+
+.flip-v {
+  transform: scale(1, -1);
+}
+
+.flip-none {
+  transition: all ease 0.5s;
+}
+
+.btnFloatLeft {
+  float: left;
+}
+
+.btnFloatRight {
+  float: right;
+}
+
+/* .ml--30 {
+  float: none;
+  margin-left: -30px;
+} */
+
+.d-inline-block {
+  display: inline-block;
 }

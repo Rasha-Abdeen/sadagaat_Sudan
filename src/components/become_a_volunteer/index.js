@@ -1,20 +1,17 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
 /**
  * This component showing becom a volunteer section this section hide from volunteerForm page
  * @component
  * @param {object} props  PathName  of the page
- * @see http://sadagaat-uk.org
+ * @see http://sadagaat.com
  */
-
 function Become(props) {
   const { t, i18n } = useTranslation();
-  const styleClass = i18n.dir() === "rtl" ? "" : "";
+  // Hide in the volunteer form page
   const show =
     props.history.location.pathname === "/volunteerForm" ? "none" : "";
-
   return (
     <React.Fragment>
       <section className="bg-theme-colored-darker4">
@@ -28,6 +25,7 @@ function Become(props) {
                   </h3>
                 </div>
                 <div className="col-sm-3 col-xs-12 text-right xs-text-center">
+                  {/* Link to Volunteer Form */}
                   <Link to="/volunteerForm">
                     <button
                       className="btn btn-transparent btn-border btn-circled btn-lg mt-15"
@@ -45,5 +43,4 @@ function Become(props) {
     </React.Fragment>
   );
 }
-
 export default withRouter(Become);

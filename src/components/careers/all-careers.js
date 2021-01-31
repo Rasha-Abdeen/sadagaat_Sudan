@@ -10,7 +10,11 @@ import "froala-editor/css/froala_editor.pkgd.min.css";
 import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 import parse from "html-react-parser";
 import Header from "../sub_page_header";
-
+/**
+ * This component returns Open Vacancies
+ * @component
+ * @see https://sadagaat.com/careers
+ */
 class AllCareers extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +22,6 @@ class AllCareers extends Component {
       careers: [],
     };
   }
-
   async componentDidMount() {
     try {
       const { data: careers } = await axios.get(
@@ -28,13 +31,10 @@ class AllCareers extends Component {
         }
       );
       this.setState({ careers });
-      console.log(this.state.careers);
     } catch (error) {
       console.log("can not load careers");
     }
-    console.log(this.state.careers);
   }
-
   async componentWillReceiveProps() {
     try {
       const { data: careers } = await axios.get(
@@ -44,23 +44,10 @@ class AllCareers extends Component {
         }
       );
       this.setState({ careers });
-      console.log(this.state.careers);
     } catch (error) {
       console.log("can not load careers");
     }
   }
-
-  careerDescription = (description) => {
-    if (description !== null) {
-      // parse(description);
-      console.log(description);
-      if (description.length >= 299) {
-        // return parse(description.slice(0, 299) + " ...");
-        return description.slice(0, 299) + " ...";
-      } else return parse(description);
-    } else return null;
-  };
-
   render() {
     const style = i18n.dir() === "rtl" ? "pl-0" : "pr-0";
     const styleMr = i18n.dir() === "rtl" ? " ml-0" : " mr-0";
@@ -69,12 +56,14 @@ class AllCareers extends Component {
     return (
       <React.Fragment>
         <section>
+          {/* Careers page header */}
           <Header name={t("Careers")} coverImage={"careers-bg-img"} />
           <div className="container">
             <div className="section-content">
               <div className="row">
                 <div className="col-md-9 col-md-offset-1">
                   {careers.length > 0 ? (
+                    // Maping Vacancies
                     careers.map((career) => (
                       <div
                         className="sm-maxwidth400 mt-5 mb-0 pt-10 pb-15 border-bottom"
@@ -85,6 +74,7 @@ class AllCareers extends Component {
                             <div className="event-content mt-10 p-5 pb-0 pt-0">
                               <h4 className="text-uppercase title line-bottom mt-0 mb-10">
                                 <span className="text-theme-colored">
+                                  {/* Link to vacancy details */}
                                   <Link to={"/vacancy/" + career.id}>
                                     {career.title}
                                   </Link>
@@ -94,13 +84,14 @@ class AllCareers extends Component {
                                 <i className="fa fa-calendar"></i>{" "}
                                 {t("Closing Date")}: {career.endDate}
                               </h6>
-                              {/* {this.careerDescription(career.description)} */}
+                              {/* FroalaEditorView Component: Used to render data entered by froala editor */}
                               <FroalaEditorView
-                                model={career.description.slice(0, 299)}
+                              // Retun part of vacancy description (First 300 letters)
                               />
                             </div>
                           </div>
                           <div className={"col-md-2 col-lg-2 " + style}>
+                            {/* Link to vacancy details */}
                             <Link
                               className={
                                 "btn btn-flat btn-colored btn-theme-colored " +
@@ -115,6 +106,7 @@ class AllCareers extends Component {
                       </div>
                     ))
                   ) : (
+                    // No Vacancies Message
                     <h3>{t("No Vacancies Available Now")}</h3>
                   )}
                 </div>

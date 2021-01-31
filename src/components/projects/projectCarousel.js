@@ -61,10 +61,10 @@ class ProjectSlider extends Component {
   filterdProject() {
     const filterdProject = this.state.projects.filter(
       (project) =>
-        (project.id === 2387) |
+        (project.id === 3404) |
         (project.id === 2733) |
-        (project.id === 2722) |
-        (project.id === 2694)
+        (project.id === 3388) |
+        (project.id === 3562)
     );
     this.setState({ filterdProject });
   }

@@ -10,7 +10,12 @@ import "froala-editor/css/froala_style.min.css";
 import "froala-editor/css/froala_editor.pkgd.min.css";
 import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 import Header from "../sub_page_header";
-
+/**
+ * This component returns Vacancy details
+ * @component
+ * * * @param {string} props Vacancy Id
+ * @see https://sadagaat.com/careers
+ */
 class Vacancy extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +26,7 @@ class Vacancy extends Component {
     };
   }
   async componentDidMount() {
+    // Get Vacancy ID from Props
     let id = this.props.match.params.id;
     try {
       const { data: vacancy } = await axios.get(`${address()}vacancies/${id}`, {
@@ -54,9 +60,6 @@ class Vacancy extends Component {
   goToLink = (url) => {
     window.location = url;
   };
-  // PopupIsOpen = () => {
-  //   return this.state.popupIsOpen;
-  // };
   handelClosePopup = () => {
     this.setState({ popupIsOpen: false });
   };
@@ -66,12 +69,9 @@ class Vacancy extends Component {
   render() {
     let renderContainer = false;
     if (this.state.render) {
-      const style = i18n.dir() === "rtl" ? "pl-0" : "pr-0";
-      const styleMr = i18n.dir() === "rtl" ? " ml-5" : " mr-5";
       const { t } = this.props;
       const vacancy = this.state.vacancy;
       const popupDir = i18n.dir() === "rtl" ? "left center" : "right center";
-      const btnDir = i18n.dir() === "rtl" ? "mr-5" : "ml-5";
       renderContainer = (
         <React.Fragment>
           <section>
@@ -97,6 +97,7 @@ class Vacancy extends Component {
                               {t("Closing Date")}: {vacancy.endDate}
                             </h6>
                             <div className="list-formatting">
+                              {/* FroalaEditorView Component: Used to render data entered by froala editor */}
                               {vacancy.description !== null ? (
                                 <FroalaEditorView model={vacancy.description} />
                               ) : null}
@@ -115,7 +116,9 @@ class Vacancy extends Component {
                           >
                             {(close) => (
                               <div>
+                                {/* Redirection Message */}
                                 <h6>{t("directMsg")}</h6>
+                                {/* Link to vacancy application link */}
                                 <a
                                   href={vacancy.url}
                                   target="_blank"
@@ -132,13 +135,6 @@ class Vacancy extends Component {
                               </div>
                             )}
                           </Popup>
-                          {/* <a
-                            className="btn btn-flat btn-colored btn-theme-colored"
-                            href={vacancy.url}
-                            target="blank"
-                          >
-                            {t("Apply")}
-                          </a> */}
                         </div>
                       </div>
                     </div>

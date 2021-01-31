@@ -9,6 +9,7 @@ import Become from "./components/become_a_volunteer/index";
 import Home from "./components/home";
 import AllCareers from "./components/careers/all-careers";
 import Vacancy from "./components/careers/details";
+import SearchResults from "./components/ProjectsFilter/SearchResults";
 const Contact = React.lazy(() => import("./components/contact"));
 const About = React.lazy(() => import("./components/about/about.js"));
 const Projects_ = React.lazy(() => import("./components/projects/projects"));
@@ -18,13 +19,6 @@ const Education = React.lazy(() => import("./components/base_hubs/education"));
 const Health = React.lazy(() => import("./components/base_hubs/health"));
 const Water = React.lazy(() => import("./components/base_hubs/water"));
 const News = React.lazy(() => import("./components/news/index"));
-const Login = React.lazy(() => import("./components/Login/Login"));
-const ForgotPassword = React.lazy(() =>
-  import("./components/Login/Forgot_Password")
-);
-const RestPassword = React.lazy(() =>
-  import("./components/Login/Reset_password")
-);
 const VolunteerForm = React.lazy(() =>
   import("./components/vlounteers/VolunteerForm")
 );
@@ -52,12 +46,6 @@ const FaildDonate = React.lazy(() =>
 const SingleProject2 = React.lazy(() =>
   import("./components/projects/single-withSlider")
 );
-const PrivateRoute = React.lazy(() =>
-  import("./components/menu_bar/privateRoute")
-);
-const PubliceRoute = React.lazy(() =>
-  import("./components/menu_bar/PublicRoute")
-);
 const SingleSubhub = React.lazy(() =>
   import("./components/sub_hubs/single-subhub")
 );
@@ -74,10 +62,6 @@ const singleNews = React.lazy(() => import("./components/news/single-news"));
 const Volunteers = React.lazy(() =>
   import("./components/vlounteers/volunteersPage")
 );
-const Registration = React.lazy(() =>
-  import("./components/Login/Registration")
-);
-
 function App() {
   const { i18n } = useTranslation();
   document.getElementById("direction").dir = i18n.dir();
@@ -120,6 +104,7 @@ function App() {
             <Route exact path="/calendar">
               <Calendar />
             </Route>
+            <Route path="/Search-Results" component={SearchResults}></Route>
             <Route exact path="/volunteers" component={Volunteers} />
             <Route
               exact

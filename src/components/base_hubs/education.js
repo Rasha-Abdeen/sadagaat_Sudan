@@ -35,31 +35,31 @@ class Education extends Component {
       headers: { "accept-language": `${i18n.language}` },
     });
     const response = await fetcher.json();
+    //Get data from API' Response
     this.setState({ hub: response, files: response.files });
     console.log(this.state.hub.files);
   }
-
   async componentWillReceiveProps() {
     const fetcher = await window.fetch(`${address()}hubs/1738`, {
       headers: { "accept-language": `${i18n.language}` },
     });
     const response = await fetcher.json();
+    //Get data from API' Response
     this.setState({ hub: response, files: response.files });
-    console.log(this.state.hub.files);
   }
-
+  // Toggle Tab1 to Active and Tab2 to not Active
   changeActiveTab1 = () => {
     this.setState({ activeTab1: "active", activeTab2: "" });
   };
-
+  // Toggle Tab1 to not Active and Tab2 to Active
   changeActiveTab2 = () => {
     this.setState({ activeTab1: "", activeTab2: "active" });
   };
-
+  //Get File name
   getFileName = () => {
     return this.state.files[0].name;
   };
-
+  //Get file type from it's name (.pdf / .docs / .xlsx)
   fileType = () => {
     let fileName = this.state.files[0].name;
     let type = "";
@@ -72,7 +72,7 @@ class Education extends Component {
     }
     return type;
   };
-
+  //Set File Icon
   fileIcon = () => {
     let fileType = this.fileType();
     console.log(fileType);
@@ -85,7 +85,7 @@ class Education extends Component {
         return <i class="fa fa-file-word-o"></i>;
     }
   };
-
+  // Open Pdf File in New Tab
   openFile = () => {
     let url = address() + "hub/document/" + this.getFileName();
     fetch(url)
@@ -101,8 +101,10 @@ class Education extends Component {
     let hubFiles = this.state.files;
     const { t } = this.props;
     const { hub } = this.state;
+    // Set Tabs classes for direction change
     const tabs_class = i18n.dir() === "rtl" ? "float-right" : "float-left";
-    const popupDir = i18n.dir() === "rtl" ? "float-right" : "float-left";
+    // Set button classes for direction change
+
     const btnDir = i18n.dir() === "rtl" ? "mr-5" : "ml-5";
     return (
       <React.Fragment>
@@ -113,7 +115,9 @@ class Education extends Component {
               <div>
                 <div className="col-xs-12 col-md-12">
                   <h2 class="line-bottom mt-0">{hub.name}</h2>
+                  {/* Tabs */}
                   <ul className="nav nav-tabs">
+                    {/* Discreption Tab */}
                     <li className={this.state.activeTab1 + " " + tabs_class}>
                       <a
                         href="#login-tab"
@@ -124,6 +128,7 @@ class Education extends Component {
                         {t("Sector Details")}
                       </a>
                     </li>
+                    {/* Files Tab */}
                     <li className={this.state.activeTab2 + " " + tabs_class}>
                       <a
                         href="#register-tab"
@@ -134,7 +139,9 @@ class Education extends Component {
                       </a>
                     </li>
                   </ul>
+                  {/* Tabs Content  */}
                   <div className="tab-content">
+                    {/* Discreption Tab Content */}
                     <div
                       className="tab-pane fade in active p-15"
                       id="login-tab"
@@ -163,6 +170,7 @@ class Education extends Component {
                                     <li class="text-theme-colored pull-right flip pr-0"></li>
                                   </ul>
                                 </div>
+                                {/* Link to Donation Page */}
                                 <Link
                                   to={"/hub/" + hub.id}
                                   class="btn btn-theme-colored btn-sm"
@@ -174,20 +182,26 @@ class Education extends Component {
                           </div>
                         </div>
                       </div>
+                      {/* Sub Sectors Component  , Props: Hubid and Hub name*/}
                       <Hub_Subhubs
                         hubId={hub.id}
                         name={t("Education Sub Sectors")}
                       />
                     </div>
+                    {/* Files Tab Content */}
                     <div className="tab-pane fade in p-15" id="register-tab">
-                      {/* <p>{t("Files")}</p> */}
+                      {/*  */}
                       {hubFiles !== undefined && hubFiles.length > 0 ? (
+                        // maping files
                         hubFiles.map((file, index) => (
                           <div>
+                            {/* Check file type */}
                             {this.fileType() === "pdf" ? (
+                              // Popup if file type is pdf
                               <Popup
                                 trigger={(open) => (
                                   <a className="popupCustom-btn">
+                                    {/* return file icon and name */}
                                     {this.fileIcon()} {file.displayName}
                                   </a>
                                 )}
@@ -196,8 +210,10 @@ class Education extends Component {
                               >
                                 <div>
                                   <h6>
+                                    {/* return file icon and name */}
                                     {this.fileIcon()} {file.displayName}
                                   </h6>
+                                  {/* Save File link */}
                                   <a
                                     href={`${address()}hub/document/${this.getFileName()}`}
                                     className="btn btn-flat btn-theme-colored btn-sm"
@@ -206,6 +222,7 @@ class Education extends Component {
                                   >
                                     {t("Save")}
                                   </a>
+                                  {/* Open file in new tab */}
                                   <a
                                     onClick={this.openFile}
                                     className={
@@ -218,15 +235,18 @@ class Education extends Component {
                                 </div>
                               </Popup>
                             ) : (
+                              // File link
                               <a
                                 href={`${address()}hub/document/${this.getFileName()}`}
                               >
+                                {/* Return file icon and name */}
                                 {this.fileIcon()} {file.displayName}
                               </a>
                             )}
                           </div>
                         ))
                       ) : (
+                        // No files message
                         <p>{t("No Files Available")}</p>
                       )}
                     </div>

@@ -102,13 +102,8 @@ export function logout() {
  * @param {object} data  volunteer form data
  */
 export function submit_volunteer_data(data) {
-  //   let token = localStorage.getItem(tokenKey);
   return axios
-    .post(`${address()}members`, data, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-    })
+    .post(`${address()}members`, data, {})
 
     .then((response) => {
       return response.data;

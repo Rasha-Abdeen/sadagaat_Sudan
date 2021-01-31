@@ -7,11 +7,11 @@ import { Link } from "react-router-dom";
 class SuccessDonate extends Component {
   render() {
     const { t } = this.props;
+
     const checkOverDonation = () => {
       let x = window.location.href;
       console.log(x);
       let y = x.search("totalAmount=");
-
       let z = x.search("&sadgaatAmount=");
       let SadagatAmountStart = z + 15;
       let totalAmount = x.slice(y + 12, z);

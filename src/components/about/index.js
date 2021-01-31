@@ -1,9 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link, withRouter } from "react-router-dom";
-
 /**
- *  this component shwing about Sadagaat  Section in the home page
+ *  this component showing about Sadagaat  Section in the home page and about Page
  * @param {object} props   location of page from props
  * @component
  */
@@ -11,18 +10,17 @@ function About_(props) {
   const { t, i18n } = useTranslation();
   // const classParameter  set class name value  = pe-0 or pl-0 after Check page direction
   const classParameter = i18n.dir() === "rtl" ? "pr-0" : "pl-0";
-
   // const buttonClass  =  set class name value after Check page direction
   const buttonClass = i18n.dir() === "rtl" ? "mr-5" : "ml-5";
   //const show = 'none' or ''  remove button read more from home page adding style show = none  or '' after check page location
   const show = props.history.location.pathname === "/about" ? "none" : "";
-
   return (
     <React.Fragment>
       <section id="about" className="pt-0">
         <div className="container">
           <div className="section-content">
             <div className="row">
+              {/* About Images Section */}
               <div className="col-md-6 mt-20">
                 <div className="row">
                   <div
@@ -57,6 +55,7 @@ function About_(props) {
                   </div>
                 </div>
               </div>
+              {/* About Details Section */}
               <div className="col-md-6 d-flex align-items-center">
                 <div className="about-details">
                   <h2 className="font-28 text-uppercase mt-1">
@@ -66,7 +65,7 @@ function About_(props) {
                     {t("about_message_1")} <br />
                     {t("about_message_2")}
                   </p>
-
+                  {/* Link To About Page */}
                   <Link
                     to="/about"
                     className={`btn btn-flat btn-colored btn-theme-colored mt-15 ${buttonClass}`}
@@ -74,7 +73,7 @@ function About_(props) {
                   >
                     {t("Read More")}
                   </Link>
-
+                  {/* Link To Donation Page */}
                   <Link
                     to="/donate"
                     className={`btn btn-flat btn-colored btn-default btn-theme-colored mt-15 ${buttonClass}`}

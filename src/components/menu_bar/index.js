@@ -1,10 +1,11 @@
 import React from "react";
 import LanguageSelector from "../../i18next/LanguageSelector";
-
 import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-// import Logo from "../images/logo.png";
-
+/**
+ * this component returns rhe website's menu bar
+ * @component
+ */
 function MenuBar() {
   const { t } = useTranslation();
   return (
@@ -14,8 +15,10 @@ function MenuBar() {
           <div className="container">
             <nav id="menuzord-right" className="menuzord default no-bg">
               <a className="menuzord-brand pull-left flip" href="/">
+                {/* Logo */}
                 <img src={require("../images/logo.png")} alt="" />
               </a>
+              {/* Menu List */}
               <ul className="menuzord-menu">
                 <li>
                   <NavLink
@@ -47,10 +50,6 @@ function MenuBar() {
                         {t("Contact")}
                       </NavLink>
                     </li>
-                    {/* <li><NavLink className="nav-link" activeclassName="active"  to="/volunteers">
-                        {t("Volunteers")}
-                      </NavLink>
-                    </li> */}
                   </ul>
                 </li>
 
@@ -82,9 +81,6 @@ function MenuBar() {
                     </li>
                   </ul>
                 </li>
-                {/* <li>
-                   <NavLink className="nav-link" to="/sub_hubs">{t("Sub Hubs")}</NavLink>
-                </li> */}
                 <li>
                   {" "}
                   <NavLink className="nav-link" to="/projects">

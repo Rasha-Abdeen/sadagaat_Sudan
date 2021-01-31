@@ -272,11 +272,11 @@
   "SDG for Sadagaat": "جنيه لصدقات",
   "Select Start Date": "حدد تاريخ البدء",
   "Select End Date": "حدد تاريخ الانتهاء",
-  "Clear Filter": "ازالة الفلتر",
+  "Clear Filter": "ازالة التحديد",
   "Filter": "تحديد",
   "Please Choose Proper Dates": "الرجاء اختيار التواريخ المناسبة",
   "Over Donation Msg": "شكرا لتبرعكم الكريم، إكتمل المبلغ المستهدف للمشروع، ما تبقى من تبرعك سوف يتم تحويله لمشاريع صدقات الأخرى.",
-  "No Projects Available in the Selected Interval": "لا توجد مشاريع متاحة في الفترة الزمنية المحددة",
+  "No Available Results for Your Search": "لا توجد نتائج متاحة لبحثك",
   "Project Details":"تفاصيل المشروع",
   "Project Timeline":"الخط الزمني للمشروع",
   "Sector File":"ملف المحور",
@@ -306,5 +306,10 @@
   "No Volunteers Programs Available Now":"لا يوجد برامج متطوعين متاحة الآن",
   "Map not available":"لا تتوفر خريطة لهذا المشروع",
   "Project Map" : "الموقع على الخريطة",
-  "Loading Map":"تحميل الخريطة"
+  "Loading Map":"تحميل الخريطة",
+  "Search Results":"نتائج البحث",
+  "All Projects":"كل المشاريع",
+  "Sort By Date":"ترتيب بالتاريخ",
+  "Search in Projects":"بحث في المشاريع",
+  "Please Choose Filter":"الرجاء تحديد الفلتر"
 }

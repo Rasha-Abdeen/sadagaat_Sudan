@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import LazyLoad from "react-lazyload";
 import slide_1 from "../images/slide 1.jpg";
 import slide_2 from "../images/slide 2.jpg";
+import slide_3 from "../images/slide 3.jpg";
+import slide_4 from "../images/slide 4.jpg";
+import slide_5 from "../images/slide 5.jpg";
 import address from "../utils/address.js";
 /**
  * This component returns hompage's slider
@@ -20,7 +23,11 @@ const properties = {
 };
 const slides = [
   { img: slide_1, link: "1911" },
-  { img: slide_2, link: "3562" },
+  { img: slide_2, link: "3388" },
+  { img: slide_3, link: "2054" },
+  { img: slide_4, link: "3404" },
+  { img: slide_5, link: "3562" },
+
 ];
 const Slideshow = () => {
   const [fetchedSlide, setSlides] = useState([]);

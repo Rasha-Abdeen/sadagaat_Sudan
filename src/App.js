@@ -1,6 +1,7 @@
 import React, { useEffect, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 import Preload from "./components/preload";
+import ReactGA from "react-ga"
 import { useTranslation } from "react-i18next";
 import TopBar from "./components/top_bar";
 import MenuBar from "./components/menu_bar";
@@ -66,7 +67,7 @@ function App() {
   const { i18n } = useTranslation();
   document.getElementById("direction").dir = i18n.dir();
   // Google analytics tracking
-  const TrackinID = "UA-186584467-1";
+  const TrackinID = "UA-188850663-1";
   ReactGA.initialize(TrackinID);
   ReactGA.pageview(window.location.pathname + window.location.search);
 

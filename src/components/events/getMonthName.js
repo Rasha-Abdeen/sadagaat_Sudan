@@ -23,6 +23,21 @@ export function getNumberWithComma(num) {
 return number
 }
 
+
+export function getNumberWithLang(num,lang) {
+    const number="";
+     if (lang==="ar") {
+        number = num.toLocaleString("ar-SA", { style: 'currency', currency: 'ج.س' });
+
+         
+     } else {
+        number = num.toLocaleString('en-US', { style: 'currency', currency: 'SDG' });
+    
+     }
+
+return number
+}
+
 /**
  * This function add comma to long number
  * @param {number} num  long number 123456789 

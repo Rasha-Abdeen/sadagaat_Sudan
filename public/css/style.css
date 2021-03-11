@@ -629,7 +629,11 @@ tbody tr:nth-of-type(2n + 1) {
   width: 200px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
 }
-
+.ol {
+  list-style: circle;
+  margin: 0;
+  padding: 0;
+}
 .popup-overlay {
   background: rgba(0, 0, 0, 0.5);
 }
@@ -644,12 +648,10 @@ tbody tr:nth-of-type(2n + 1) {
 }
 
 .list-formatting ul {
-  list-style-type: circle !important;
+  list-style: circle !important;
 }
 
-.list-formatting ol {
-  list-style-type: decimal;
-}
+
 
 .list-formatting p {
   margin: auto 0;

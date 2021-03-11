@@ -429,9 +429,15 @@ strong {
 img {
   max-width: 100%;
 }
-ul,
-ol {
+ul{
   list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ol {
+
+  list-style-type: decimal !important;
   margin: 0;
   padding: 0;
 }
@@ -571,11 +577,26 @@ iframe {
   outline-offset: 2px;
 }
 /* -------- List ---------- */
-ul,
+ul{
+  list-style-type: square;  
+  margin: 25px;
+  margin-top: 10px;
+  margin-bottom: 10PX;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
 ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  list-style: decimal;
+  margin: 25px;
+  margin-top: 10px;
+  margin-bottom: 10PX;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 5px;
 }
 ul ul,
 ol ul {

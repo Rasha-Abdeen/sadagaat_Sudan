@@ -30,7 +30,7 @@ const Projects = (props) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [alertOn, setAlert] = useState(false);
-  let [sortOn, setSortOn] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
   let [filterOn, setFilterOn] = useState(false);
   const [loading, setLoading] = useState(true);
   let [sorting, toggleSorting] = useState(false);
@@ -44,7 +44,8 @@ const Projects = (props) => {
     i18n.dir() === "rtl"
       ? "btn datePick-btn btn-theme"
       : "btn datePick-btn btn-theme";
-  const sorBtnClasses = i18n.dir() === "rtl" ? " ml-0" : " mr-0";
+  const sorBtnClasses =
+    i18n.dir() === "rtl" ? " mr-0 btnFloatLeft" : " ml-0 btnFloatRight";
   const iconDir = i18n.dir() === "rtl" ? " mr-10" : " ml-10";
   function range(start, end) {
     var ans = [];
@@ -86,6 +87,10 @@ const Projects = (props) => {
     console.log(Dates.endDate);
   }
 
+  /**
+   * this fuction checks entered dates and calles fetchFilteredData function
+   */
+
   function SetDates() {
     const today = new Date();
     let dates = "";
@@ -114,14 +119,16 @@ const Projects = (props) => {
       };
       SetSelectedDates(dates);
       fetchDataFiltered();
-    }
-    ///
-    else {
+    } else {
       showAlert();
     }
 
     console.log(dates);
   }
+
+  /**
+   * this fuction shows the alert for 3 Secs
+   */
 
   function showAlert() {
     setAlert(true);
@@ -129,7 +136,9 @@ const Projects = (props) => {
       setAlert(false);
     }, 3000);
   }
-
+  /**
+   * this fuction Fetches Filtered Data
+   */
   async function fetchDataFiltered() {
     let isSorting;
     if (document.getElementsByClassName("flip-v") === undefined) {
@@ -171,13 +180,15 @@ const Projects = (props) => {
     console.log(Dates.endDate);
   }
   /**
-   * This function check the filter of Projects matching with type
-   * @param {string} type  type of project 'completed' ,'ongoing' , 'planned'
-   * @param {Array} allProjects  array of all projects
+   * this fuction returns selected dates
+   * @returns Selected Start Date and End date
    */
   function datePickerCustom() {
+    // Get the value of the current day
     const today = new Date();
+    // Set years array
     const years = range(today.getFullYear(), 2000);
+    // Set months array
     const months = [
       "January",
       "February",
@@ -192,11 +203,13 @@ const Projects = (props) => {
       "November",
       "December",
     ];
+    // Set date input classes directions
     let dateInputClasses =
       i18n.dir() === "rtl" ? "dateInput ml-5" : "dateInput";
     return (
       <React.Fragment>
         <div className="col-md-2 col-sm-3 col-xs-6">
+          {/* Start date datepicker */}
           <DatePicker
             selected={startDate}
             className={dateInputClasses}
@@ -226,7 +239,7 @@ const Projects = (props) => {
                   {"<"}
                 </button>
                 <select
-                  value={date.getYear()}
+                  value={years[date.getYear()]}
                   onChange={({ target: { value } }) => changeYear(value)}
                 >
                   {years.map((option) => (
@@ -235,6 +248,7 @@ const Projects = (props) => {
                     </option>
                   ))}
                 </select>
+
                 <select
                   value={months[date.getMonth()]}
                   onChange={({ target: { value } }) =>
@@ -259,6 +273,7 @@ const Projects = (props) => {
           />
         </div>
         <div className="col-md-2 col-sm-3 col-xs-6">
+          {/* End date datepicker */}
           <DatePicker
             className={dateInputClasses}
             placeholderText={t("Select End Date")}
@@ -288,7 +303,7 @@ const Projects = (props) => {
                   {"<"}
                 </button>
                 <select
-                  value={date.getYear()}
+                  value={years[date.getYear()]}
                   onChange={({ target: { value } }) => changeYear(value)}
                 >
                   {years.map((option) => (
@@ -325,12 +340,19 @@ const Projects = (props) => {
     );
   }
 
+  /**
+   * this fuction clears filters
+   */
+
   function clearFilter() {
-    setStartDate("");
-    setEndDate("");
-    filterOn = false;
+    setStartDate(null);
+    setEndDate(null);
     fetchData();
   }
+
+  /**
+   * this fuction gets the projects type
+   */
 
   function filterProjectsType(type) {
     if (type === "ongoing") projectsType = 2;
@@ -350,6 +372,11 @@ const Projects = (props) => {
     else fetchDataFiltered();
   }
 
+  /**
+   * this fuction sets the filtes button style classes
+   * @returns Filter Button Classes
+   */
+
   function filterBtnClasses() {
     let filterBtn =
       i18n.dir() === "rtl"
@@ -358,10 +385,10 @@ const Projects = (props) => {
 
     if (startDate === null || endDate === null) {
       filterBtn = filterBtn + "disabled";
-      filterOn = true;
     }
     return filterBtn;
   }
+
   function alertClasses() {
     let classes = "row fade-in ";
     if (alertOn === false) classes = "row fade-out d-none";
@@ -371,8 +398,6 @@ const Projects = (props) => {
   function hideAlert() {
     setAlert(false);
   }
-
-  let projectsPage = data;
 
   function toggleSortBtn() {
     if (sortBtnFlip === "") {
@@ -384,13 +409,6 @@ const Projects = (props) => {
       toggleSortBtns("");
       data.reverse();
     }
-  }
-
-  function pageProjects() {
-    let x = document.getElementsByClassName("flip-v");
-    if (x === undefined && filterOn === false) {
-      return data;
-    } else return data.reverse();
   }
 
   return (
@@ -480,7 +498,6 @@ const Projects = (props) => {
                       </ul>
 
                       <div className="progress-item mt-0">
-                        {/* <span>{t('Donation Progress')}</span> */}
                         <div className="progress">
                           <div
                             data-percent={Precision(project.donationProgress)}
@@ -517,17 +534,17 @@ const Projects = (props) => {
                         {parse(project.description)}
                       </p>
 
-                      <Link
-                        to={"/projects/" + project.id}
-                        className="btn btn-default btn-theme-colored btn-xs font-16 mt-10"
-                        style={{
-                          display: `${
-                            project.donationProgress >= 100 ? "none" : ""
-                          }`,
-                        }}
-                      >
-                        {t("Donate")}
-                      </Link>
+                       <Link
+                          to={"/projects/" + project.id}
+                          className="btn btn-default btn-theme-colored btn-xs font-16 mt-10"
+                          style={{
+                            display: `${
+                              project.donationProgress >= 100 ? "none" : ""
+                            }`,
+                          }}
+                        >
+                          {t("Donate")}
+                        </Link> 
                     </div>
                   </div>
                 </Link>

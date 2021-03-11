@@ -5,7 +5,8 @@ import i18n from "i18next";
 import { withTranslation } from "react-i18next";
 import "@brainhubeu/react-carousel/lib/style.css";
 import { Link } from "react-router-dom";
-import { getNumberWithComma, Precision } from "../events/getMonthName";
+import { getNumber, Precision,getNumberWithLang } from "../events/getMonthName";
+import {getNumberWithComma} from "../events/getMonthName";
 import parse from "html-react-parser";
 import { Timeline, TimelineItem } from "vertical-timeline-component-for-react";
 import Slider from "./slider";
@@ -34,6 +35,9 @@ class SinglProject2 extends Component {
       activeTab2: "",
       activeTab3: "",
       showMap: false,
+      currency:[],
+      currencyval: [],
+      
     };
   }
   /**
@@ -46,10 +50,22 @@ class SinglProject2 extends Component {
       const { data: project } = await axios.get(`${address()}projects/${id}`, {
         headers: { "accept-language": `${i18n.language}` },
       });
+      const currentcur= project;
       this.setState({ project });
+      this.setState({currencyval: project.currency});
+
+
+     this.setState({currency: project.currency.currencyTranslations});
+      //console.log('currency ...............: ',currency);
+      this.setTranslationData()
+      //console.log("this is project data ",project.currency.currencyTranslations);
+
     } catch (error) {
       console.log("can not load project for the home page slider");
     }
+    
+   
+    
 
     try {
       const { data: Steps } = await axios.get(
@@ -153,7 +169,32 @@ class SinglProject2 extends Component {
     }, 1000);
   };
 
+
+  setTranslationData=()=>{
+    // get newstranslation  array 
+    const currency = this.state.currency
+     // loping through array
+    for(let i = 0 ;i < currency.length; i++){
+      // check user language with lacale
+      if(i18n.language === currency[i].locale){
+        // fill the state with one translation news , news name and descriptions
+        this.setState({
+        
+             name:currency[i].name,
+             //description:newsData[i].description
+           
+        })
+       // console.log('translationsDataname',this.state.translationNews)
+
+      }
+    }
+}
+
   render() {
+    const currency = this.state.currency;
+    const currencyval = this.state.currencyval;
+   
+//console.log ("this value of currencyval:.....",currency)
     let allMedia = this.state.stepsMedia;
     let renderContainer = false;
     if (this.state.render) {
@@ -291,23 +332,70 @@ class SinglProject2 extends Component {
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="mt-10 mb-20">
-                                    <ul class="list-inline clearfix mt-10">
-                                      <li class="pull-left flip pr-0">
-                                        {" "}
-                                        {t("Raised")}{" "}
-                                        <span class="font-weight-700 font-">
-                                          {getNumberWithComma(project.raised)}
-                                        </span>
-                                      </li>
-                                      <li class="text-theme-colored pull-right flip pr-0">
-                                        {t("Goals")}
-                                        <span class="font-weight-700">
-                                          {getNumberWithComma(project.goal)}
-                                        </span>
-                                      </li>
-                                    </ul>
-                                  </div>
+                         
+ <div>{
+
+           currency.map((currency,index)=>{
+              return ( (i18n.language === currency.locale) && (currency !== "undefined" )  ) ?
+              <div class="mt-10 mb-20">
+              <ul class="list-inline clearfix mt-10">
+                <li class="pull-left flip pr-0">
+                  {" "}
+                  {t("Raised")}{" "}
+                  <span class="font-weight-700 font-">
+                  {currency.name}{" "}{getNumber(project.raised)}
+                  </span>
+                </li>
+                <li class="text-theme-colored pull-right flip pr-0">
+                  <span className="text-theme-colored font-weight-700">
+                  {t("Goal")}
+                  {currency.name}{" "}{getNumber(project.goal)}
+                  </span>
+                  </li>
+                  </ul>
+                </div>
+              :
+             null
+             
+            })}
+              </div>   
+              <div>{ 
+              ( currency.length == 0  )?(
+
+                
+                <div className="causes-details clearfix p-15 pt-15 pb-15">
+                <ul className="list-inline font-16 font-weight-600 clearfix mb-5">
+                  <li className="pull-left font-weight-400 text-black-333 pr-0">
+                    {t("Raised")}
+                    <span className="text-theme-colored font-weight-700">
+                      {/* pass raise to getNumber function to   */}
+                      {i18n.language === "ar"?"ج.س":"SDG"}
+
+                      {getNumber(project.raised)}
+                    </span>
+                  </li>
+                  <li className="pull-right font-weight-400 text-black-333 pr-0">
+                    {t("Goal")}
+                    <span className="text-theme-colored font-weight-700"> {i18n.language === "ar"?"ج.س":"SDG"}
+
+                      {getNumber(project.goal)}
+                    </span>
+                  </li>
+                </ul>
+                </div>
+
+     ):null}
+            
+           </div>
+ 
+
+
+
+
+
+
+                              
+                                       
                                   <Link
                                     to={"/projects/" + project.id}
                                     class="btn btn-theme-colored btn-sm"
@@ -472,7 +560,7 @@ class SinglProject2 extends Component {
                     </div>
                   </div>
                 </div>
-              </div>
+                </div>
             </section>
           </div>
         </React.Fragment>

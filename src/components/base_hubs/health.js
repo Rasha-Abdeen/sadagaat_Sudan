@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import address from "../utils/address";
 import Header from "../sub_page_header";
+import parse from "html-react-parser";
+
 import { Link } from "react-router-dom";
 import i18n from "i18next";
 import Hub_Subhubs from "./hub_subHubs";
@@ -20,8 +22,10 @@ class Health extends Component {
       hub: [],
       offset: 0,
       files: [],
+      file: "",
       activeTab1: "active",
       activeTab2: "",
+      details : "",
     };
   }
   /**
@@ -36,7 +40,9 @@ class Health extends Component {
       headers: { "accept-language": `${i18n.language}` },
     });
     const response = await fetcher.json();
-    this.setState({ hub: response, files: response.files });
+    this.setState({ hub: response, files: response.files , details: response.formatedDescription });
+    console.log ("sector eduction with table data ...",this.details);
+     console.log("the fetched data ...",this.hub);
   }
 
   async componentWillReceiveProps() {
@@ -44,7 +50,7 @@ class Health extends Component {
       headers: { "accept-language": `${i18n.language}` },
     });
     const response = await fetcher.json();
-    this.setState({ hub: response, files: response.files });
+    this.setState({ hub: response, files: response.files , details: response.formatedDescription  });
   }
 
   changeActiveTab1 = () => {
@@ -53,6 +59,18 @@ class Health extends Component {
 
   changeActiveTab2 = () => {
     this.setState({ activeTab1: "", activeTab2: "active" });
+  };
+
+  fileType = () => {
+    let fileName = this.state.files[0].displayName;
+    let icon = "";
+    if (fileName.search(".pdf")) {
+      return "pdf";
+    } else if (fileName.search(".xlsx")) {
+      return "xlsx";
+    } else if (fileName.search(".docs")) {
+      return "docx";
+    }
   };
 
   getFileName = () => {
@@ -66,7 +84,7 @@ class Health extends Component {
       type = "pdf";
     } else if (fileName.search(".xlsx") > 0) {
       type = "xlsx";
-    } else if (fileName.search(".docx") > 0) {
+    } else if (fileName.search(".docs") > 0) {
       type = "docx";
     }
     return type;
@@ -97,12 +115,14 @@ class Health extends Component {
   };
 
   render() {
+    let details = this.state.details;
     let hubFiles = this.state.files;
-    console.log(hubFiles);
     const { t } = this.props;
     const { hub } = this.state;
+    const listPadding = i18n.dir() === "rtl" ? "right" : "left";
+
     const tabs_class = i18n.dir() === "rtl" ? "float-right" : "float-left";
-    const popupDir = i18n.dir() === "rtl" ? "float-right" : "float-left";
+    const popupDir = i18n.dir() === "rtl" ? "left center" : "right center";
     const btnDir = i18n.dir() === "rtl" ? "mr-5" : "ml-5";
     return (
       <React.Fragment>
@@ -130,7 +150,7 @@ class Health extends Component {
                         data-toggle="tab"
                         onClick={this.changeActiveTab2}
                       >
-                        {t("Sector File")}
+                        {t("More Information")}
                       </a>
                     </li>
                   </ul>
@@ -180,56 +200,16 @@ class Health extends Component {
                       />
                     </div>
                     <div className="tab-pane fade in p-15" id="register-tab">
-                      <p>{t("Files")}</p>
-                      {/* <AllFiles files={this.state.files}></AllFiles> */}
-                      {hubFiles !== undefined && hubFiles.length > 0 ? (
-                        hubFiles.map((file, index) => (
-                          <div>
-                            {this.fileType() === "pdf" ? (
-                              <Popup
-                                trigger={(open) => (
-                                  <a className="popupCustom-btn">
-                                    {this.fileIcon()} {file.displayName}
-                                  </a>
-                                )}
-                                position="bottom center"
-                                closeOnDocumentClick
-                              >
-                                <div>
-                                  <h6>
-                                    {this.fileIcon()} {file.displayName}
-                                  </h6>
-                                  <a
-                                    href={`${address()}hub/document/${this.getFileName()}`}
-                                    className="btn btn-flat btn-theme-colored btn-sm"
-                                    target="_slef"
-                                    download="pdf"
-                                  >
-                                    {t("Save")}
-                                  </a>
-                                  <a
-                                    onClick={this.openFile}
-                                    className={
-                                      "btn btn-flat btn-theme-colored btn-sm " +
-                                      btnDir
-                                    }
-                                  >
-                                    {t("Open")}
-                                  </a>
-                                </div>
-                              </Popup>
-                            ) : (
-                              <a
-                                href={`${address()}hub/document/${this.getFileName()}`}
-                              >
-                                {this.fileIcon()} {file.displayName}
-                              </a>
-                            )}
-                          </div>
-                        ))
-                      ) : (
-                        <p>{t("No Files Available")}</p>
-                      )}
+                    {
+                      (details === null || details === "") ? (
+                    <div className={"list-formatting "+listPadding }>
+                      <h4>{t("No More Information")}</h4>
+                        </div>
+                   ) :(
+                   <div>
+                    {parse(details)}
+                       </div>)
+                  }
                     </div>
                   </div>
                 </div>

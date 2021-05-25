@@ -21,6 +21,7 @@ function Calendar(){
   const [offset ,setOffset]= useState(0)
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(6);
+  const[cover,setCover]=useState({})
   const {t} = useTranslation()
   const [loading , setLoading] = useState(true)
   const styleMr = i18n.dir() === "rtl" ? "l" : "r"
@@ -36,12 +37,22 @@ function Calendar(){
     setLoading(false)
 
   }
+
+  async function fetchCover() {
+    const fetcher = await window.fetch(`${address()}cover-image/EVENT2`,{headers: {'accept-language': `${i18n.language}`}})
+    const response = await fetcher.json()
+
+    setCover(response)
+    
+
+  }
   
  /**  useEffect call fetchData()  to get all events when component mounted or  when change language
 */
   
   useEffect(() => {
       fetchData()
+      fetchCover()
    },[i18n.language])
 
   // Get current events you wate to post in page
@@ -55,8 +66,42 @@ const paginate = (e) => {
 }
     return(
    <section>
-          
-<Header name={t("Events")} coverImage = {'events-bg-img'}/>
+      {(cover !== undefined )?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/EVENT2` + ')'
+        
+       }}  className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Events")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className=" events-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Events")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+             
+       
+       
+       }
+
+
   <div className="container mt-30 mb-30">
     <div className="section-content">
       <div className="row">
@@ -67,14 +112,14 @@ const paginate = (e) => {
           <div className="schedule-box maxwidth500 bg-lighter mb-30" >
             <div className="schedule-details border-bottom-theme-color-2px clearfix p-15 pt-10">
               <div className={`text-center pull-left flip bg-theme-colored p-10 pt-5 pb-5 m${styleMr}-10`} key = {event.id}>
-                <ul style = {{height:'50px'}}>
-                  <li className="font-19 text-white font-weight-600 border-bottom">
+                <div style = {{height:'50px'}}>
+                  <span className="font-19 text-white font-weight-600 border-bottom">
                       {event.startDate.slice(8,10)}
-                  </li>
-                  <li className="font-12 text-white text-uppercase">
+                  </span>
+                  <span className="font-12 text-white text-uppercase">
                      {getMonthName(event.startDate)}
-                  </li>
-                </ul>
+                  </span>
+                </div>
               </div>
               <Link to = {'/event/'+event.id} >
               <h4 className="title mt-5 mb-5">
@@ -83,10 +128,10 @@ const paginate = (e) => {
                 
                 </h4>
                
-              <ul className="list-inline font-11 text-gray" style = {{height:'50px'}}>
-                <li><i className={`fa fa-calendar m${styleMr}-5`} /> {event.startDate}</li>
-                <li><i className={`fa fa-map-marker ${styleMr}`} /> {event.locationName}</li>
-              </ul>
+              <div className="list-inline font-11 text-gray" style = {{height:'50px'}}>
+                <span><i className={`fa fa-calendar m${styleMr}-5`} /> {event.startDate}</span>
+                <span><i className={`fa fa-map-marker ${styleMr}`} /> {event.locationName}</span>
+              </div>
               <div className="clearfix" >
             </div>
             </Link>

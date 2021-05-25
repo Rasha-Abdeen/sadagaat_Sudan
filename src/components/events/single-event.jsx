@@ -20,6 +20,7 @@ class SinglEvent extends Component {
     this.state = {
       event: [],
       allMedia: [],
+      cover: {},
     };
   }
 
@@ -45,6 +46,23 @@ class SinglEvent extends Component {
       .catch((error) => {
         console.log(error.message);
       });
+
+      try {
+       
+        const fetcher = await window.fetch(`${address()}cover-image/EVENT2`, {
+         headers: { "accept-language": `${i18n.language}` },
+       });
+       const response = await fetcher.json();
+    
+       this.setState({cover: response})
+       console.log("the fetched cover image  ...",this.cover);
+       if (this.cover.status === undefined){
+         this.setState({cover: undefined})
+    
+       }
+        } catch (error) {
+          console.log(error)
+        }
    
   }
 /**
@@ -69,6 +87,22 @@ class SinglEvent extends Component {
       .catch((error) => {
         console.log(error.message);
       });
+      try {
+       
+        const fetcher = await window.fetch(`${address()}cover-image/EVENT2`, {
+         headers: { "accept-language": `${i18n.language}` },
+       });
+       const response = await fetcher.json();
+    
+       this.setState({cover: response})
+       console.log("the fetched cover image  ...",this.cover);
+       if (this.cover.status === undefined){
+         this.setState({cover: undefined})
+    
+       }
+        } catch (error) {
+          console.log(error)
+        }
   }
   /**
    * This function joine event videos  and images arrays in one array AllMedia
@@ -108,11 +142,44 @@ class SinglEvent extends Component {
   render() {
     const { t } = this.props;
     const event = this.state.event;
+    const cover = this.state.cover;
     const allMedia = this.state.allMedia;
     return (
       <div class="main-content">
-        <Header name={t("Events")}  coverImage = {'events-bg-img'}/>
 
+{(cover !== undefined)?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/EVENT1` + ')'
+        
+       }}  
+       
+       className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Events")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+<section className="events-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Events")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>       
+       }
         <section>
           <div class="container">
             <div class="row">
@@ -203,32 +270,29 @@ class SinglEvent extends Component {
                 </div>
               </div>
               <div class="col-md-5">
-                <ul>
-                  <li>
+                <span>
                     <h4>{t("Topic")}:</h4>
                     <p>{event.name}</p>
-                  </li>
-                  <li>
+                  </span>
+                  <span>
                     <h4>{t("Description")}:</h4>
                     <p>{event.description}</p>
-                  </li>
-                  <li>
+                  </span>
+                  <span>
                     <h4>{t("Start Date")}:</h4>
                     <p>{event.startDate}</p>
-                  </li>
-                  <li>
+                  </span>
+                  <span>
                     <h4>{t("End Date")}:</h4>
                     <p>{event.endDate}</p>
-                  </li>
-                  <li>
+                  </span>
+                  <span>
                     <h4>{t("Location")}:</h4>
                     <p>{event.locationName}</p>
-                  </li>
-
-                  <li>
+                  </span>
+                  <span>
                     <h5></h5>
-                  </li>
-                </ul>
+                  </span>
               </div>
             </div>
           </div>

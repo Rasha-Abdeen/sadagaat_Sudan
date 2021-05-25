@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import { Precision, getNumber } from "../events/getMonthName";
-import parse from "html-react-parser";
+import  from "html-react-r";
 import ReactPaginate from "react-paginate";
 import Preload from "../preload";
 import DateSelected from "../projects/DateSelect";
@@ -194,7 +194,7 @@ const VolunteerPrograms = (props) => {
                       </div>
                       <h4 className="text-uppercase">{program.name}</h4>
                       <p className="mt-20 project-discription">
-                        {parse(program.description)}
+                        {(program.description)}
                       </p>
                     </div>
                   </div>

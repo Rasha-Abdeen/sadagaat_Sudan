@@ -18,6 +18,7 @@ class ProjectSlider extends Component {
     super();
     this.state = {
       projects: [],
+      pinned:[],
       filterdProject: [],
     };
   }
@@ -31,6 +32,16 @@ class ProjectSlider extends Component {
       });
       this.setState({ projects });
       this.filterdProject();
+    } catch (error) {
+      console.log("can not load project for the home page slider");
+    }
+
+    try {
+      const { data: pinned } = await axios.get(`${address()}projects/pinned`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState({ pinned });
+      console.log("the pinned project...",pinned)
     } catch (error) {
       console.log("can not load project for the home page slider");
     }
@@ -74,6 +85,7 @@ class ProjectSlider extends Component {
     const { t } = this.props;
     const projects = this.state.filterdProject;
     const projectProgressAlign = i18n.dir() === "rtl" ? "right" : "left";
+    const pinned = this.state.pinned;
 
     return (
       <React.Fragment>
@@ -134,7 +146,116 @@ class ProjectSlider extends Component {
                   },
                 }}
               >
-                {projects.map((project) => (
+                {pinned.length!=0?
+                pinned.map((project) => (
+                  <div className="item ml-5" key={project.id}>
+                    <div
+                      className="causes bg-white mb-30"
+                      key={project.id}
+                      style={{ height: "635px" }}
+                    >
+                      <Link to={"/single-projects/" + project.id}>
+                        <div
+                          className="thumb"
+                          //style = {{ width:"500px"}}
+                        >
+                          <img
+                            src={`${address()}projects/${project.id}/image`}
+                            // alt="project picture"
+                            className="img-fullwidth"
+                            width="240"
+                            height="320"
+                          />
+                        </div>
+
+                        <div className="causes-details clearfix p-15 pt-15 pb-15">
+                          <ul className="list-inline font-16 font-weight-600 clearfix mb-5">
+                            <li className="pull-left font-weight-700 text-black-333 pr-0">
+                              {t("Raised")}
+                              <span className="text-theme-colored font-weight-700">
+                                {getNumber(project.raised)}
+                              </span>
+                            </li>
+                            <li className="pull-right font-weight-700 text-black-333 pr-0">
+                              {t("Goal")}
+                              <span className="text-theme-colored font-weight-700">
+                                {getNumber(project.goal)}
+                              </span>
+                            </li>
+                          </ul>
+                          <div className="progress-item mt-0">
+                            <div className="progress">
+                              <div
+                                data-percent={Precision(
+                                  project.donationProgress
+                                )}
+                                className="progress-bar"
+                              >
+                                <span className="percent">
+                                  {Precision(project.donationProgress)}%
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="progress-item mt-0">
+                            <p
+                              className=""
+                              style={{ textAlign: projectProgressAlign }}
+                            >
+                              {t("Project Progress")}
+                            </p>
+                            <div className="progress">
+                              <div
+                                data-percent={Precision(
+                                  project.projectProgress
+                                )}
+                                className="progress-bar"
+                              >
+                                <span className="percent">
+                                  {Precision(project.projectProgress)}%
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <h4 className="text-uppercase">
+                            <a href="">{project.name}</a>
+                          </h4>
+
+                          <p className="mt-20 project-discription">
+                            {parse(project.description)}
+                          </p>
+                          {
+                            project.raised != 0 && project.goal != 0 ?
+                            <Link
+                            to={"/projects/" + project.id}
+                            className="btn btn-default btn-theme-colored btn-xs font-16 mt-10"
+                            style={{
+                              display: `
+                            ${
+                              project.projectProgress === 100 ||
+                              project.donationProgress >= 100
+                                ? "none"
+                                : ""
+                            }`,
+                            }}
+                          >
+                            {t("Donate")}
+                          </Link>:
+                          <Link
+                          to={"/projects/" + project.id}
+                          
+                        >
+                        </Link>
+                          }
+
+                          
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                )):
+                projects.map((project) => (
                   <div className="item ml-5" key={project.id}>
                     <div
                       className="causes bg-white mb-30"
@@ -233,6 +354,16 @@ class ProjectSlider extends Component {
                     </div>
                   </div>
                 ))}
+                   
+
+
+
+                
+                
+
+
+
+                
               </Carousel>
               {/* </div> */}
             </div>

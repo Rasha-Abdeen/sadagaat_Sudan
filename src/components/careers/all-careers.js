@@ -20,6 +20,7 @@ class AllCareers extends Component {
     super(props);
     this.state = {
       careers: [],
+      cover: {},
     };
   }
   async componentDidMount() {
@@ -34,6 +35,18 @@ class AllCareers extends Component {
     } catch (error) {
       console.log("can not load careers");
     }
+    try {
+      const { data: cover } = await axios.get(`${address()}cover-image/CARRIER1`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState({cover});
+      if (this.cover.status === "500 INTERNAL_SERVER_ERROR"){
+        this.setState({cover: undefined})
+
+      }
+    } catch (error) {
+console.log(" can't fetch carrer cover image")
+    }
   }
   async componentWillReceiveProps() {
     try {
@@ -47,17 +60,69 @@ class AllCareers extends Component {
     } catch (error) {
       console.log("can not load careers");
     }
+
+    try {
+      
+      const { data: cover } = await axios.get(`${address()}cover-image/CARRIER1`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState(cover);
+      console.log("the carrer cover image****************",this.state.cover)
+      if (this.cover.status === undefined){
+        this.setState({cover: undefined})
+
+      }
+
+
+    } catch (error) {
+      console.log(" can't load carrer cover image *********************",this.state.cover)
+    }
+    
   }
   render() {
     const style = i18n.dir() === "rtl" ? "pl-0" : "pr-0";
     const styleMr = i18n.dir() === "rtl" ? " ml-0" : " mr-0";
     const { t } = this.props;
     const careers = this.state.careers;
+    const cover = this.state.cover;
     return (
       <React.Fragment>
         <section>
           {/* Careers page header */}
-          <Header name={t("Careers")} coverImage={"careers-bg-img"} />
+          {
+          (cover !== undefined)?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/CARRIER1` + ')'
+        
+       }}  className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Careers")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className="careers-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">
+                   {t("Careers")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       }
+          
           <div className="container">
             <div className="section-content">
               <div className="row">

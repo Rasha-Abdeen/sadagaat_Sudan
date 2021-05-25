@@ -209,7 +209,7 @@ const Filters = (props) => {
     clearFilter();
   }
 
-  let projectTypes = ["All Projects", "Ongoing Projects", "Completed Projects"];
+  let projectTypes = ["All Projects", "Ongoing Projects", "Completed Projects","Planned Projects"];
 
   function showAlert() {
     setAlert(true);
@@ -232,6 +232,8 @@ const Filters = (props) => {
       getType("ongoing");
     } else if (type === projectTypes[2]) {
       getType("completed");
+    }else if (type === projectTypes[3]) {
+      getType("planned");
     } else getType("");
   }
 

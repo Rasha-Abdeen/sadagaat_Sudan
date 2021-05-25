@@ -1,16 +1,57 @@
-import React from 'react'
+import React, { useRef, useState, Component, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import parse from "html-react-parser";
+import address from "../utils/address";
+import axios from "axios";
+
+import Preload from "../preload";
+
+import i18n from "i18next";
+import { withTranslation } from "react-i18next";
+
+import { map } from "jquery";
+
+ function DonationTable(props){
+  const { t, i18n } = useTranslation();
+    const [table,setTable]=useState([]);
+    const [desc,setDesc]=useState([]);
+    const [loading, setLoading] = useState(true);
+    const style = i18n.dir() === "rtl" ? "pl-0" : "pr-0";
+    const styleMr = i18n.dir() === "rtl" ? " ml-5" : " mr-5";
+   const [data,setData]=useState([])
+
+    async function fetchTable() {
+   const fetcher = await window.fetch(`${address()}donation-description`,
+   {headers: {'accept-language': `${i18n.language}`}
+  });
+  const response = await fetcher.json();
+  setTable(response);
+  console.log("the fetched table...",response.description)
 
 
- function DonationTable(){
+}
 
-    const { t } = useTranslation();
+useEffect(() => {
+  fetchTable();
+
+},[i18n.language])
+
+
 
      return(
-         
-        <div class="col-xs-12 col-sm-12 col-md-7">
+
+        <div className="col-xs-12 col-sm-12 col-md-7 ${style}">
         <h3 class="mt-0 line-bottom">{t('Donate Through Banks')}</h3>
         <div class="table-responsive">
+
+        {
+
+          table.length !=0 ?
+  <div >
+   { parse(`${table.description}`)}
+
+  </div>
+  :
           <table class="table table-bordered">
             <thead>
               <tr>
@@ -62,8 +103,15 @@ import { useTranslation } from "react-i18next";
                   </tr>
                 </tbody>
           </table>
+
+ }
+
+
+
+
       </div>
     </div>
 
+
      )
- }export default DonationTable;
+ }export default withTranslation()(DonationTable);

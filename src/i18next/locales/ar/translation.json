@@ -3,7 +3,7 @@
   "About": "عن",
   "Sectors": "المحاور",
   "Sub Sectors": "المحاور الفرعية",
-  "Projects": "مشاريعنا",
+  "Projects": "المشاريع",
   "Ongoing Projects": "المشاريع الحالية",
   "members": "أعضائنا",
   "Contact Us": "اتصل بنا",
@@ -208,7 +208,7 @@
   "Languages you Know?": "اللغات التي تعرفها",
   "Volunteer Registration": "تسجيل المتطوعين",
   "Event Description": "وصف الحدث",
-  "Planned Projects": "المشاريخ المخطط لها",
+  "Planned Projects": "المشاريع المخطط لها",
   "There Is No Finished Project Yet": "لايوجد مشاريع مكتملة ",
   "There Is No Planned Project Yet": "لايوجد مشاريع مخطط لها ",
   "Donate Through Banks": "تبرع عبر الحسابات البنكية",
@@ -313,7 +313,11 @@
   "Search in Projects":"بحث في المشاريع",
   "Please Choose Filter":"الرجاء تحديد الفلتر",
   "More Information":" معلومات إضافية",
-  "No More Information":"لا توجد معلومات إضافية "
+  "No More Information":"لا توجد معلومات إضافية ",
+  "More Images":"المزيد من الصور",
+  "of":"من",
+  "Ongoing":"الحاليه",
+  "Planned":"المخطط لها "
 
 
 }

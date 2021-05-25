@@ -82,10 +82,22 @@ function MenuBar() {
                   </ul>
                 </li>
                 <li>
-                  {" "}
+                   <a>
+                    {t("Projects")}
+                    <span class="indicator"></span>{" "}
+                  </a>
+                  <ul className="dropdown">
+                    <li>
                   <NavLink className="nav-link" to="/projects">
-                    {t("Ongoing Projects")}
+                    {t("Ongoing")}
                   </NavLink>
+                  </li>
+                 <li>
+                  <NavLink className="nav-link" to="/planned-projects">
+                    {t("Planned")}
+                  </NavLink>
+                  </li>
+                  </ul>
                 </li>
                 <li>
                   <a>

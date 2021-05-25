@@ -1,4 +1,6 @@
 import React, { useEffect, Suspense } from "react";
+import "./App.css"
+
 import { Switch, Route } from "react-router-dom";
 import Preload from "./components/preload";
 import ReactGA from "react-ga"
@@ -20,6 +22,9 @@ const Education = React.lazy(() => import("./components/base_hubs/education"));
 const Health = React.lazy(() => import("./components/base_hubs/health"));
 const Water = React.lazy(() => import("./components/base_hubs/water"));
 const News = React.lazy(() => import("./components/news/index"));
+const Gallery = React.lazy(() => import("./components/More_gallery/gallery")); 
+const WaterDetails= React.lazy(() => import("./components/base_hubs/details/index"));
+
 const VolunteerForm = React.lazy(() =>
   import("./components/vlounteers/VolunteerForm")
 );
@@ -105,6 +110,7 @@ function App() {
             <Route exact path="/education" component={Education} />
             <Route exact path="/news" component={News} />
             <Route path="/contact" component={Contact} />
+            <Route path="/gallery" component={Gallery} />
             <Route exact path="/donate/" component={Donate} />
             <Route exact path="/calendar">
               <Calendar />
@@ -142,6 +148,8 @@ function App() {
               component={SingleVolunteersProgram}
             />
             <Route exact path="/careers" component={AllCareers} />
+            <Route exact path="/water/details" component={WaterDetails} />
+
             <Route exact path="/vacancy/:id" component={Vacancy} />
             <Route
               exact

@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import address from "../utils/address";
 import Header from "../sub_page_header";
 import parse from "html-react-parser";
-
+import Parser from 'react-string-color-parser';
 import { Link } from "react-router-dom";
 import i18n from "i18next";
 import Hub_Subhubs from "./hub_subHubs";
 import { withTranslation } from "react-i18next";
 import Popup from "reactjs-popup";
+import WaterDetails from "../base_hubs/details/index"
 
 /**
  * This comoponent display subHub information  and Project related to this subhub
@@ -26,6 +27,7 @@ class Water extends Component {
       activeTab1: "active",
       activeTab2: "",
       details : "",
+      cover: {},
     };
   }
   /**
@@ -43,6 +45,25 @@ class Water extends Component {
     this.setState({ hub: response, files: response.files , details: response.formatedDescription });
     console.log ("sector eduction with table data ...",this.details);
      console.log("the fetched data ...",this.hub);
+
+     try {
+      const fetch = await window.fetch(`${address()}cover-image/WATER_SECT`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      const response = await fetch.json();
+
+      this.setState({cover: response})
+      console.log("the fetched cover image  ...",this.cover);
+
+      if (this.cover.status === "500 INTERNAL_SERVER_ERROR"){
+        this.setState({cover: undefined})
+
+      }
+       
+     } catch (error) {
+       console.log(" cant load water background image ")
+       
+     }
   }
 
   async componentWillReceiveProps() {
@@ -51,6 +72,20 @@ class Water extends Component {
     });
     const response = await fetcher.json();
     this.setState({ hub: response, files: response.files , details: response.formatedDescription  });
+    
+    try {
+      const fetch = await window.fetch(`${address()}cover-image/WATER_SECT`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      const response = await fetch.json();
+
+      this.setState({cover: response})
+      console.log("the fetched cover image  ...",this.cover);
+       
+     } catch (error) {
+       console.log(" cant load water background image ")
+       
+     }
   }
 
   changeActiveTab1 = () => {
@@ -58,7 +93,7 @@ class Water extends Component {
   };
 
   changeActiveTab2 = () => {
-    this.setState({ activeTab1: "", activeTab2: "active" });
+    this.setState({ activeTab1: "", activeTab2: "active"  });
   };
 
   fileType = () => {
@@ -124,10 +159,46 @@ class Water extends Component {
     const tabs_class = i18n.dir() === "rtl" ? "float-right" : "float-left";
     const popupDir = i18n.dir() === "rtl" ? "left center" : "right center";
     const btnDir = i18n.dir() === "rtl" ? "mr-5" : "ml-5";
+
+    const cover= this.state.cover;
     return (
       <React.Fragment>
         <section>
-          <Header name={t("Water")} coverImage={"water-bg-img"} />
+        {
+        (cover !== undefined)?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/WATER_SECT` + ')'
+        
+       }}  className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Water")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className="water-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Water")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       }
+
+
+    
           <div className="container">
             <div className="row multi-row-clearfix">
               <div>
@@ -148,7 +219,7 @@ class Water extends Component {
                       <a
                         href="#register-tab"
                         data-toggle="tab"
-                        onClick={this.changeActiveTab2}
+                        onClick={() => this.props.history.push("/water/details") }
                       >
                         {t("More Information")}
                       </a>
@@ -207,7 +278,7 @@ class Water extends Component {
                         </div>
                    ) :(
                    <div>
-                    {parse(details)}
+                    <WaterDetails/>
                        </div>)
                   }
                     </div>

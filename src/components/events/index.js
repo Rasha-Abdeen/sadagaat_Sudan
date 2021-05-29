@@ -71,15 +71,13 @@ function Event() {
                     <div className="row">
                       <div className={`col-xs-2 col-md-3 ${style}`}>
                         <div className="event-date text-center bg-theme-colored border-1px p-0 pt-10 pb-10 sm-custom-style">
-                          <ul>
-                            <li className="font-28 text-white font-weight-700">
+                          <span className="font-28 text-white font-weight-700">
                               {event.startDate.slice(8, 10)}
-                            </li>
-                            <li className="font-18 text-white  font-weight-700 text-center text-uppercase">
+                            </span>
+                            <span className="font-18 text-white  font-weight-700 text-center text-uppercase">
                               {/* {event.startDate.slice(0,4)} */}
                               {getMonthName(event.startDate)}
-                            </li>
-                          </ul>
+                            </span>
                         </div>
                       </div>
                       <Link to={"/event/" + event.id}>
@@ -88,21 +86,20 @@ function Event() {
                             <h5 className="media-heading font-16 font-weight-600">
                               <p>{event.name}</p>
                             </h5>
-                            <ul className="list-inline font-weight-600 text-gray-dimgray">
-                              <li>
+                            <span className="list-inline font-weight-600 text-gray-dimgray">
+                              
                                 <i
                                   className={`fa fa-calendar ${styleMr} text-theme-colored`}
                                 />
                                 {`${event.startDate}`}
-                              </li>
-                              <li>
+                              </span>
+                              <span>
                                 {"  "}
                                 <i
                                   className={`fa fa-map-marker text-theme-colored ${styleMr}`}
                                 />
                                 {event.locationName}
-                              </li>
-                            </ul>
+                              </span>
                           </div>
                         </div>
                       </Link>
@@ -124,7 +121,7 @@ function Event() {
                       autoPlay={5000}
                       stopAutoPlayOnHover
                       dots
-                      direction={i18n.dir() === "rtl" ? "rtl" : "ltr"}
+                      rtl={true}
                     >
                       {news.map((news_) => (
                         <div className="causes" key={news_.id}>

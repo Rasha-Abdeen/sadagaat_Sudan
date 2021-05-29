@@ -24,6 +24,7 @@ class DonateToProject extends Component {
       loading: false,
       currency: "SDG",
       project: [],
+      cover:{},
     };
   }
   async componentDidMount() {
@@ -41,6 +42,18 @@ class DonateToProject extends Component {
       .catch((error) => {
         alert(error.message);
       });
+      try {
+        const fetcher = await window.fetch(`${address()}cover-image/DONATION`,
+      {headers: {'accept-language': `${i18n.language}`}
+     });
+     const response= fetcher.json();
+     this.setState({cover:response});
+     console.log(" c************over image value ***********************",this.state.cover.status)
+         
+      } catch (error) {
+        console.log(" cant load planned project cover image dur to ",error)
+        
+      }
   }
   async componentWillReceiveProps() {
     let id = this.state.project_id;
@@ -56,6 +69,18 @@ class DonateToProject extends Component {
       .catch((error) => {
         alert(error.message);
       });
+      try {
+        const fetcher = await window.fetch(`${address()}cover-image/DONATION`,
+      {headers: {'accept-language': `${i18n.language}`}
+     });
+     const response= fetcher.json();
+     this.setState({cover:response});
+     console.log(" c************over image value ***********************",this.state.cover.status)
+         
+      } catch (error) {
+        console.log(" cant load planned project cover image dur to ",error)
+        
+      }
   }
 
   handleChange = (e) => {
@@ -119,10 +144,45 @@ class DonateToProject extends Component {
   render() {
     const { t } = this.props;
     const loading = this.state.loading;
+    const cover= this.state.cover;
+
 
     return (
       <div>
-        <Header name={t("Donate")} />
+
+{
+      (cover !== undefined)
+      ?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/DONATION` + ')'
+        
+       }}  className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Donate")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className=" projects-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Donate")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       }
 
         <section>
           <div class="container">

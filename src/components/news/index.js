@@ -20,9 +20,11 @@ function News() {
   const { t } = useTranslation();
   const style = i18n.dir() === "rtl" ? "pull-right ml-20" : "pull-left mr-20";
   const [loading, setLoading] = useState(true);
+  const [cover,setCover]= useState({})
 
   useEffect(() => {
     fetchData();
+    fetchCover()
   }, [i18n.language]);
 
   /**
@@ -37,7 +39,14 @@ function News() {
     setData(response);
     setLoading(false);
   }
-
+  async function fetchCover() {
+    const fetcher = await window.fetch(`${address()}cover-image/EVENT1`, {
+      headers: { "accept-language": `${i18n.language}` },
+    });
+    const response = await fetcher.json();
+    setCover(response);
+    console.log(" cover image loaded ^^^^^^^^^",cover)
+  }
   // Get current posts
   const currentPosts = data.slice(offset, offset + postsPerPage);
 
@@ -50,7 +59,41 @@ function News() {
   return (
     <React.Fragment>
       <section>
-        <Header name={t("News")} coverImage={"news-bg-img"} />
+
+
+      {(cover !== undefined)?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/EVENT1` + ')'
+        
+       }}  
+       
+       className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("News")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className="news-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("News")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       }
 
         <div className="container mt-30 mb-30 pt-30 pb-30">
           <div class="row">

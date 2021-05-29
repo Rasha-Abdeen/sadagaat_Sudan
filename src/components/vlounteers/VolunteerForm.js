@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Header from "../sub_page_header";
+import address from "../utils/address";
+import i18n from "i18next";
 import Axios from "axios";
 import { submit_volunteer_data, logout } from "../../repository";
 import { animateScroll as scroll } from "react-scroll";
@@ -41,12 +43,14 @@ class VolunteerForm extends Component {
         volunteeredPeriod: "",
         volunteeredProjects: "",
         receiveEmails: "",
+
       },
       response: {
         message: "",
         styleClass: "",
       },
       dob: moment(),
+      cover: {},
 
       /*there is some quistion not found in bakend and mobile app  */
     };
@@ -151,18 +155,68 @@ class VolunteerForm extends Component {
     scroll.scrollTo(70);
   };
 
+
+  async componentDidMount(){
+    const fetch = await window.fetch(`${address()}cover-image/VOLUNTEER2`, {
+      headers: { "accept-language": `${i18n.language}` },
+    });
+    this.setState({cover: fetch})
+    console.log("the fetched cover image  ...",this.cover);
+
+
+  }
+  async componentWillReceiveProps(){
+    const fetch = await window.fetch(`${address()}cover-image/VOLUNTEER2`, {
+      headers: { "accept-language": `${i18n.language}` },
+    });
+    this.setState({cover: fetch})
+    console.log("the fetched cover image  ...",this.cover);
+
+  }
+
   render() {
     const { t } = this.props;
+    const cover = this.state.cover;
 
     return (
       <React.Fragment>
         <div className="main-content">
-          <Header
-            name={t("Registration Form")}
-            coverImage={"volunteer-bg-img"}
-          />
 
-          <section>
+
+        {
+              ( cover !== undefined)
+              ?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/VOLUNTEER2` + ')'
+        
+       }}  className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Registration Form")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className="volunteer-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Registration Form")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       }
+        <section>
             <div className="container">
               <div className="row">
                 <div className="col-md-10 col-md-offset-1">

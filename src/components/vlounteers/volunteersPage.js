@@ -22,6 +22,7 @@ const Volunteers =()=>{
   const [length , setLength]= useState(false)
   const {t} = useTranslation()
   const [loading , setLoading] = useState(true)
+  const [cover , setCover]= useState({});
 
 /**
  * This function get volunteer page data from API
@@ -34,21 +35,58 @@ const Volunteers =()=>{
     //check if voluntees have images or videos 
     let length = response.images.length > 0 || response.video.length > 0 ? true : false
     setLength(length)
-
-
-    
+  }
+  async function fetchCover() {
+    const fetcher = await window.fetch(`${address()}cover-image/VOLUNTEER1`,
+    {headers: {'accept-language': `${i18n.language}`}
+   });
+   const response = await fetcher.json()
+   setCover(response);
+   console.log(" c************over image value ***********************",cover)
   }
   useEffect(() => {
-    
-       
          fetchData()
-        }, [])
+         fetchCover()
+        }, [i18n.language])
 
 
 return(
   <React.Fragment>
     <div>
-    <Header name={t('Volunteers')} coverImage = {'volunteer-bg-img'}/>
+    {
+      ( cover !== undefined)
+      ?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/VOLUNTEER1` + ')'
+        
+       }}  className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Volunteers")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className=" volunteer-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Volunteers")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       }
+
     <section>
  
           <div className="container mt-30 mb-30 pt-30 pb-30">

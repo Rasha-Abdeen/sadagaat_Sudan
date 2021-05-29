@@ -22,6 +22,7 @@ class Vacancy extends Component {
     this.state = {
       vacancy: [],
       render: false,
+      cover: " ",
       popupIsOpen: false,
     };
   }
@@ -34,8 +35,22 @@ class Vacancy extends Component {
       });
       this.setState({ vacancy });
       console.log(this.state.vacancy.description);
+
+      const { data: cover } = await axios.get(`${address()}cover-image/CARRIER1`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState(cover);
     } catch (error) {
       console.log("can not load careers");
+    }
+
+    try {
+      const { data: cover } = await axios.get(`${address()}cover-image/CARRIER1`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState(cover);
+    } catch (error) {
+      console.log("can not load carrer1 cover image");
     }
     setTimeout(
       function () {
@@ -53,8 +68,22 @@ class Vacancy extends Component {
       });
       this.setState({ vacancy });
       console.log(this.state.vacancy);
+
     } catch (error) {
       console.log("can not load careers");
+    }
+
+    try {
+      
+      const { data: cover } = await axios.get(`${address()}cover-image/CARRIER1`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState(cover);
+      console.log("the carrer cover image****************",this.state.cover)
+
+
+    } catch (error) {
+      console.log(" can't load carrer cover image *********************",this.state.cover)
     }
   }
   goToLink = (url) => {
@@ -68,14 +97,49 @@ class Vacancy extends Component {
   };
   render() {
     let renderContainer = false;
+         
+
     if (this.state.render) {
       const { t } = this.props;
       const vacancy = this.state.vacancy;
       const popupDir = i18n.dir() === "rtl" ? "left center" : "right center";
+      const cover = this.state.cover;
+      console.log("the cover image of carrer section ************",cover)
       renderContainer = (
         <React.Fragment>
           <section>
-            <Header name={t("Careers")} coverImage={"careers-bg-img"} />
+          {
+          (cover !== undefined || cover != null)?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/CARRIER1` + ')'
+        
+       }}  className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Careers")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className="careers-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Careers")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       }
             <div className="container">
               <div className="section-content">
                 <div className="row">
@@ -98,14 +162,19 @@ class Vacancy extends Component {
                             </h6>
                             <div className="list-formatting">
                               {/* FroalaEditorView Component: Used to render data entered by froala editor */}
-                              {vacancy.description !== null ? (
+                              {vacancy.description !== null  ? (
                                 <FroalaEditorView model={vacancy.description} />
                               ) : null}
                             </div>
                           </div>
                         </div>
 
+
+                        {
+                            vacancy.url !== null ?
+                          
                         <div className="col-md-1">
+
                           <Popup
                             trigger={
                               <button className="btn btn-flat btn-theme-colored btn-sm">
@@ -135,7 +204,8 @@ class Vacancy extends Component {
                               </div>
                             )}
                           </Popup>
-                        </div>
+                        </div>:null}
+                        
                       </div>
                     </div>
                   </div>

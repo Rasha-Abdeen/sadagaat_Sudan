@@ -6,6 +6,11 @@ import { Link } from "react-router-dom";
 import { animateScroll as scroll } from "react-scroll";
 import i18n from "i18next";
 import { withTranslation } from "react-i18next";
+import { Timeline, TimelineItem } from "vertical-timeline-component-for-react";
+
+import { Map, TileLayer, Popup, Marker } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { VenueLocationIcon } from "../projects/VenueLocationIcon";
 /**
  * This component showing contact page with contact form request , also imbedded map of sadagaat location
  * @component
@@ -23,7 +28,13 @@ class Contact extends Component {
         subject: "",
         message: "",
       },
+
+      lat: 15.474857402687254 ,
+      lng: 32.53852443117698,
       // response message that return after post form of check validation of text Area
+      Contact:{},
+      location: {},
+      cover:{},
       response: {
         EmptyMessageError: "",
         responseMessage: "",
@@ -41,6 +52,73 @@ class Contact extends Component {
    * @see http://sadagaat-uk.org/contact
    * @see  https://stackoverflow.com/questions/51675169/html5-input-validation-with-custom-message
    */
+
+
+  async componentDidMount() {
+
+
+
+    try {
+      const { data: Contact  } = await axios.get(`${address()}contact-info/SD`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState({ Contact });
+      this.setState({location:Contact.location})
+      this.setState({lat:Contact.location.lat})
+      this.setState({lng:Contact.location.lng})
+
+const { data: cover  } = await axios.get(`${address()}cover-image/ABOUT2`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState({cover});
+      if (this.cover.status === undefined){
+        this.setState({cover: undefined})
+
+      }
+
+      
+      console.log("the contact info render ",this.state.Contact);
+      console.log("the location render from api",this.state.location.name)
+
+
+
+    } catch (error) {
+      console.log("can not load Contact for the contact page slider");
+    }
+
+    
+  }
+    // get projct id from url
+  async componentWillReceiveProps() {
+    try {
+      const { data: Contact } = await axios.get(`${address()}contact-info/SD`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState({ Contact });
+      this.setState({location:Contact.location})
+      this.setState({lat:Contact.location.lat})
+      this.setState({lng:Contact.location.lng})
+
+      const { data: cover  } = await axios.get(`${address()}cover-image/ABOUT2`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState({cover});
+      if (this.cover.status === "500 INTERNAL_SERVER_ERROR"){
+        this.setState({cover: undefined})
+
+      }
+      console.log("the contact info render ",this.state.Contact.email);
+    } catch (error) {
+      console.log("can not load Contact for the contact page slider");
+    }
+  
+  }
+  
+
+  /**
+   * returned project when recive prpos like language 'ar' , 'en'
+   */
+
 
   handleFormErrorMessage = (e, message = "") => {
     const { t } = this.props;
@@ -122,7 +200,27 @@ class Contact extends Component {
     }
   };
 
+
+
+
+
   render() {
+    const contacts = this.state.Contact;
+    const location=this.state.location;
+    const lat = this.state.lat;
+    const lng= this.state.lng;
+    const cover = this.state.cover;
+    const currentLoc= [lat,lng]
+    let zoom = 9;
+
+
+
+    console.log("the fetched location tttttttttttttttttttstfrom api _********_:", contacts)
+    console.log("the fetched location tttttttttttttttttttstfrom api _********_:", lng)
+
+
+    
+
     const { t } = this.props;
     //  imbedded map check page direction
     const mapUrl =
@@ -131,8 +229,39 @@ class Contact extends Component {
         : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3843.308792782386!2d32.542087414371004!3d15.57514198918783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x168e91da784579c7%3A0x5c0c21eeb61695d5!2z2YXZhti42YXYqSDYtdiv2YLYp9iqINin2YTYrtmK2LHZitip!5e0!3m2!1sen!2s!4v1590012628658!5m2!1sen!2s";
     return (
       <React.Fragment>
+
         <div>
-          <Header name={t("Contact Us")} coverImage={"contact-bg-img"} />
+        {(cover  !== undefined )?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/ABOUT2` + ')'
+        
+       }}  className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Contact Us")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className="contact-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Contact Us")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       }
 
           <section className="divider">
             <div className="container">
@@ -153,7 +282,12 @@ class Contact extends Component {
                         </span>
                         <div className="media-body">
                           <h5 className="mt-0">{t("Our Office Location")}</h5>
-                          <p>{t("Ammarat 27 st , Khartoum Sudan")}</p>
+                          {
+                            (contacts != undefined && location != undefined) ?
+                            <p>{location.name}</p>:
+                            <p>{t("Ammarat 27 st , Khartoum Sudan")}</p>
+
+                          }
                         </div>
                       </div>
                     </div>
@@ -167,11 +301,20 @@ class Contact extends Component {
                         </span>
                         <div className="media-body">
                           <h5 className="mt-0">{t("Contact Number")}</h5>
-                          <p>
-                            {i18n.dir() === "rtl"
-                              ? "249910010077+"
-                              : "+249910010077"}
-                          </p>
+                          {
+                            (contacts.length != 0 ) ?
+                            <p>
+                              
+                            {contacts.phone}</p>:
+                             <p>
+
+                             {i18n.dir() === "rtl"
+                             ? "249910010077+"
+                             : "+249910010077"}
+                         </p>
+                          }
+
+                           
                         </div>
                       </div>
                     </div>
@@ -185,7 +328,14 @@ class Contact extends Component {
                         </span>
                         <div className="media-body">
                           <h5 className="mt-0">{t("Email Address")}</h5>
-                          <p>info@sadagaat.com</p>
+                          {
+                            contacts.length != 0 ?
+                            <p>
+                              {contacts.email}
+                            </p>
+                            :<p>info@sadagaat.com</p>
+                          }
+                          
                         </div>
                       </div>
                     </div>
@@ -200,7 +350,15 @@ class Contact extends Component {
                         </span>
                         <div className="media-body">
                           <h5 className="mt-0">{t("Website")}</h5>
-                          <p>www.sadagaat.com </p>
+                          {
+                            ( contacts.length != 0 )  ?
+                            <p>
+                              {contacts.website}
+                            </p>
+                            :
+                            <p>www.sadagaat.com </p>
+                          }
+                          
                         </div>
                       </div>
                     </div>
@@ -385,20 +543,44 @@ class Contact extends Component {
           <section>
             <div className="container-fluid pt-0 pb-0">
               <div className="row">
-                <div className="mapouter">
+             
+
+                    {
+                      (location != undefined && contacts != undefined) ?
+                      <div id="LocationMap">
+                       <Map center={currentLoc} zoom={zoom}>
+                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                        <Marker
+                          position={currentLoc}
+                          icon={VenueLocationIcon}
+                        >
+                            <Popup>
+                                        <div className="poup-text">
+                                          <p>{location.name}</p>
+                                        </div>
+                                      </Popup>
+
+                        </Marker>
+                      </Map>
+                      </div>
+                      :
+                      <div className="mapouter">
                   <div className="gmap_canvas">
-                    <iframe
+                      <iframe
                       width={600}
                       height={500}
-                      id="gmap_canvas"
                       src={mapUrl}
                       frameBorder={0}
                       scrolling="no"
                       marginHeight={0}
                       marginWidth={0}
+                    
                     ></iframe>
-                  </div>
+                      </div>
                 </div>
+                    }
+                    
+                
               </div>
             </div>
           </section>

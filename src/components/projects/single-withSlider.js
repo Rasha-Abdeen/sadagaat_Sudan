@@ -387,16 +387,10 @@ class SinglProject2 extends Component {
      ):null}
             
            </div>
- 
-
-
-
-
-
-
-                              
-                                       
-                                  <Link
+     
+     {
+       project.raised != 0 && project.goal != 0 ?
+       <Link
                                     to={"/projects/" + project.id}
                                     class="btn btn-theme-colored btn-sm"
                                     style={{
@@ -407,7 +401,16 @@ class SinglProject2 extends Component {
                                     }}
                                   >
                                     {t("Donate Now")}
-                                  </Link>
+                                  </Link>:
+                                  <Link
+                                  to={"/projects/" + project.id}
+                                
+                                >
+                                 
+                                </Link>
+
+     }
+                                  
                                 </div>
                               </div>
                             </div>
@@ -486,7 +489,9 @@ class SinglProject2 extends Component {
                               ))}
                             </Timeline>
                             <div className="mb-20">
-                              <Link
+                              {
+                                project.raised != 0 && project.goal != 0 ?
+                                <Link
                                 to={"/projects/" + project.id}
                                 class={
                                   "btn btn-theme-colored btn-sm mb-20 " +
@@ -500,7 +505,15 @@ class SinglProject2 extends Component {
                                 }}
                               >
                                 {t("Donate Now")}
-                              </Link>
+                              </Link>:
+                              <Link
+                              to={"/projects/" + project.id}
+                              
+                            >
+                              
+                            </Link>
+                              }
+                              
                             </div>
                           </div>
                         ) : (

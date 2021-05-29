@@ -266,7 +266,10 @@ const FilteredProjects = (props) => {
                       <p className="mt-20 project-discription">
                         {parse(project.description)}
                       </p>
-                      <Link
+
+                      {
+                        project.raised != 0 && project.goal != 0 ?
+                        <Link
                         to={"/projects/" + project.id}
                         className="btn btn-default btn-theme-colored btn-xs font-16 mt-10"
                         style={{
@@ -276,7 +279,13 @@ const FilteredProjects = (props) => {
                         }}
                       >
                         {t("Donate")}
-                      </Link>
+                      </Link>:
+                      <Link
+                        to={"/projects/" + project.id}
+                        
+                      >
+                        
+                      </Link>}
                     </div>
                   </div>
                 </Link>

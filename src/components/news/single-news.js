@@ -24,7 +24,8 @@ class SinglNews extends Component {
       // videos and Images
       allMedia:[],
       // translation 
-      translationNews:{}
+      translationNews:{},
+      cover: {}
     };
   }
 
@@ -50,6 +51,22 @@ class SinglNews extends Component {
       console.log("can not load news for the home page slider");
     }
   //  console.log(this.state.news)
+  try {
+       
+    const fetcher = await window.fetch(`${address()}cover-image/EVENT1`, {
+     headers: { "accept-language": `${i18n.language}` },
+   });
+   const response = await fetcher.json();
+
+   this.setState({cover: response})
+   console.log("the fetched cover image  ...",this.cover);
+   if (this.cover.status === undefined){
+     this.setState({cover: undefined})
+
+   }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 
@@ -57,6 +74,22 @@ class SinglNews extends Component {
    * When component recive props Like Language props its re call setTranslation function 
    */
   async componentWillReceiveProps() {
+    try {
+       
+      const fetcher = await window.fetch(`${address()}cover-image/EVENT1`, {
+       headers: { "accept-language": `${i18n.language}` },
+     });
+     const response = await fetcher.json();
+  
+     this.setState({cover: response})
+     console.log("the fetched cover image  ...",this.cover);
+     if (this.cover.status === undefined){
+       this.setState({cover: undefined})
+  
+     }
+      } catch (error) {
+        console.log(error)
+      }
 
     this.setTranslationData()
 
@@ -139,10 +172,43 @@ fillMediaArray =()=>{
     const { news } = this.state;
     const allMedia = this.state.allMedia
     const translationNews = this.state.translationNews
+    const cover = this.state.cover;
     return (
       <div>
-        <Header name={t("News")}  coverImage = {'news-bg-img'}/>
 
+{(cover !== undefined)?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/EVENT1` + ')'
+        
+       }}  
+       
+       className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("News")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+<section className="news-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("News")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>       
+       }
         <section>
           <div className="container mt-30 mb-30 pt-30 pb-30">
             <div class="row">

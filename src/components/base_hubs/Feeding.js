@@ -26,6 +26,7 @@ class Feeding  extends Component {
       activeTab1: "active",
       activeTab2: "",
       details : "",
+      cover: {},
     };
   }
   /**
@@ -43,6 +44,24 @@ class Feeding  extends Component {
     this.setState({ hub: response, files: response.files , details: response.formatedDescription });
     console.log ("sector eduction with table data ...",this.details);
      console.log("the fetched data ...",this.hub);
+
+
+     try {
+      const fetch = await window.fetch(`${address()}cover-image/FEEDING_SECT`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      const response = fetch.json()
+      this.setState({cover: response})
+      console.log("the fetched cover image  ...",this.cover);
+      if (this.cover.status === undefined){
+        this.setState({cover: undefined})
+
+      }
+       
+     } catch (error) {
+       console.log(" cant load water background image ")
+       
+     }
   }
 
   async componentWillReceiveProps() {
@@ -51,6 +70,21 @@ class Feeding  extends Component {
     });
     const response = await fetcher.json();
     this.setState({ hub: response, files: response.files , details: response.formatedDescription  });
+    try {
+      const fetch = await window.fetch(`${address()}cover-image/FEEDING_SECT`, {
+        headers: { "accept-language": `${i18n.language}` },
+      });
+      this.setState({cover: fetch})
+      console.log("the fetched cover image  ...",this.cover);
+      if (this.cover.status === "500 INTERNAL_SERVER_ERROR"){
+        this.setState({cover: undefined})
+
+      }
+       
+     } catch (error) {
+       console.log(" cant load water background image ")
+       
+     }
   }
 
   changeActiveTab1 = () => {
@@ -124,10 +158,44 @@ class Feeding  extends Component {
     const tabs_class = i18n.dir() === "rtl" ? "float-right" : "float-left";
     const popupDir = i18n.dir() === "rtl" ? "left center" : "right center";
     const btnDir = i18n.dir() === "rtl" ? "mr-5" : "ml-5";
+
+    const cover = this.state.cover;
     return (
       <React.Fragment>
         <section>
-          <Header name={t("Feeding")} coverImage={"feeding-bg-img"} />
+        {
+        (cover !== undefined) ?
+       <section style={{ 
+         //backgroundImage: 'url(' + "https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg"+ ')',
+        backgroundImage: 'url(' + `${address()}cover-image/FEEDING_SECT` + ')'
+        
+       }}  className=" inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Feeding")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       :
+       <section className="feeding-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+         <div className="container pt-60 pb-60 "
+       >
+           <div className="section-content">
+             <div className="row" >
+               <div className="col-md-12 text-center">
+                 <h3 className="font-28 text-white">{t("Feeding")} </h3>
+               </div>
+             </div>
+           </div>
+         </div>
+       </section>
+       }
+
           <div className="container">
             <div className="row multi-row-clearfix">
               <div>

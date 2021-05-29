@@ -161,7 +161,7 @@ const Projects = (props) => {
       currentPage +
       "&size=" +
       postsPerPage;
-    console.log(FilterUrl);
+    console.log("the status of type project ...................***********",projectType);
     const fetcher = await window.fetch(
       FilterUrl,
       {
@@ -347,7 +347,7 @@ const Projects = (props) => {
   function clearFilter() {
     setStartDate(null);
     setEndDate(null);
-    fetchData();
+    fetchDataFiltered();
   }
 
   /**
@@ -360,7 +360,7 @@ const Projects = (props) => {
     if (type === "planned") projectsType = 3;
   }
   useEffect(() => {
-    fetchData();
+    fetchDataFiltered();
   }, [props]);
 
   // Change page
@@ -368,7 +368,7 @@ const Projects = (props) => {
     console.log(pageNumber);
     currentPage = pageNumber.selected;
     console.log(currentPage);
-    if (filterOn === false) fetchData();
+    if (filterOn === false) fetchDataFiltered();
     else fetchDataFiltered();
   }
 
@@ -534,17 +534,29 @@ const Projects = (props) => {
                         {parse(project.description)}
                       </p>
 
-                       <Link
-                          to={"/projects/" + project.id}
-                          className="btn btn-default btn-theme-colored btn-xs font-16 mt-10"
-                          style={{
-                            display: `${
-                              project.donationProgress >= 100 ? "none" : ""
-                            }`,
-                          }}
-                        >
-                          {t("Donate")}
-                        </Link> 
+{
+  project.raised !== 0 && project.goal !== 0 ?
+
+  <Link
+  to={"/projects/" + project.id}
+  className="btn btn-default btn-theme-colored btn-xs font-16 mt-10"
+  style={{
+    display: `${
+      project.donationProgress >= 100 ? "none" : ""
+    }`,
+  }}
+>
+ 
+  {t("Donate")}
+</Link> :
+
+<Link
+to={"/projects/" + project.id}
+>
+
+
+</Link> 
+}
                     </div>
                   </div>
                 </Link>

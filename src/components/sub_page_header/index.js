@@ -6,6 +6,11 @@ import { useTranslation } from "react-i18next";
 function Header(props) {
   const { t } = useTranslation();
   const coverImage = props.coverImage !== undefined ? props.coverImage :'bg-img'
+  console.log("the cover image value***************", coverImage)
+
+
+
+  
 
   return (
     <React.Fragment>

@@ -13,6 +13,7 @@ import i18n from "i18next";
 import address from "../../utils/address";
 import { Route, useHistory } from 'react-router'
 import { browserHistory } from 'react-router';
+import i18next from "i18next";
 
 
 const useForceUpdate = () =>useState()[1];
@@ -21,6 +22,7 @@ function Details() {
 
    const { t } = useTranslation();
    const [data, setData] = useState("");
+   const [loading, setLoading] = useState(false);
    const [dir ,setDir]=useState("");
 
    const force= useForceUpdate()
@@ -36,16 +38,23 @@ function Details() {
    const response = await fetcher.json();
    setData(response.formatedDescription);
 //   setDir(i18n.language === "ar" ? "rtl": "ltr")
-   console.log(dir)   
+  //  console.log(dir)   
  }   
   
  useEffect(() => {
+   window.localStorage.setItem('sadagaat-language', i18next.language)
    fetchTable()
-   console.log("test table fetch ........")
+  },[]);
+
+  useEffect(() => {
+   if(window.localStorage.getItem('sadagaat-language') !==  i18next.language) {
+    setLoading(true) 
+    window.location.reload()
+   }
   },[i18n.language]);
 
-  console.log("the current lang direction ",dir)
   return (
+    loading? null: 
     <React.Fragment>
       <section>
       

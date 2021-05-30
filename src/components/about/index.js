@@ -34,8 +34,14 @@ function About_(props) {
  async function fetchAbout1() {
   const fetcher = await window.fetch(`${address()}about-us/ABOUTUS1/image`,
   {headers: {'accept-language': `${i18n.language}`}
+ }).then((fetcher)=>{
+   if(fetcher.status == 500)
+   {
+     setAbout1(undefined)
+   }
+
  });
- const response = await fetcher.json();
+ //const response = await fetcher.json();
  setAbout1(fetcher);
 
 }
@@ -64,7 +70,7 @@ async function fetchAbout3() {
 
 },[i18n.language])
 
-
+console.log("the set undefined through caption",about1)
 
   return (
     <React.Fragment>

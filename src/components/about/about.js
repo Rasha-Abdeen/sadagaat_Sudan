@@ -24,19 +24,13 @@ function About() {
   async function fetchCover() {
     const fetcher = await window.fetch(`${address()}cover-image/ABOUT1`,
     {headers: {'accept-language': `${i18n.language}`}
-   }).then((fetcher)=>{
-      if (fetcher.status == 500){
-        setCover(undefined)
-      }else{
-        setCover(fetcher);
-
-      }
    });
-     //const response = await fetcher.json()
+     const response = await fetcher.json()
+   setCover(fetcher);
    console.log(" c************over image value ***********************",cover)
-  //  if(response.status === undefined){ 
-  //   setCover(undefined)
-  //  }
+   if(response.status === undefined){ 
+    setCover(undefined)
+   }
   }
   async function fetchAbout() {
     const fetcher = await window.fetch(`${address()}about-us`,
@@ -105,7 +99,7 @@ function About() {
               <div className="col-md-4">
                 <h2 className="text-white">{t("Our Vision")}</h2>
                 {
-                  about !== undefined ? 
+                  about.vision != null ? 
                   <p className="text-white">{about.vision}</p>
                   :
                   <p className="text-white">{t("vision_message_1")}</p>
@@ -114,7 +108,7 @@ function About() {
               <div className="col-md-4">
                 <h2 className="text-white">{t("Our Mission")}</h2>
                 {
-                  about !== undefined ?
+                  about.mission != null ?
                   <p className="text-white">{about.mission}</p>
 
                   :
@@ -125,7 +119,7 @@ function About() {
               <div className="col-md-4">
                 <h2 className="text-white">{t("Our Values")}</h2>
                 {
-                  about !== undefined ?
+                  about.value != null ?
                 <p className="text-white">{about.value}</p>
 
                   :

@@ -34,14 +34,8 @@ function About_(props) {
  async function fetchAbout1() {
   const fetcher = await window.fetch(`${address()}about-us/ABOUTUS1/image`,
   {headers: {'accept-language': `${i18n.language}`}
- }).then((fetcher)=>{
-   if(fetcher.status == 500)
-   {
-     setAbout1(undefined)
-   }
-
  });
- //const response = await fetcher.json();
+ const response = await fetcher.json();
  setAbout1(fetcher);
 
 }
@@ -70,7 +64,7 @@ async function fetchAbout3() {
 
 },[i18n.language])
 
-console.log("the set undefined through caption",about1)
+
 
   return (
     <React.Fragment>
@@ -87,7 +81,7 @@ console.log("the set undefined through caption",about1)
                     <div className="img-hover-border">
                        
                      {
-                       about1 !== undefined ?
+                       !about1 ?
                        <img
                        className="img-responsive"
                        
@@ -115,7 +109,7 @@ console.log("the set undefined through caption",about1)
                   <div className="col-md-6 col-sm-6 col-xs-12 pl-0 pr-0 d-xs-none">
                     <div className="img-hover-border">
                     {
-                       about2 !== undefined ?
+                       !about2 ?
                        <img
                        className="img-responsive"
                        
@@ -139,7 +133,7 @@ console.log("the set undefined through caption",about1)
                     </div>
                     <div className="img-hover-border mt-15 mt-sm-20">
                     {
-                       about3 !== undefined ?
+                       !about3 ?
                        <img
                        className="img-responsive"
                        
@@ -172,7 +166,7 @@ console.log("the set undefined through caption",about1)
                     {t("About")} <span>{t("Sadagaat")}</span>
                   </h2>
                   {
-                    about !== undefined ? <p>
+                    about !=null ? <p>
                     {about} <br />
                   </p>:
                     <p>

@@ -70,7 +70,7 @@ function PlannedProjects() {
            <div className="section-content">
              <div className="row" >
                <div className="col-md-12 text-center">
-                 <h3 className="font-28 text-white">{t("Planned .,.,.f,gProjects")} </h3>
+                 <h3 className="font-28 text-white">{t("Planned Projects")} </h3>
                </div>
              </div>
            </div>

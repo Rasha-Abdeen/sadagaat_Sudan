@@ -104,9 +104,11 @@ const { data: cover  } = await axios.get(`${address()}cover-image/ABOUT2`, {
       const { data: cover  } = await axios.get(`${address()}cover-image/ABOUT2`, {
         headers: { "accept-language": `${i18n.language}` },
       });
-      this.setState({cover});
-      if (this.cover.status === "500 INTERNAL_SERVER_ERROR"){
+      if (this.cover.status == 500){
         this.setState({cover: undefined})
+
+      }else{
+        this.setState({cover});
 
       }
       console.log("the contact info render ",this.state.Contact.email);

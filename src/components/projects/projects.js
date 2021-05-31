@@ -17,12 +17,16 @@ const Projects_ = () => {
   async function fetchCover() {
     const fetcher = await window.fetch(`${address()}cover-image/PROJECT2`,
     {headers: {'accept-language': `${i18n.language}`}
+   }).then((fetcher)=>{
+    if(fetcher.status == 500){ 
+      setCover(undefined);
+
+     }else{
+      setCover(fetcher);
+
+     }
    });
-    const response = fetcher.json()
-   setCover(response);
-   if (cover.status === "500 INTERNAL_SERVER_ERROR"){
-    setCover(undefined)
-  }
+    
   }
   useEffect(() => {
          fetchCover()

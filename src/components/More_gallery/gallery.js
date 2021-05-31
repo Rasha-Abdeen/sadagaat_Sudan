@@ -10,7 +10,10 @@ import blood from "../images/blood.jpg";
 import Gallery from 'react-grid-gallery'
 import { useTranslation } from "react-i18next";
 
-
+/**
+ * This component to display gallery images using react-grid-gallery 
+ * @see http://sadagaat.com/gallery
+ */
 
 
 export default function More() {

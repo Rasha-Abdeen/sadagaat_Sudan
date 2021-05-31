@@ -39,8 +39,13 @@ class Vacancy extends Component {
       const { data: cover } = await axios.get(`${address()}cover-image/CARRIER1`, {
         headers: { "accept-language": `${i18n.language}` },
       });
-      this.setState(cover);
-    } catch (error) {
+      if (this.cover.status == 500){
+        this.setState({cover: undefined})
+
+      }else{
+        this.setState({cover});
+
+      }    } catch (error) {
       console.log("can not load careers");
     }
 

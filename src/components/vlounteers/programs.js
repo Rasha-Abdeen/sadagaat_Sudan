@@ -12,9 +12,15 @@ const Programs = () => {
   async function fetchCover() {
     const fetcher = await window.fetch(`${address()}cover-image/VOLUNTEER3`,
     {headers: {'accept-language': `${i18n.language}`}
+   }).then((fetcher)=>{
+    if(fetcher.status == 500){ 
+      setCover(undefined);
+
+     }else{
+      setCover(fetcher);
+
+     }
    });
-    const response = await fetcher.json()
-   setCover(response);
    console.log(" c************over image value ***********************",cover)
   }
   useEffect(() => {

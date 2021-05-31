@@ -49,16 +49,16 @@ class Water extends Component {
      try {
       const fetch = await window.fetch(`${address()}cover-image/WATER_SECT`, {
         headers: { "accept-language": `${i18n.language}` },
-      });
-      const response = await fetch.json();
-
-      this.setState({cover: response})
-      console.log("the fetched cover image  ...",this.cover);
-
-      if (this.cover.status === "500 INTERNAL_SERVER_ERROR"){
-        this.setState({cover: undefined})
-
-      }
+      }).then((fetch)=>{
+        if(fetch.status == 500){ 
+          this.setState({cover: undefined})
+  
+         }else{
+          this.setState({cover: fetch})
+    
+         }
+       });
+     
        
      } catch (error) {
        console.log(" cant load water background image ")
@@ -76,11 +76,15 @@ class Water extends Component {
     try {
       const fetch = await window.fetch(`${address()}cover-image/WATER_SECT`, {
         headers: { "accept-language": `${i18n.language}` },
-      });
-      const response = await fetch.json();
-
-      this.setState({cover: response})
-      console.log("the fetched cover image  ...",this.cover);
+      }).then((fetch)=>{
+        if(fetch.status == 500){ 
+          this.setState({cover: undefined})
+  
+         }else{
+          this.setState({cover: fetch})
+    
+         }
+       });
        
      } catch (error) {
        console.log(" cant load water background image ")
@@ -183,7 +187,7 @@ class Water extends Component {
          </div>
        </section>
        :
-       <section className="water-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
+       <section className="health-bg-img inner-header divider parallax layer-overlay overlay-dark-6">
          <div className="container pt-60 pb-60 "
        >
            <div className="section-content">

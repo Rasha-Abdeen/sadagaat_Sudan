@@ -42,9 +42,15 @@ function News() {
   async function fetchCover() {
     const fetcher = await window.fetch(`${address()}cover-image/EVENT1`, {
       headers: { "accept-language": `${i18n.language}` },
-    });
-    const response = await fetcher.json();
-    setCover(response);
+    }).then((fetcher)=>{
+      if(fetcher.status == 500){ 
+        setCover(undefined);
+
+       }else{
+        setCover(fetcher);
+  
+       }
+     });;
     console.log(" cover image loaded ^^^^^^^^^",cover)
   }
   // Get current posts

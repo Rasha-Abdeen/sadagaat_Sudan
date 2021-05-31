@@ -49,18 +49,26 @@ class Education extends Component {
        
      const fetch = await window.fetch(`${address()}cover-image/EDUCATION_SECT`, {
       headers: { "accept-language": `${i18n.language}` },
-    });
-    const response = await fetcher.json();
+    }).then((fetch)=>{
+      if(fetch.status == 500){ 
+        this.setState({cover: undefined})
 
-    this.setState({cover: response})
+       }else{
+        this.setState({cover: fetch})
+  
+       }
+     });
+    //const response = await fetcher.json();
+
     console.log("the fetched cover image  ...",this.cover);
-    if (this.cover.status === undefined){
-      this.setState({cover: undefined})
+    // if (this.cover.status === undefined){
+    //   this.setState({cover: undefined})
 
+    // }
+     } 
+    catch (error) {
+     console.log(error)
     }
-     } catch (error) {
-       console.log(error)
-     }
   }
 
   async componentWillReceiveProps() {
@@ -73,15 +81,16 @@ class Education extends Component {
     try {
       const fetch = await window.fetch(`${address()}cover-image/EDUCATION_SECT`, {
         headers: { "accept-language": `${i18n.language}` },
-      });
-      const response = await fetcher.json();
+      }).then((fetch)=>{
+        if(fetch.status == 500){ 
+          this.setState({cover: undefined})
   
-      this.setState({cover: response})
-      console.log("the fetched cover image  ...",this.cover);
-      if (this.cover.status === "500 INTERNAL_SERVER_ERROR"){
-        this.setState({cover: undefined})
-
-      }
+         }else{
+          this.setState({cover: fetch})
+    
+         }
+       });
+      
     } catch (error) {
       console.log(error)
     }

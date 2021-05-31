@@ -45,9 +45,16 @@ class DonateToProject extends Component {
       try {
         const fetcher = await window.fetch(`${address()}cover-image/DONATION`,
       {headers: {'accept-language': `${i18n.language}`}
+     }).then((fetcher)=>{
+      if(fetch.status == 500){ 
+        this.setState({cover: undefined})
+
+       }else{
+        this.setState({cover: fetcher})
+  
+       }
      });
-     const response= fetcher.json();
-     this.setState({cover:response});
+
      console.log(" c************over image value ***********************",this.state.cover.status)
          
       } catch (error) {
@@ -72,9 +79,16 @@ class DonateToProject extends Component {
       try {
         const fetcher = await window.fetch(`${address()}cover-image/DONATION`,
       {headers: {'accept-language': `${i18n.language}`}
+     }).then((fetcher)=>{
+      if(fetch.status == 500){ 
+        this.setState({cover: undefined})
+
+       }else{
+        this.setState({cover: fetcher})
+  
+       }
      });
-     const response= fetcher.json();
-     this.setState({cover:response});
+     
      console.log(" c************over image value ***********************",this.state.cover.status)
          
       } catch (error) {

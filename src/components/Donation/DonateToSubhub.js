@@ -53,9 +53,16 @@ class DonateToSubhub extends Component {
     try {
       const fetcher =  window.fetch(`${address()}cover-image/DONATION`,
     {headers: {'accept-language': `${i18n.language}`}
+   }).then((fetcher)=>{
+    if(fetch.status == 500){ 
+      this.setState({cover: undefined})
+
+     }else{
+      this.setState({cover: fetcher})
+
+     }
    });
-   const response= fetcher.json();
-   this.setState({cover:response});
+   
    console.log(" c************over image value ***********************",this.state.cover.status)
        
     } catch (error) {
@@ -84,9 +91,16 @@ async componentWillReceiveProps(){
   try {
     const fetcher = await window.fetch(`${address()}cover-image/DONATION`,
   {headers: {'accept-language': `${i18n.language}`}
+ }).then((fetcher)=>{
+  if(fetcher.status == 500){ 
+    this.setState({cover: undefined})
+
+   }else{
+    this.setState({cover: fetcher})
+
+   }
  });
- const response= fetcher.json();
- this.setState({cover:response});
+
  console.log(" c************over image value ***********************",this.state.cover.status)
      
   } catch (error) {

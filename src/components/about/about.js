@@ -24,13 +24,17 @@ function About() {
   async function fetchCover() {
     const fetcher = await window.fetch(`${address()}cover-image/ABOUT1`,
     {headers: {'accept-language': `${i18n.language}`}
+   }).then((fetcher)=>{
+    if(fetcher.status == 500){ 
+      setCover(undefined)
+     }else{
+      setCover(fetcher);
+
+     }
    });
-     const response = await fetcher.json()
-   setCover(fetcher);
+    
    console.log(" c************over image value ***********************",cover)
-   if(response.status === undefined){ 
-    setCover(undefined)
-   }
+  
   }
   async function fetchAbout() {
     const fetcher = await window.fetch(`${address()}about-us`,

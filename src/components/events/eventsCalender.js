@@ -39,10 +39,16 @@ function Calendar(){
   }
 
   async function fetchCover() {
-    const fetcher = await window.fetch(`${address()}cover-image/EVENT2`,{headers: {'accept-language': `${i18n.language}`}})
-    const response = await fetcher.json()
+    const fetcher = await window.fetch(`${address()}cover-image/EVENT2`,{headers: {'accept-language': `${i18n.language}`}}).then((fetcher)=>{
+      if(fetcher.status == 500){ 
+        setCover(undefined)
 
-    setCover(response)
+       }else{
+        setCover(fetcher)
+  
+       }
+     });
+    
     
 
   }

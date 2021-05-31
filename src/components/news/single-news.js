@@ -55,10 +55,15 @@ class SinglNews extends Component {
        
     const fetcher = await window.fetch(`${address()}cover-image/EVENT1`, {
      headers: { "accept-language": `${i18n.language}` },
-   });
-   const response = await fetcher.json();
+   }).then((fetcher)=>{
+    if(fetcher.status == 500){ 
+      this.setState({cover: undefined})
 
-   this.setState({cover: response})
+     }else{
+      this.setState({cover: fetcher})
+
+     }
+   });
    console.log("the fetched cover image  ...",this.cover);
    if (this.cover.status === undefined){
      this.setState({cover: undefined})
@@ -78,11 +83,16 @@ class SinglNews extends Component {
        
       const fetcher = await window.fetch(`${address()}cover-image/EVENT1`, {
        headers: { "accept-language": `${i18n.language}` },
-     });
-     const response = await fetcher.json();
+     }).then((fetcher)=>{
+      if(fetcher.status == 500){ 
+        this.setState({cover: undefined})
+
+       }else{
+        this.setState({cover: fetcher})
   
-     this.setState({cover: response})
-     console.log("the fetched cover image  ...",this.cover);
+       }
+     });
+   
      if (this.cover.status === undefined){
        this.setState({cover: undefined})
   

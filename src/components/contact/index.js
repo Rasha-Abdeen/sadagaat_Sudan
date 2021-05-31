@@ -70,9 +70,11 @@ class Contact extends Component {
 const { data: cover  } = await axios.get(`${address()}cover-image/ABOUT2`, {
         headers: { "accept-language": `${i18n.language}` },
       });
-      this.setState({cover});
-      if (this.cover.status === undefined){
+      if (this.cover.status == 500){
         this.setState({cover: undefined})
+
+      }else{
+        this.setState({cover});
 
       }
 

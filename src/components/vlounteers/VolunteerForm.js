@@ -159,16 +159,31 @@ class VolunteerForm extends Component {
   async componentDidMount(){
     const fetch = await window.fetch(`${address()}cover-image/VOLUNTEER2`, {
       headers: { "accept-language": `${i18n.language}` },
-    });
-    this.setState({cover: fetch})
-    console.log("the fetched cover image  ...",this.cover);
+    }).then((fetch)=>{
+      if(fetch.status == 500){ 
+        this.setState({cover: undefined})
+
+       }else{
+        this.setState({cover: fetch})
+  
+       }
+     });
+  
 
 
   }
   async componentWillReceiveProps(){
     const fetch = await window.fetch(`${address()}cover-image/VOLUNTEER2`, {
       headers: { "accept-language": `${i18n.language}` },
-    });
+    }).then((fetch)=>{
+      if(fetch.status == 500){ 
+        this.setState({cover: undefined})
+
+       }else{
+        this.setState({cover: fetch})
+  
+       }
+     });
     this.setState({cover: fetch})
     console.log("the fetched cover image  ...",this.cover);
 

@@ -19,9 +19,15 @@ function PlannedProjects() {
     try {
       const fetcher = await window.fetch(`${address()}cover-image/PROJECT3`,
     {headers: {'accept-language': `${i18n.language}`}
+   }).then((fetcher)=>{
+    if(fetcher.status == 500){ 
+      setCover(undefined);
+
+     }else{
+      setCover(fetcher);
+
+     }
    });
-   const response= fetcher.json();
-   setCover(fetcher);
    console.log(" c************over image value ***********************",cover.status)
      
     } catch (error) {

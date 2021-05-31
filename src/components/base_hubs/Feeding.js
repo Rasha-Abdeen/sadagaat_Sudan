@@ -49,14 +49,16 @@ class Feeding  extends Component {
      try {
       const fetch = await window.fetch(`${address()}cover-image/FEEDING_SECT`, {
         headers: { "accept-language": `${i18n.language}` },
-      });
-      const response = fetch.json()
-      this.setState({cover: response})
-      console.log("the fetched cover image  ...",this.cover);
-      if (this.cover.status === undefined){
-        this.setState({cover: undefined})
-
-      }
+      }).then((fetch)=>{
+        if(fetch.status == 500){ 
+          this.setState({cover: undefined})
+  
+         }else{
+          this.setState({cover: fetch})
+    
+         }
+       });
+     
        
      } catch (error) {
        console.log(" cant load water background image ")
@@ -73,13 +75,16 @@ class Feeding  extends Component {
     try {
       const fetch = await window.fetch(`${address()}cover-image/FEEDING_SECT`, {
         headers: { "accept-language": `${i18n.language}` },
-      });
-      this.setState({cover: fetch})
-      console.log("the fetched cover image  ...",this.cover);
-      if (this.cover.status === "500 INTERNAL_SERVER_ERROR"){
-        this.setState({cover: undefined})
-
-      }
+      }).then((fetch)=>{
+        if(fetch.status == 500){ 
+          this.setState({cover: undefined})
+  
+         }else{
+          this.setState({cover: fetch})
+    
+         }
+       });
+      
        
      } catch (error) {
        console.log(" cant load water background image ")

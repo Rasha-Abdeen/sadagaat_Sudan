@@ -15,8 +15,11 @@ import { Route, useHistory } from 'react-router'
 import { browserHistory } from 'react-router';
 import i18next from "i18next";
 
-
-const useForceUpdate = () =>useState()[1];
+/**
+ * This component to display more inforamtion just in water sector . it display it in table format 
+ * @component
+ * @see http://sadagaat.com/water/details
+ */
 
 function Details() {
 
@@ -25,8 +28,7 @@ function Details() {
    const [loading, setLoading] = useState(false);
    const [dir ,setDir]=useState("");
 
-   const force= useForceUpdate()
-   const update = ()=> force( )
+
 
    async function fetchTable() {
     const fetcher = await window.fetch(`${address()}hubs/1102`,

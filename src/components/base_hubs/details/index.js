@@ -83,8 +83,10 @@ function Details() {
           //}
             
             config={{toolbar: [],
-           language: i18n.language,
-           ui: i18n.language,
+           language: {
+            ui: i18n.language,
+            content: 'en'
+        },
            highlight:{
              options:[
                {
